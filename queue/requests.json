@@ -1,0 +1,4 @@
+{
+  "about": "Reader-triggered chapters, written from Base44 BuildRequest records (most-requested first). Empty until the read-only Base44 key is added as a GitHub secret.",
+  "chapters": []
+}

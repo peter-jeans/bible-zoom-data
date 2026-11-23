@@ -4,10 +4,15 @@ on:
   push:
     branches: [main]
   schedule:
-    # Weekly scheduled build (Mondays 03:00 UTC). Later runs will generate the
-    # next batch of chapters from the priority queue.
-    - cron: "0 3 * * 1"
+    # Daily pre-population run (03:00 UTC). Each day's budget grows by
+    # queue/config.json chapters_per_day, in queue order (spec v0.5 §8.3).
+    - cron: "0 3 * * *"
   workflow_dispatch:
+    inputs:
+      all:
+        description: "Build every chapter now (ignore the daily budget)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -26,15 +31,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Build static data
-        run: node scripts/build.mjs dist
-      - name: Validate release (registry, licences, coverage, tags)
+      - name: Restore source cache
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: sources-v1-${{ hashFiles('scripts/fetch-sources.mjs') }}
+      - name: Fetch open sources (skipped when cached)
+        run: node scripts/fetch-sources.mjs
+      - name: Build (scheduler)
+        run: node scripts/build.mjs dist ${{ github.event.inputs.all == 'true' && '--all' || '' }}
+      - name: Validate release (registry, licences, coverage, tags, progress)
         run: node scripts/validate.mjs dist
-      - name: Size report
+      - name: Summary
         run: |
-          echo "### Data site size" >> "$GITHUB_STEP_SUMMARY"
-          echo "Files: $(find dist -type f | wc -l)" >> "$GITHUB_STEP_SUMMARY"
-          echo "Size: $(du -sh dist | cut -f1) (GitHub Pages limit is about 1 GB)" >> "$GITHUB_STEP_SUMMARY"
+          node -e '
+          const p=require("./dist/progress.json");
+          const lines=["### Bible Zoom data","",`Chapters built: ${p.chapters.built} / ${p.chapters.total} (budget ${p.chapters.allowed_today})`,"",
+          "| Layer | Chapters |","|---|---|",...Object.entries(p.layers).filter(([,v])=>v.built).map(([k,v])=>`| ${k} | ${v.built} (${v.percent}%) |`),"",
+          `Next in queue: ${p.queue.next.slice(0,10).join(", ")}`];
+          require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n")+"\n");'
+          echo "Size: $(du -sh dist | cut -f1), files: $(find dist -type f | wc -l) (GitHub Pages limit about 1 GB)" >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

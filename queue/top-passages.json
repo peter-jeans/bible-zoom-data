@@ -1,0 +1,26 @@
+{
+  "about": "Top 200 passages, in priority order. A Bible Zoom curated list of widely read passages (our own list; see spec v0.5 §8.3 and open decision 13). The owner can edit it. Each entry is BOOK CH[:V[-V]].",
+  "passages": [
+    "JHN 3:1-21", "PSA 23", "GEN 1", "GEN 2", "GEN 3", "ROM 8", "JHN 1:1-18", "MAT 5", "MAT 6", "MAT 7",
+    "1CO 13", "PHP 4", "ISA 53", "ISA 40", "JER 29:11-14", "PRO 3:1-12", "ROM 12", "EPH 2:1-10", "GAL 5:16-26", "HEB 11",
+    "PSA 1", "PSA 51", "PSA 91", "PSA 139", "PSA 121", "PSA 46", "PSA 27", "PSA 103", "PSA 19", "PSA 8",
+    "PSA 22", "PSA 32", "PSA 34", "PSA 37", "PSA 42", "PSA 62", "PSA 73", "PSA 84", "PSA 90", "PSA 100",
+    "PSA 119:1-16", "PSA 119:97-112", "PSA 130", "PSA 150", "PSA 2", "PSA 16", "PSA 18", "PSA 24", "PSA 40", "PSA 63",
+    "GEN 4", "GEN 6", "GEN 9", "GEN 11", "GEN 12", "GEN 15", "GEN 22", "GEN 28", "GEN 32", "GEN 50",
+    "EXO 3", "EXO 12", "EXO 14", "EXO 20", "EXO 33", "LEV 19", "NUM 6:22-27", "DEU 6", "DEU 30", "JOS 1",
+    "JDG 6", "RUT 1", "1SA 16", "1SA 17", "2SA 7", "2SA 11", "2SA 12", "1KI 3", "1KI 18", "1KI 19",
+    "2CH 7:11-22", "NEH 8", "EST 4", "JOB 1", "JOB 38", "JOB 42", "PRO 1", "PRO 31", "ECC 3", "ECC 12",
+    "SNG 2", "ISA 6", "ISA 7:10-17", "ISA 9:1-7", "ISA 11", "ISA 43", "ISA 55", "ISA 61", "JER 1", "JER 31:31-34",
+    "LAM 3:19-33", "EZK 36:22-38", "EZK 37", "DAN 3", "DAN 6", "DAN 7", "HOS 11", "JOL 2:28-32", "AMO 5", "JON 1",
+    "JON 2", "MIC 6:6-8", "HAB 3", "ZEP 3:14-20", "MAL 3", "MAT 1", "MAT 2", "MAT 3", "MAT 4", "MAT 11:25-30",
+    "MAT 13", "MAT 16", "MAT 22:34-40", "MAT 25", "MAT 26", "MAT 27", "MAT 28", "MRK 1", "MRK 4", "MRK 8:27-38",
+    "MRK 10", "MRK 16", "LUK 1", "LUK 2", "LUK 4", "LUK 10", "LUK 15", "LUK 22", "LUK 23", "LUK 24",
+    "JHN 2", "JHN 4", "JHN 6", "JHN 8", "JHN 10", "JHN 11", "JHN 13", "JHN 14", "JHN 15", "JHN 17",
+    "JHN 20", "JHN 21", "ACT 1", "ACT 2", "ACT 9", "ACT 17", "ROM 1", "ROM 3", "ROM 5", "ROM 6",
+    "ROM 9", "ROM 10", "1CO 1", "1CO 11", "1CO 15", "2CO 4", "2CO 5", "2CO 12", "GAL 2", "EPH 1",
+    "EPH 4", "EPH 5", "EPH 6", "PHP 2", "PHP 3", "COL 1", "COL 3", "1TH 4", "1TH 5", "2TI 3",
+    "TIT 2", "PHM 1", "HEB 1", "HEB 4", "HEB 12", "JAS 1", "JAS 2", "1PE 1", "1PE 2", "1PE 5",
+    "2PE 1", "1JN 1", "1JN 3", "1JN 4", "JUD 1", "REV 1", "REV 3", "REV 4", "REV 5", "REV 12",
+    "REV 19", "REV 20", "REV 21", "REV 22", "MRK 9:2-13", "ISA 7", "JHN 7", "JHN 8:1-11", "1CO 12", "HEB 8"
+  ]
+}

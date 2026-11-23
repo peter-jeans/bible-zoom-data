@@ -1,0 +1,8 @@
+{
+  "about": "Scheduler settings. The queue order is: reader requests, then top-passages.json, then popular_books, then everything else in canonical order (spec v0.5 §8.3).",
+  "start_date": "2026-11-24",
+  "initial_chapters": 300,
+  "chapters_per_day": 150,
+  "popular_books": ["PSA", "JHN", "GEN", "ROM", "MAT"],
+  "requests_file": "queue/requests.json"
+}
