@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "layers": [
     {
       "id": "reception",
@@ -325,6 +325,36 @@
           "label": "apocalyptic",
           "color": "#7a4f8a",
           "darkColor": "#ccbcd3"
+        },
+        {
+          "id": "biography",
+          "label": "ancient biography",
+          "color": "#6a5a2a",
+          "darkColor": "#c6c0ae"
+        },
+        {
+          "id": "midrash",
+          "label": "scripture-shaped retelling",
+          "color": "#2a6f5a",
+          "darkColor": "#aec8c0"
+        },
+        {
+          "id": "type-scene",
+          "label": "type-scene",
+          "color": "#7a3f6a",
+          "darkColor": "#ccb6c6"
+        },
+        {
+          "id": "testimony",
+          "label": "eyewitness testimony",
+          "color": "#4a5aa0",
+          "darkColor": "#bac0db"
+        },
+        {
+          "id": "vision",
+          "label": "visionary / symbolic",
+          "color": "#b0477a",
+          "darkColor": "#e1b9cc"
         }
       ]
     },

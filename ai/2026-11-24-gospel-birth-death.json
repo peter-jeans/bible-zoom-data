@@ -1,0 +1,240 @@
+{
+  "batch": "2026-11-24-gospel-birth-death",
+  "drafted": "2026-11-24",
+  "drafted_by": "Claude (Claude Code), at the owner's request",
+  "note": "AI-suggested, not yet reviewed. Each option names a published proponent; options are equal and unranked. Spans: end 0 means the last verse of the chapter. Categories live in seed/bible/registry.json (the registry is the authority).",
+  "groups": [
+    {
+      "layer": "genre",
+      "group": "ai-birth-matthew",
+      "passages": [
+        [
+          "MAT",
+          1,
+          18,
+          2,
+          0
+        ]
+      ],
+      "options": [
+        {
+          "category": "narrative",
+          "label": "Historical narrative",
+          "reasoning": "Read as a report of events in Jesus' family history, framed by genealogy. Held in traditional and many evangelical commentaries, e.g. D. A. Carson, 'Matthew' (Expositor's Bible Commentary, 1984)."
+        },
+        {
+          "category": "midrash",
+          "label": "Midrash-like retelling of Scripture",
+          "reasoning": "Episodes built around Old Testament quotations (Isa 7:14, Mic 5:2, Hos 11:1, Jer 31:15) to interpret Jesus. Robert H. Gundry, 'Matthew: A Commentary on His Literary and Theological Art' (1982), argued Matthew used midrashic embellishment here."
+        },
+        {
+          "category": "type-scene",
+          "label": "Moses-pattern birth story",
+          "reasoning": "A ruler's massacre of infants and a child's escape echo Moses' birth (Exodus 1–2). Raymond E. Brown, 'The Birth of the Messiah' (1977), traces this Moses typology."
+        },
+        {
+          "category": "biography",
+          "label": "Birth section of an ancient biography",
+          "reasoning": "Greco-Roman lives often open with ancestry and portents at birth. Richard A. Burridge, 'What Are the Gospels?' (1992), classes the Gospels as ancient biography (bios)."
+        }
+      ]
+    },
+    {
+      "layer": "genre",
+      "group": "ai-birth-luke",
+      "passages": [
+        [
+          "LUK",
+          1,
+          5,
+          2,
+          52
+        ]
+      ],
+      "options": [
+        {
+          "category": "narrative",
+          "label": "Historical narrative",
+          "reasoning": "Luke presents an ordered account from eyewitness tradition (1:1–4), dated by rulers. I. Howard Marshall, 'The Gospel of Luke' (NIGTC, 1978), reads it as historical narrative."
+        },
+        {
+          "category": "type-scene",
+          "label": "Annunciation type-scene",
+          "reasoning": "Angelic announcements of births to Zechariah and Mary follow a recurring biblical pattern (Sarah, Hannah, Samson's mother). Robert Alter, 'The Art of Biblical Narrative' (1981), names the annunciation type-scene; Raymond E. Brown (1977) applies the pattern to Luke 1."
+        },
+        {
+          "category": "midrash",
+          "label": "Scripture-shaped retelling",
+          "reasoning": "The canticles and scenes echo Septuagint language and the Samuel story closely. Raymond E. Brown, 'The Birth of the Messiah' (1977), discusses how far these chapters are composed from Old Testament models."
+        },
+        {
+          "category": "biography",
+          "label": "Birth section of an ancient biography",
+          "reasoning": "Childhood portents and a precocious boy in the temple (2:41–52) are familiar features of ancient lives. Richard A. Burridge, 'What Are the Gospels?' (1992)."
+        }
+      ]
+    },
+    {
+      "layer": "genre",
+      "group": "ai-passion",
+      "passages": [
+        [
+          "MAT",
+          26,
+          1,
+          27,
+          66
+        ],
+        [
+          "MRK",
+          14,
+          1,
+          15,
+          47
+        ],
+        [
+          "LUK",
+          22,
+          1,
+          23,
+          56
+        ],
+        [
+          "JHN",
+          18,
+          1,
+          19,
+          42
+        ]
+      ],
+      "options": [
+        {
+          "category": "testimony",
+          "label": "Eyewitness testimony",
+          "reasoning": "Named people in the passion story (e.g. Simon of Cyrene's sons, the women) may point to the eyewitnesses behind it. Richard Bauckham, 'Jesus and the Eyewitnesses' (2006)."
+        },
+        {
+          "category": "midrash",
+          "label": "Prophecy historicised",
+          "reasoning": "Details are read as drawn from Psalms and Prophets (e.g. Psalm 22) rather than from memory. John Dominic Crossan, 'Who Killed Jesus?' (1995), argues for 'prophecy historicized' against 'history remembered'."
+        },
+        {
+          "category": "biography",
+          "label": "Death scene of an ancient biography",
+          "reasoning": "Ancient lives gave great weight to how the subject died. Richard A. Burridge, 'What Are the Gospels?' (1992)."
+        },
+        {
+          "category": "narrative",
+          "label": "Passion narrative (the Gospel's core)",
+          "reasoning": "Martin Kähler, 'The So-Called Historical Jesus and the Historic, Biblical Christ' (1892), called the Gospels 'passion narratives with extended introductions'."
+        }
+      ]
+    },
+    {
+      "layer": "genre",
+      "group": "ai-resurrection",
+      "passages": [
+        [
+          "MAT",
+          28,
+          1,
+          28,
+          0
+        ],
+        [
+          "MRK",
+          16,
+          1,
+          16,
+          8
+        ],
+        [
+          "LUK",
+          24,
+          1,
+          24,
+          0
+        ],
+        [
+          "JHN",
+          20,
+          1,
+          21,
+          0
+        ]
+      ],
+      "options": [
+        {
+          "category": "narrative",
+          "label": "Historical report",
+          "reasoning": "The empty tomb and appearances are read as reports of real events. N. T. Wright, 'The Resurrection of the Son of God' (2003)."
+        },
+        {
+          "category": "testimony",
+          "label": "Eyewitness testimony",
+          "reasoning": "Named women witnesses at the tomb are taken as tradents of the story. Richard Bauckham, 'Jesus and the Eyewitnesses' (2006) and 'Gospel Women' (2002)."
+        },
+        {
+          "category": "vision",
+          "label": "Vision accounts",
+          "reasoning": "Appearance stories are read as narrative expressions of visionary experiences. Gerd Lüdemann, 'The Resurrection of Jesus' (1994)."
+        },
+        {
+          "category": "type-scene",
+          "label": "Translation / empty-tomb story",
+          "reasoning": "Mark's empty tomb is compared with ancient stories of a hero's body taken up and not found. Adela Yarbro Collins, 'Mark: A Commentary' (Hermeneia, 2007)."
+        }
+      ]
+    },
+    {
+      "layer": "genre",
+      "group": "ai-risen-saints",
+      "passages": [
+        [
+          "MAT",
+          27,
+          51,
+          27,
+          53
+        ]
+      ],
+      "options": [
+        {
+          "category": "narrative",
+          "label": "Historical report",
+          "reasoning": "The earthquake and raised saints are read as events, as in many traditional commentaries, e.g. D. A. Carson, 'Matthew' (Expositor's Bible Commentary, 1984)."
+        },
+        {
+          "category": "apocalyptic",
+          "label": "Apocalyptic imagery",
+          "reasoning": "The signs are read as apocalyptic symbolism marking the turn of the ages (cf. Ezek 37, Joel 2). Michael R. Licona, 'The Resurrection of Jesus: A New Historiographical Approach' (2010), proposed this reading."
+        }
+      ]
+    },
+    {
+      "layer": "manuscripts",
+      "group": "ai-mark-ending",
+      "passages": [
+        [
+          "MRK",
+          16,
+          9,
+          16,
+          20
+        ]
+      ],
+      "options": [
+        {
+          "category": "variant",
+          "label": "Later addition",
+          "reasoning": "Verses 9–20 are absent from the earliest complete manuscripts (Codex Sinaiticus and Codex Vaticanus). Bruce M. Metzger, 'A Textual Commentary on the Greek New Testament' (1971; 2nd ed. 1994)."
+        },
+        {
+          "category": "variant",
+          "label": "Original ending",
+          "reasoning": "The longer ending is in the great majority of manuscripts and was known by the 2nd century. Nicholas P. Lunn, 'The Original Ending of Mark' (2014), argues it is authentic."
+        }
+      ]
+    }
+  ]
+}

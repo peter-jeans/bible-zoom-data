@@ -123,6 +123,17 @@ function rareWords(verses = []) {
   return tags;
 }
 
+// AI-suggested batches (spec §8.7): drafted by Claude in batches, labelled, never settled.
+const aiByChapter = new Map();
+if (existsSync('ai')) for (const f of (await readdir('ai')).filter(n => n.endsWith('.json')).sort()) {
+  const batch = await json(`ai/${f}`);
+  for (const g of batch.groups) for (const [book, c1, v1, c2, v2] of g.passages) for (let c = c1; c <= c2; c++) {
+    const key = `${book}/${c}`;
+    if (!aiByChapter.has(key)) aiByChapter.set(key, []);
+    aiByChapter.get(key).push({ g, batch, from: c === c1 ? v1 : 1, to: c === c2 ? v2 : 0, group: `${g.group}-${book}` });
+  }
+}
+
 // ---- 3. Build ---------------------------------------------------------------------------
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
@@ -172,6 +183,17 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     }
     await save(`${out}/layers/${layer}/${id}/${ch}.json`, tags);
     entry[layer] = tags[0].category;
+  }
+  for (const a of aiByChapter.get(key) || []) {
+    const file = `${out}/layers/${a.g.layer}/${id}/${ch}.json`;
+    const existing = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : [];
+    const end = a.to || last;
+    const tags = a.g.options.map(o => ({
+      category: o.category, label: o.label, start: Math.min(a.from, last), end: Math.min(end, last), status: 'CONTESTED', group: a.group,
+      method: 'ai-suggested', reasoning: o.reasoning, drafted: a.batch.drafted, batch: a.batch.batch,
+    }));
+    await save(file, [...existing, ...tags]);
+    if (!entry[a.g.layer]) entry[a.g.layer] = tags[0].category;
   }
   if (!Object.keys(entry).length) entry.genre = null;
   coverage[key] = Object.fromEntries(layerIds.filter(l => l in entry).map(l => [l, entry[l]]));
