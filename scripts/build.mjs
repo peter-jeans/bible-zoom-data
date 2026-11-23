@@ -96,7 +96,18 @@ for (const key of queue.filter(k => toBuild.has(k))) {
   const notes = await bookNotes(id);
   const generated = { figures: notes.figures[ch], imagery: notes.imagery[ch], poetry: notes.poetry[ch], genre: genreFor(id, ch) };
   for (const [layer, tags] of Object.entries(generated)) {
-    if (layer in entry || !tags?.length) continue;
+    if (!tags?.length) continue;
+    // Curated seed tags come first; for the note-based layers the canonical tags are added after
+    // them, so readers see every option. Genre stays curated where the seed provides it.
+    if (layer in entry) {
+      if (entry[layer] && layer !== 'genre') {
+        const file = `${out}/layers/${layer}/${id}/${ch}.json`;
+        const seedTags = JSON.parse(await readFile(file, 'utf8'));
+        const known = new Set(seedTags.map(t => `${t.start}|${t.end}|${t.label}`));
+        await save(file, [...seedTags, ...tags.filter(t => !known.has(`${t.start}|${t.end}|${t.label}`))]);
+      }
+      continue;
+    }
     await save(`${out}/layers/${layer}/${id}/${ch}.json`, tags);
     entry[layer] = tags[0].category;
   }
