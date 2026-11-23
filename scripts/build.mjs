@@ -17,6 +17,10 @@ import { parseUsfm } from './lib/usfm.mjs';
 import { notesToTags } from './lib/notes.mjs';
 import { genreFor } from './lib/genre.mjs';
 import { crossReferences, places } from './lib/openbible.mjs';
+import { outlineFromNotes } from './lib/structure.mjs';
+import { loadTheographic, names as nameTags, events as eventTags, bookSetting } from './lib/theographic.mjs';
+import { themes as themeTags } from './lib/themes.mjs';
+import { poeticLines, acrostics } from './lib/poetry.mjs';
 
 const out = argv.find((a, i) => i >= 2 && !a.startsWith('--')) || 'dist';
 const buildAll = argv.includes('--all');
@@ -53,7 +57,7 @@ const toBuild = new Set([...queue.slice(0, allowed), ...Object.keys(seedCoverage
 
 // ---- 2. Sources ------------------------------------------------------------------------
 const usfmFile = async (dir, id) => (await readdir(`${CACHE}/${dir}`)).find(f => new RegExp(`^\\d+-${id}`).test(f));
-const textCache = {}, notesCache = {};
+const textCache = {}, notesCache = {}, bookCache = {};
 async function bookText(id) {
   if (!textCache[id]) {
     const [k, w] = [await usfmFile('kjv', id), await usfmFile('web', id)];
@@ -72,11 +76,40 @@ async function bookNotes(id) {
   return notesCache[id];
 }
 
+// Book-level engines from the unfoldingWord introductions and the WEB poetry markers.
+async function bookExtras(id) {
+  if (!bookCache[id]) {
+    const t = await bookText(id);
+    const last = c => t.KJV[c]?.at(-1)?.number || 0;
+    const tn = existsSync(`${CACHE}/tn/tn_${id}.tsv`) ? await readFile(`${CACHE}/tn/tn_${id}.tsv`, 'utf8') : '';
+    bookCache[id] = {
+      outline: tn ? outlineFromNotes(tn, last) : {},
+      setting: tn ? bookSetting(tn) : [],
+      lines: poeticLines(await readFile(`${CACHE}/web/${await usfmFile('web', id)}`, 'utf8')),
+    };
+  }
+  return bookCache[id];
+}
+const lastVerseOf = (book, ch) => textCache[book]?.KJV[ch]?.at(-1)?.number || 0;
+
 // Mechanistic engines over whole-Bible data (no AI): cross-references, places, concordance counts.
 const xref = await crossReferences(`${CACHE}/openbible/xref/cross_references.txt`, books);
 const geo = await places(`${CACHE}/openbible/ancient.jsonl`, books);
 const strongCount = new Map();
-for (const b of books) for (const vs of Object.values((await bookText(b.id)).KJV)) for (const v of vs) for (const w of v.words) if (w.strong) strongCount.set(w.strong, (strongCount.get(w.strong) || 0) + 1);
+const occurrences = new Map();
+for (const b of books) for (const [c, vs] of Object.entries((await bookText(b.id)).KJV)) for (const v of vs) for (const w of v.words) if (w.strong) {
+  strongCount.set(w.strong, (strongCount.get(w.strong) || 0) + 1);
+  if (!occurrences.has(w.strong)) occurrences.set(w.strong, []);
+  const list = occurrences.get(w.strong);
+  if (list.length < 500) list.push({ book: b.id, ch: +c, verse: v.number, text: w.text.replace(/[^\p{L}'’-]/gu, ''), id: w.id });
+}
+const theo = await loadTheographic(`${CACHE}/theographic`, books);
+const names = nameTags(theo, (book, ch) => textCache[book]?.WEB[ch]);
+const dated = eventTags(theo);
+const acrostic = acrostics(lastVerseOf);
+const peopleSubjects = new Set([...theo.person.values()].map(p => p.name?.toUpperCase()).filter(Boolean));
+const placeSubjects = new Set(Object.values(geo).flatMap(chs => Object.values(chs).flat()).map(t => t.label.split(/[:(]/)[0].trim().toUpperCase()));
+const topical = themeTags(await readFile(`${CACHE}/naves/naves.csv`, 'utf8'), books, { exclude: new Set([...peopleSubjects, ...placeSubjects]), lastVerse: lastVerseOf });
 const withCounts = verses => verses.map(v => ({ ...v, words: v.words.map(w => (w.strong ? { ...w, count: strongCount.get(w.strong) } : w)) }));
 function rareWords(verses = []) {
   const tags = [];
@@ -114,9 +147,15 @@ for (const key of queue.filter(k => toBuild.has(k))) {
   // Layers from canonical sources, unless the seed already provides that layer.
   const notes = await bookNotes(id);
   const kjv = (await bookText(id)).KJV[ch];
+  const extras = await bookExtras(id);
+  const last = kjv.at(-1).number;
+  const setting = extras.setting.map(s => ({ category: 'context', label: `${s.kind}: ${s.sentence}`, start: 1, end: last, status: 'SETTLED', source: 'uw-tn', witnesses: 1, detail: s.detail }));
+  const poetry = [...(acrostic[id]?.[ch] || []), ...(extras.lines[ch] || []), ...(notes.poetry[ch] || [])];
+  const history = [...setting, ...(dated[id]?.[ch] || [])];
   const generated = {
-    figures: notes.figures[ch], imagery: notes.imagery[ch], poetry: notes.poetry[ch], genre: genreFor(id, ch),
+    figures: notes.figures[ch], imagery: notes.imagery[ch], poetry, genre: genreFor(id, ch),
     intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv),
+    structure: extras.outline[ch], history, names: names[id]?.[ch], themes: topical[id]?.[ch],
   };
   for (const [layer, tags] of Object.entries(generated)) {
     if (!tags?.length) continue;
@@ -165,5 +204,13 @@ const progress = {
   queue: { order: ['reader requests', 'top 200 passages', `popular books: ${config.popular_books.join(', ')}`, 'everything else'], requests: requests.length, next: remaining.slice(0, 25), remaining: remaining.length },
 };
 await save(`${out}/progress.json`, progress);
+
+// Whole-Bible concordance: one file per Strong's number (first 500 occurrences, with the total).
+let lexFiles = 0;
+for (const [strong, list] of occurrences) {
+  await save(`${out}/library/lexicon/${strong}.json`, { scope: 'Whole Bible (KJV)', total: strongCount.get(strong), occurrences: { KJV: { [strong]: list } } });
+  lexFiles++;
+}
+console.log(`Concordance index: ${lexFiles} Strong's numbers.`);
 await writeFile(`${out}/.nojekyll`, '');
 console.log(`Built ${builtCount} chapters (${Object.keys(ordered).length}/${total}; budget ${allowed}). Next: ${remaining.slice(0, 5).join(', ') || 'none'}.`);

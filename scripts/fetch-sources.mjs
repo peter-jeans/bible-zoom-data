@@ -30,6 +30,10 @@ if (await download('https://a.openbible.info/data/cross-references.zip', `${CACH
   execFileSync('unzip', ['-oq', `${CACHE}/openbible/xref.zip`, '-d', `${CACHE}/openbible/xref`]);
 }
 await download('https://raw.githubusercontent.com/openbibleinfo/Bible-Geocoding-Data/main/data/ancient.jsonl', `${CACHE}/openbible/ancient.jsonl`);
+await mkdir(`${CACHE}/theographic`, { recursive: true });
+for (const f of ['verses', 'people', 'events']) await download(`https://raw.githubusercontent.com/robertrouse/theographic-bible-metadata/master/json/${f}.json`, `${CACHE}/theographic/${f}.json`);
+await mkdir(`${CACHE}/naves`, { recursive: true });
+await download('https://raw.githubusercontent.com/BradyStephenson/bible-data/main/NavesTopicalDictionary.csv', `${CACHE}/naves/naves.csv`);
 let fetched = 0;
 for (const b of registry.books) {
   if (await download(`https://git.door43.org/unfoldingWord/en_tn/raw/branch/master/tn_${b.id}.tsv`, `${CACHE}/tn/tn_${b.id}.tsv`)) fetched++;
