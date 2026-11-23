@@ -23,6 +23,7 @@ import { themes as themeTags } from './lib/themes.mjs';
 import { poeticLines, acrostics } from './lib/poetry.mjs';
 import { formsFor, formsFromNotes, voiceFromNotes } from './lib/form.mjs';
 import { loadTahot, originalTags, grammarTags, manuscriptTags } from './lib/stepbible.mjs';
+import { natureTags, objectTags } from './lib/world.mjs';
 
 const out = argv.find((a, i) => i >= 2 && !a.startsWith('--')) || 'dist';
 const buildAll = argv.includes('--all');
@@ -202,6 +203,7 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     structure: extras.outline[ch], history, themes: topical[id]?.[ch],
     form: formsFor(id, ch, kjv, extras.noteForms),
     original: hebrew[id]?.[ch], grammar: parsing[id]?.[ch], manuscripts: ketiv[id]?.[ch],
+    nature: natureTags(kjv), objects: objectTags(kjv),
     names: (names[id]?.[ch] || []).filter(t => t.category !== 'speaker'),
     voice: [...(names[id]?.[ch] || []).filter(t => t.category === 'speaker'), ...(extras.voice[ch] || [])].sort((a, b) => a.start - b.start),
     mode: figurativeMode(extras.outline[ch], notes.imagery[ch] || [], last),

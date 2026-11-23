@@ -187,5 +187,15 @@
     "license": "CC BY 4.0",
     "url": "https://github.com/STEPBible/STEPBible-Data",
     "attribution": "Hebrew text, glosses and grammar from STEP Bible (www.STEPBible.org), TAHOT, CC BY 4.0. Reformatted by Bible Zoom."
+  },
+  {
+    "id": "bz-world",
+    "title": "Bible Zoom nature and daily-life word lists",
+    "author": "Bible Zoom",
+    "date": "2026",
+    "tradition": "Word lists over the KJV text",
+    "license": "CC BY-SA 4.0",
+    "url": "https://github.com/peter-jeans/bible-zoom-data/blob/main/scripts/lib/world.mjs",
+    "attribution": "Nature and daily-life mentions found by Bible Zoom word lists."
   }
 ]

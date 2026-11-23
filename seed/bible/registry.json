@@ -1,5 +1,5 @@
 {
-  "version": 8,
+  "version": 9,
   "layers": [
     {
       "id": "reception",
@@ -97,6 +97,36 @@
           "label": "species",
           "color": "#718342",
           "darkColor": "#c9d0b7"
+        },
+        {
+          "id": "animal",
+          "label": "animals",
+          "color": "#6b5b8c",
+          "darkColor": "#c7c1d3"
+        },
+        {
+          "id": "plant",
+          "label": "plants",
+          "color": "#2f8a5a",
+          "darkColor": "#b0d3c0"
+        },
+        {
+          "id": "weather",
+          "label": "weather",
+          "color": "#2f78b0",
+          "darkColor": "#b0cce1"
+        },
+        {
+          "id": "landform",
+          "label": "land and water",
+          "color": "#7a6a58",
+          "darkColor": "#ccc6c0"
+        },
+        {
+          "id": "sky",
+          "label": "sky",
+          "color": "#94730a",
+          "darkColor": "#d6caa2"
         }
       ]
     },
@@ -112,6 +142,42 @@
           "label": "object",
           "color": "#9a6743",
           "darkColor": "#d9c5b8"
+        },
+        {
+          "id": "food",
+          "label": "food and drink",
+          "color": "#a5762a",
+          "darkColor": "#ddcbae"
+        },
+        {
+          "id": "clothing",
+          "label": "clothing",
+          "color": "#4f7a9a",
+          "darkColor": "#bcccd9"
+        },
+        {
+          "id": "building",
+          "label": "buildings",
+          "color": "#8a6a3a",
+          "darkColor": "#d3c6b4"
+        },
+        {
+          "id": "tool",
+          "label": "tools and weapons",
+          "color": "#a83a3a",
+          "darkColor": "#deb4b4"
+        },
+        {
+          "id": "money",
+          "label": "money and measures",
+          "color": "#5f6b7a",
+          "darkColor": "#c2c7cc"
+        },
+        {
+          "id": "vessel",
+          "label": "vessels",
+          "color": "#2f7f8f",
+          "darkColor": "#b0ced4"
         }
       ]
     },
