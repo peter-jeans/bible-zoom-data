@@ -16,6 +16,7 @@ import { argv } from 'node:process';
 import { parseUsfm } from './lib/usfm.mjs';
 import { notesToTags } from './lib/notes.mjs';
 import { genreFor } from './lib/genre.mjs';
+import { crossReferences, places } from './lib/openbible.mjs';
 
 const out = argv.find((a, i) => i >= 2 && !a.startsWith('--')) || 'dist';
 const buildAll = argv.includes('--all');
@@ -71,6 +72,24 @@ async function bookNotes(id) {
   return notesCache[id];
 }
 
+// Mechanistic engines over whole-Bible data (no AI): cross-references, places, concordance counts.
+const xref = await crossReferences(`${CACHE}/openbible/xref/cross_references.txt`, books);
+const geo = await places(`${CACHE}/openbible/ancient.jsonl`, books);
+const strongCount = new Map();
+for (const b of books) for (const vs of Object.values((await bookText(b.id)).KJV)) for (const v of vs) for (const w of v.words) if (w.strong) strongCount.set(w.strong, (strongCount.get(w.strong) || 0) + 1);
+const withCounts = verses => verses.map(v => ({ ...v, words: v.words.map(w => (w.strong ? { ...w, count: strongCount.get(w.strong) } : w)) }));
+function rareWords(verses = []) {
+  const tags = [];
+  for (const v of verses) {
+    const rare = v.words.filter(w => w.strong && strongCount.get(w.strong) <= 2);
+    if (rare.length) tags.push({
+      category: 'occurrence', start: v.number, end: v.number, status: 'SETTLED', source: 'kjv-strongs', witnesses: 1,
+      label: `Rare word${rare.length > 1 ? 's' : ''}: ${rare.map(w => `${w.text.replace(/[^\p{L}'’-]/gu, '')} (${w.strong}, ${strongCount.get(w.strong) === 1 ? 'only here' : 'twice in the Bible'})`).join(', ')}`,
+    });
+  }
+  return tags;
+}
+
 // ---- 3. Build ---------------------------------------------------------------------------
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
@@ -89,12 +108,16 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     for (const tr of ['KJV', 'WEB']) {
       const verses = t[tr][ch];
       if (!verses?.length) throw Error(`Missing ${tr} text for ${key}`);
-      await save(`${out}/text/${tr}/${id}/${ch}.json`, { book: id, ch, verses });
+      await save(`${out}/text/${tr}/${id}/${ch}.json`, { book: id, ch, verses: tr === 'KJV' ? withCounts(verses) : verses });
     }
   }
   // Layers from canonical sources, unless the seed already provides that layer.
   const notes = await bookNotes(id);
-  const generated = { figures: notes.figures[ch], imagery: notes.imagery[ch], poetry: notes.poetry[ch], genre: genreFor(id, ch) };
+  const kjv = (await bookText(id)).KJV[ch];
+  const generated = {
+    figures: notes.figures[ch], imagery: notes.imagery[ch], poetry: notes.poetry[ch], genre: genreFor(id, ch),
+    intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv),
+  };
   for (const [layer, tags] of Object.entries(generated)) {
     if (!tags?.length) continue;
     // Curated seed tags come first; for the note-based layers the canonical tags are added after

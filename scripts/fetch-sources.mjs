@@ -25,6 +25,11 @@ for (const [name, url] of Object.entries(bibles)) {
   }
 }
 await download('https://git.door43.org/unfoldingWord/en_tn/raw/branch/master/LICENSE.md', `${CACHE}/tn/LICENSE.md`);
+await mkdir(`${CACHE}/openbible`, { recursive: true });
+if (await download('https://a.openbible.info/data/cross-references.zip', `${CACHE}/openbible/xref.zip`) || !existsSync(`${CACHE}/openbible/xref`)) {
+  execFileSync('unzip', ['-oq', `${CACHE}/openbible/xref.zip`, '-d', `${CACHE}/openbible/xref`]);
+}
+await download('https://raw.githubusercontent.com/openbibleinfo/Bible-Geocoding-Data/main/data/ancient.jsonl', `${CACHE}/openbible/ancient.jsonl`);
 let fetched = 0;
 for (const b of registry.books) {
   if (await download(`https://git.door43.org/unfoldingWord/en_tn/raw/branch/master/tn_${b.id}.tsv`, `${CACHE}/tn/tn_${b.id}.tsv`)) fetched++;

@@ -1,6 +1,7 @@
 // Turns unfoldingWord Translation Notes (TSV) into Bible Zoom tags for three layers:
 // figures (rhetorical figures only), imagery (metaphor/simile notes) and poetry (parallelism).
 // Translation-technique notes (abstract nouns, active/passive, etc.) are not figures and are skipped.
+import { imageFamily } from './imagery.mjs';
 export const FIGURE_FAMILY = {
   metaphor: 'comparison', simile: 'comparison', exmetaphor: 'comparison',
   metonymy: 'substitution', synecdoche: 'substitution', euphemism: 'substitution',
@@ -65,7 +66,10 @@ export function notesToTags(tsv) {
     if (sup === 'parallelism') push('poetry', { ...base, category: 'parallelism', label: `Parallelism: ${summary}`, detail });
     const family = FIGURE_FAMILY[sup];
     if (family) push('figures', { ...base, category: family, label: `${NAMES[sup]}: ${summary}`, figure: NAMES[sup], detail });
-    if (sup === 'metaphor' || sup === 'simile' || sup === 'exmetaphor') push('imagery', { ...base, category: 'image', label: summary, figure: NAMES[sup], detail });
+    if (sup === 'metaphor' || sup === 'simile' || sup === 'exmetaphor') {
+      const fam = imageFamily(text);
+      push('imagery', { ...base, category: fam.id, label: `${fam.label}: ${summary}`, figure: NAMES[sup], family: fam.label, detail });
+    }
   }
   for (const layer of Object.values(out)) for (const tags of Object.values(layer)) tags.sort((a, b) => a.start - b.start || a.end - b.end);
   return out;
