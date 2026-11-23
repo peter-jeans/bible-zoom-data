@@ -1,12 +1,12 @@
 {
-  "version": 5,
+  "version": 6,
   "layers": [
     {
       "id": "reception",
       "name": "Reception",
       "side": "above",
       "description": "Tradition & commentary",
-      "group": null,
+      "group": "Interpretation",
       "categories": [
         {
           "id": "tradition",
@@ -21,7 +21,7 @@
       "name": "Typology",
       "side": "above",
       "description": "Type and antitype",
-      "group": null,
+      "group": "Interpretation",
       "categories": [
         {
           "id": "type",
@@ -32,11 +32,164 @@
       ]
     },
     {
+      "id": "intertext",
+      "name": "Intertext",
+      "side": "above",
+      "description": "Cross-references most voted by readers (OpenBible.info)",
+      "group": "Interpretation",
+      "categories": [
+        {
+          "id": "echo",
+          "label": "cross-reference",
+          "color": "#6f699c",
+          "darkColor": "#c8c6d9"
+        }
+      ]
+    },
+    {
+      "id": "history",
+      "name": "Historical setting",
+      "side": "above",
+      "description": "Authorship, date and dated events (unfoldingWord; Theographic traditional chronology)",
+      "group": null,
+      "categories": [
+        {
+          "id": "context",
+          "label": "context",
+          "color": "#7b6b51",
+          "darkColor": "#cdc7bd"
+        },
+        {
+          "id": "event",
+          "label": "dated event",
+          "color": "#a0522d",
+          "darkColor": "#dbbdaf"
+        }
+      ]
+    },
+    {
+      "id": "places",
+      "name": "Places",
+      "side": "above",
+      "description": "Sites and geographic candidates",
+      "group": "World",
+      "categories": [
+        {
+          "id": "site",
+          "label": "site",
+          "color": "#9b6a29",
+          "darkColor": "#d9c6ae"
+        }
+      ]
+    },
+    {
+      "id": "nature",
+      "name": "Nature",
+      "side": "above",
+      "description": "Plants and animals",
+      "group": "World",
+      "categories": [
+        {
+          "id": "species",
+          "label": "species",
+          "color": "#718342",
+          "darkColor": "#c9d0b7"
+        }
+      ]
+    },
+    {
+      "id": "objects",
+      "name": "Objects & daily life",
+      "side": "above",
+      "description": "Objects and practices",
+      "group": "World",
+      "categories": [
+        {
+          "id": "object",
+          "label": "object",
+          "color": "#9a6743",
+          "darkColor": "#d9c5b8"
+        }
+      ]
+    },
+    {
+      "id": "archaeology",
+      "name": "Archaeology",
+      "side": "above",
+      "description": "Material evidence",
+      "group": "World",
+      "categories": [
+        {
+          "id": "evidence",
+          "label": "evidence",
+          "color": "#8b7155",
+          "darkColor": "#d3c9be"
+        }
+      ]
+    },
+    {
+      "id": "mode",
+      "name": "Mode (how it refers)",
+      "side": "above",
+      "description": "How a passage refers: historiographic, figurative, symbolic… Contested readings name who holds them",
+      "group": "Literature",
+      "categories": [
+        {
+          "id": "historiographic",
+          "label": "historiographic",
+          "color": "#4a5aa0",
+          "darkColor": "#bac0db"
+        },
+        {
+          "id": "figurative",
+          "label": "figurative",
+          "color": "#2a6f5a",
+          "darkColor": "#aec8c0"
+        },
+        {
+          "id": "symbolic",
+          "label": "symbolic",
+          "color": "#b0477a",
+          "darkColor": "#e1b9cc"
+        },
+        {
+          "id": "allegorical",
+          "label": "allegorical",
+          "color": "#7a3f6a",
+          "darkColor": "#ccb6c6"
+        },
+        {
+          "id": "apocalyptic",
+          "label": "apocalyptic",
+          "color": "#7a4f8a",
+          "darkColor": "#ccbcd3"
+        },
+        {
+          "id": "scripture-shaped",
+          "label": "scripture-shaped (midrashic)",
+          "color": "#6a5a2a",
+          "darkColor": "#c6c0ae"
+        },
+        {
+          "id": "visionary",
+          "label": "visionary",
+          "color": "#a0522d",
+          "darkColor": "#dbbdaf"
+        },
+        {
+          "id": "saga",
+          "label": "saga / legend",
+          "color": "#5a6f2a",
+          "darkColor": "#c0c8ae"
+        }
+      ]
+    },
+    {
       "id": "themes",
-      "name": "Themes",
+      "name": "Motifs & themes",
       "side": "above",
       "description": "Topics from Nave’s Topical Bible",
-      "group": null,
+      "group": "Literature",
       "categories": [
         {
           "id": "theme",
@@ -47,11 +200,254 @@
       ]
     },
     {
+      "id": "genre",
+      "name": "Kind (genre)",
+      "side": "above",
+      "description": "Literary forms and competing readings",
+      "group": "Literature",
+      "categories": [
+        {
+          "id": "narrative",
+          "label": "narrative",
+          "color": "#74618d",
+          "darkColor": "#cac3d4"
+        },
+        {
+          "id": "exalted prose",
+          "label": "exalted prose",
+          "color": "#3e7481",
+          "darkColor": "#b6cacf"
+        },
+        {
+          "id": "cosmology and polemic",
+          "label": "cosmology and polemic",
+          "color": "#9a653e",
+          "darkColor": "#d9c4b6"
+        },
+        {
+          "id": "temple inauguration",
+          "label": "temple inauguration",
+          "color": "#537849",
+          "darkColor": "#beccba"
+        },
+        {
+          "id": "poetry",
+          "label": "poetry",
+          "color": "#925880",
+          "darkColor": "#d6c0cf"
+        },
+        {
+          "id": "law",
+          "label": "law",
+          "color": "#8c5d3c",
+          "darkColor": "#d3c1b5"
+        },
+        {
+          "id": "wisdom",
+          "label": "wisdom",
+          "color": "#6d7a3e",
+          "darkColor": "#c8ccb6"
+        },
+        {
+          "id": "prophecy",
+          "label": "prophecy",
+          "color": "#9b4f4f",
+          "darkColor": "#d9bcbc"
+        },
+        {
+          "id": "gospel",
+          "label": "gospel",
+          "color": "#3d6e8f",
+          "darkColor": "#b5c8d4"
+        },
+        {
+          "id": "epistle",
+          "label": "epistle",
+          "color": "#5f6b7a",
+          "darkColor": "#c2c7cc"
+        },
+        {
+          "id": "apocalyptic",
+          "label": "apocalyptic",
+          "color": "#7a4f8a",
+          "darkColor": "#ccbcd3"
+        },
+        {
+          "id": "biography",
+          "label": "ancient biography",
+          "color": "#6a5a2a",
+          "darkColor": "#c6c0ae"
+        },
+        {
+          "id": "midrash",
+          "label": "scripture-shaped retelling",
+          "color": "#2a6f5a",
+          "darkColor": "#aec8c0"
+        },
+        {
+          "id": "type-scene",
+          "label": "type-scene",
+          "color": "#7a3f6a",
+          "darkColor": "#ccb6c6"
+        },
+        {
+          "id": "testimony",
+          "label": "eyewitness testimony",
+          "color": "#4a5aa0",
+          "darkColor": "#bac0db"
+        },
+        {
+          "id": "vision",
+          "label": "visionary / symbolic",
+          "color": "#b0477a",
+          "darkColor": "#e1b9cc"
+        }
+      ]
+    },
+    {
+      "id": "form",
+      "name": "Form",
+      "side": "above",
+      "description": "A passage’s recognisable shape (form criticism): coloured by family, labelled with the specific form",
+      "group": "Literature",
+      "categories": [
+        {
+          "id": "narrative",
+          "label": "narrative form",
+          "color": "#74618d",
+          "darkColor": "#cac3d4"
+        },
+        {
+          "id": "law",
+          "label": "law form",
+          "color": "#8c5d3c",
+          "darkColor": "#d3c1b5"
+        },
+        {
+          "id": "poetry",
+          "label": "poetic form",
+          "color": "#925880",
+          "darkColor": "#d6c0cf"
+        },
+        {
+          "id": "wisdom",
+          "label": "wisdom form",
+          "color": "#6d7a3e",
+          "darkColor": "#c8ccb6"
+        },
+        {
+          "id": "prophecy",
+          "label": "prophetic form",
+          "color": "#9b4f4f",
+          "darkColor": "#d9bcbc"
+        },
+        {
+          "id": "letter",
+          "label": "letter form",
+          "color": "#5f6b7a",
+          "darkColor": "#c2c7cc"
+        }
+      ]
+    },
+    {
+      "id": "structure",
+      "name": "Structure",
+      "side": "above",
+      "description": "Book outlines and sections (unfoldingWord book introductions)",
+      "group": "Literature",
+      "categories": [
+        {
+          "id": "section",
+          "label": "section",
+          "color": "#387c67",
+          "darkColor": "#b3cdc5"
+        },
+        {
+          "id": "division",
+          "label": "division",
+          "color": "#2f5f8a",
+          "darkColor": "#b0c2d3"
+        }
+      ]
+    },
+    {
+      "id": "voice",
+      "name": "Voice",
+      "side": "above",
+      "description": "Narrator and direct speech: who is speaking, quotations and asides",
+      "group": "Literature",
+      "categories": [
+        {
+          "id": "speaker",
+          "label": "speaker",
+          "color": "#3f6fa0",
+          "darkColor": "#b6c8db"
+        }
+      ]
+    },
+    {
+      "id": "figures",
+      "name": "Tropes › Figures of speech",
+      "side": "above",
+      "description": "Named rhetorical figures",
+      "group": "Literature",
+      "categories": [
+        {
+          "id": "figure",
+          "label": "figure (general)",
+          "color": "#7a5a9a",
+          "darkColor": "#ccc0d9"
+        },
+        {
+          "id": "comparison",
+          "label": "comparison (metaphor, simile)",
+          "color": "#b5532f",
+          "darkColor": "#e3beb0"
+        },
+        {
+          "id": "substitution",
+          "label": "substitution (metonymy, synecdoche, euphemism)",
+          "color": "#2f7f8f",
+          "darkColor": "#b0ced4"
+        },
+        {
+          "id": "personification",
+          "label": "personification and apostrophe",
+          "color": "#a0407a",
+          "darkColor": "#dbb6cc"
+        },
+        {
+          "id": "emphasis",
+          "label": "emphasis (hyperbole, doublet, merism…)",
+          "color": "#8f7a1f",
+          "darkColor": "#d4ccaa"
+        },
+        {
+          "id": "omission",
+          "label": "omission (ellipsis)",
+          "color": "#6b6f78",
+          "darkColor": "#c7c8cc"
+        },
+        {
+          "id": "question",
+          "label": "rhetorical question and irony",
+          "color": "#3f63b0",
+          "darkColor": "#b6c4e1"
+        },
+        {
+          "id": "idiom",
+          "label": "idiom",
+          "color": "#3f8a3f",
+          "darkColor": "#b6d3b6"
+        }
+      ]
+    },
+    {
       "id": "imagery",
-      "name": "Metaphor & imagery",
+      "name": "Tropes › Metaphor & imagery",
       "side": "above",
       "description": "Image families",
-      "group": null,
+      "group": "Literature",
       "categories": [
         {
           "id": "pastoral",
@@ -158,305 +554,11 @@
       ]
     },
     {
-      "id": "intertext",
-      "name": "Intertext",
-      "side": "above",
-      "description": "Cross-references most voted by readers (OpenBible.info)",
-      "group": null,
-      "categories": [
-        {
-          "id": "echo",
-          "label": "cross-reference",
-          "color": "#6f699c",
-          "darkColor": "#c8c6d9"
-        }
-      ]
-    },
-    {
-      "id": "history",
-      "name": "Historical setting",
-      "side": "above",
-      "description": "Authorship, date and dated events (unfoldingWord; Theographic traditional chronology)",
-      "group": null,
-      "categories": [
-        {
-          "id": "context",
-          "label": "context",
-          "color": "#7b6b51",
-          "darkColor": "#cdc7bd"
-        },
-        {
-          "id": "event",
-          "label": "dated event",
-          "color": "#a0522d",
-          "darkColor": "#dbbdaf"
-        }
-      ]
-    },
-    {
-      "id": "places",
-      "name": "Places",
-      "side": "above",
-      "description": "Sites and geographic candidates",
-      "group": "World",
-      "categories": [
-        {
-          "id": "site",
-          "label": "site",
-          "color": "#9b6a29",
-          "darkColor": "#d9c6ae"
-        }
-      ]
-    },
-    {
-      "id": "nature",
-      "name": "Nature",
-      "side": "above",
-      "description": "Plants and animals",
-      "group": "World",
-      "categories": [
-        {
-          "id": "species",
-          "label": "species",
-          "color": "#718342",
-          "darkColor": "#c9d0b7"
-        }
-      ]
-    },
-    {
-      "id": "objects",
-      "name": "Objects & daily life",
-      "side": "above",
-      "description": "Objects and practices",
-      "group": "World",
-      "categories": [
-        {
-          "id": "object",
-          "label": "object",
-          "color": "#9a6743",
-          "darkColor": "#d9c5b8"
-        }
-      ]
-    },
-    {
-      "id": "archaeology",
-      "name": "Archaeology",
-      "side": "above",
-      "description": "Material evidence",
-      "group": "World",
-      "categories": [
-        {
-          "id": "evidence",
-          "label": "evidence",
-          "color": "#8b7155",
-          "darkColor": "#d3c9be"
-        }
-      ]
-    },
-    {
-      "id": "genre",
-      "name": "Genre & form",
-      "side": "above",
-      "description": "Literary forms and competing readings",
-      "group": null,
-      "categories": [
-        {
-          "id": "narrative",
-          "label": "narrative",
-          "color": "#74618d",
-          "darkColor": "#cac3d4"
-        },
-        {
-          "id": "exalted prose",
-          "label": "exalted prose",
-          "color": "#3e7481",
-          "darkColor": "#b6cacf"
-        },
-        {
-          "id": "cosmology and polemic",
-          "label": "cosmology and polemic",
-          "color": "#9a653e",
-          "darkColor": "#d9c4b6"
-        },
-        {
-          "id": "temple inauguration",
-          "label": "temple inauguration",
-          "color": "#537849",
-          "darkColor": "#beccba"
-        },
-        {
-          "id": "poetry",
-          "label": "poetry",
-          "color": "#925880",
-          "darkColor": "#d6c0cf"
-        },
-        {
-          "id": "law",
-          "label": "law",
-          "color": "#8c5d3c",
-          "darkColor": "#d3c1b5"
-        },
-        {
-          "id": "wisdom",
-          "label": "wisdom",
-          "color": "#6d7a3e",
-          "darkColor": "#c8ccb6"
-        },
-        {
-          "id": "prophecy",
-          "label": "prophecy",
-          "color": "#9b4f4f",
-          "darkColor": "#d9bcbc"
-        },
-        {
-          "id": "gospel",
-          "label": "gospel",
-          "color": "#3d6e8f",
-          "darkColor": "#b5c8d4"
-        },
-        {
-          "id": "epistle",
-          "label": "epistle",
-          "color": "#5f6b7a",
-          "darkColor": "#c2c7cc"
-        },
-        {
-          "id": "apocalyptic",
-          "label": "apocalyptic",
-          "color": "#7a4f8a",
-          "darkColor": "#ccbcd3"
-        },
-        {
-          "id": "biography",
-          "label": "ancient biography",
-          "color": "#6a5a2a",
-          "darkColor": "#c6c0ae"
-        },
-        {
-          "id": "midrash",
-          "label": "scripture-shaped retelling",
-          "color": "#2a6f5a",
-          "darkColor": "#aec8c0"
-        },
-        {
-          "id": "type-scene",
-          "label": "type-scene",
-          "color": "#7a3f6a",
-          "darkColor": "#ccb6c6"
-        },
-        {
-          "id": "testimony",
-          "label": "eyewitness testimony",
-          "color": "#4a5aa0",
-          "darkColor": "#bac0db"
-        },
-        {
-          "id": "vision",
-          "label": "visionary / symbolic",
-          "color": "#b0477a",
-          "darkColor": "#e1b9cc"
-        }
-      ]
-    },
-    {
-      "id": "structure",
-      "name": "Structure",
-      "side": "above",
-      "description": "Book outlines and sections (unfoldingWord book introductions)",
-      "group": null,
-      "categories": [
-        {
-          "id": "section",
-          "label": "section",
-          "color": "#387c67",
-          "darkColor": "#b3cdc5"
-        },
-        {
-          "id": "division",
-          "label": "division",
-          "color": "#2f5f8a",
-          "darkColor": "#b0c2d3"
-        }
-      ]
-    },
-    {
-      "id": "translation",
-      "name": "Translation lens",
-      "side": "centre",
-      "description": "English translation choices",
-      "group": null,
-      "categories": [
-        {
-          "id": "translation",
-          "label": "translation",
-          "color": "#6f7869",
-          "darkColor": "#c8ccc6"
-        }
-      ]
-    },
-    {
-      "id": "figures",
-      "name": "Figures of speech",
-      "side": "below",
-      "description": "Named rhetorical figures",
-      "group": null,
-      "categories": [
-        {
-          "id": "figure",
-          "label": "figure (general)",
-          "color": "#7a5a9a",
-          "darkColor": "#ccc0d9"
-        },
-        {
-          "id": "comparison",
-          "label": "comparison (metaphor, simile)",
-          "color": "#b5532f",
-          "darkColor": "#e3beb0"
-        },
-        {
-          "id": "substitution",
-          "label": "substitution (metonymy, synecdoche, euphemism)",
-          "color": "#2f7f8f",
-          "darkColor": "#b0ced4"
-        },
-        {
-          "id": "personification",
-          "label": "personification and apostrophe",
-          "color": "#a0407a",
-          "darkColor": "#dbb6cc"
-        },
-        {
-          "id": "emphasis",
-          "label": "emphasis (hyperbole, doublet, merism…)",
-          "color": "#8f7a1f",
-          "darkColor": "#d4ccaa"
-        },
-        {
-          "id": "omission",
-          "label": "omission (ellipsis)",
-          "color": "#6b6f78",
-          "darkColor": "#c7c8cc"
-        },
-        {
-          "id": "question",
-          "label": "rhetorical question and irony",
-          "color": "#3f63b0",
-          "darkColor": "#b6c4e1"
-        },
-        {
-          "id": "idiom",
-          "label": "idiom",
-          "color": "#3f8a3f",
-          "darkColor": "#b6d3b6"
-        }
-      ]
-    },
-    {
       "id": "poetry",
-      "name": "Poetry & sound",
-      "side": "below",
+      "name": "Schemes (poetry & sound)",
+      "side": "above",
       "description": "Poetic lines, acrostics and parallelism",
-      "group": null,
+      "group": "Literature",
       "categories": [
         {
           "id": "parallelism",
@@ -479,8 +581,23 @@
       ]
     },
     {
+      "id": "translation",
+      "name": "Translation lens",
+      "side": "centre",
+      "description": "English translation choices",
+      "group": null,
+      "categories": [
+        {
+          "id": "translation",
+          "label": "translation",
+          "color": "#6f7869",
+          "darkColor": "#c8ccc6"
+        }
+      ]
+    },
+    {
       "id": "names",
-      "name": "Names & speakers",
+      "name": "Names",
       "side": "below",
       "description": "People named in each verse (Theographic) and speakers found by rule",
       "group": null,
@@ -490,12 +607,6 @@
           "label": "name",
           "color": "#825778",
           "darkColor": "#d0bfcc"
-        },
-        {
-          "id": "speaker",
-          "label": "speaker (rule)",
-          "color": "#3f6fa0",
-          "darkColor": "#b6c8db"
         }
       ]
     },
@@ -576,9 +687,11 @@
     }
   ],
   "defaults": [
-    "imagery",
     "genre",
-    "figures"
+    "form",
+    "mode",
+    "figures",
+    "imagery"
   ],
   "presets": {
     "Language study": [
@@ -590,12 +703,15 @@
       "syntax"
     ],
     "Literary": [
+      "mode",
+      "themes",
       "genre",
+      "form",
       "structure",
+      "voice",
       "figures",
-      "poetry",
       "imagery",
-      "reception"
+      "poetry"
     ],
     "World": [
       "places",
@@ -606,19 +722,22 @@
     "Everything": [
       "reception",
       "typology",
-      "themes",
-      "imagery",
       "intertext",
       "history",
       "places",
       "nature",
       "objects",
       "archaeology",
+      "mode",
+      "themes",
       "genre",
+      "form",
       "structure",
-      "translation",
+      "voice",
       "figures",
+      "imagery",
       "poetry",
+      "translation",
       "names",
       "syntax",
       "grammar",
@@ -1092,6 +1211,29 @@
       "short": "Rev",
       "chapters": 22,
       "order": 66
+    }
+  ],
+  "groups": [
+    {
+      "id": "Interpretation",
+      "collapsed": false
+    },
+    {
+      "id": "World",
+      "collapsed": false
+    },
+    {
+      "id": "Literature",
+      "collapsed": true,
+      "summary": [
+        "genre",
+        "form"
+      ],
+      "notch": {
+        "layer": "mode",
+        "status": "CONTESTED"
+      },
+      "figurative_threshold": 0.4
     }
   ]
 }

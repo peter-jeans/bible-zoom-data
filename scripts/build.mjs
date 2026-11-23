@@ -92,6 +92,29 @@ async function bookExtras(id) {
 }
 const lastVerseOf = (book, ch) => textCache[book]?.KJV[ch]?.at(-1)?.number || 0;
 
+// Figurative mode (spec v0.6 §5.10): a passage (outline section, else the chapter) where trope tags
+// cover at least the registry threshold of verses is marked "figurative" by rule.
+const litGroup = (registry.groups || []).find(g => g.id === 'Literature');
+const FIG_THRESHOLD = litGroup?.figurative_threshold ?? 0.4;
+function figurativeMode(sections = [], tropes, last) {
+  const units = sections.filter(t => t.category === 'section');
+  const spans = units.length ? units.map(t => [t.start, Math.min(t.end, last)]) : [[1, last]];
+  const covered = new Set();
+  for (const t of tropes) for (let v = t.start; v <= Math.min(t.end, last); v++) covered.add(v);
+  const out = [];
+  for (const [a, z] of spans) {
+    const n = z - a + 1;
+    let hit = 0;
+    for (let v = a; v <= z; v++) if (covered.has(v)) hit++;
+    if (n >= 2 && hit / n >= FIG_THRESHOLD) out.push({
+      category: 'figurative', label: `Figurative (metaphor-rich) · ${Math.round(100 * hit / n)}% of verses`, start: a, end: z,
+      status: 'SINGLE_PROPOSAL', method: 'rule', rule: 'trope-density', source: 'uw-tn', witnesses: 1,
+      detail: `Found by a rule: ${hit} of ${n} verses here carry a metaphor or simile in unfoldingWord's notes (threshold ${Math.round(FIG_THRESHOLD * 100)}%). Rules can be wrong; check the text.`,
+    });
+  }
+  return out;
+}
+
 // Mechanistic engines over whole-Bible data (no AI): cross-references, places, concordance counts.
 const xref = await crossReferences(`${CACHE}/openbible/xref/cross_references.txt`, books);
 const geo = await places(`${CACHE}/openbible/ancient.jsonl`, books);
@@ -166,7 +189,10 @@ for (const key of queue.filter(k => toBuild.has(k))) {
   const generated = {
     figures: notes.figures[ch], imagery: notes.imagery[ch], poetry, genre: genreFor(id, ch),
     intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv),
-    structure: extras.outline[ch], history, names: names[id]?.[ch], themes: topical[id]?.[ch],
+    structure: extras.outline[ch], history, themes: topical[id]?.[ch],
+    names: (names[id]?.[ch] || []).filter(t => t.category !== 'speaker'),
+    voice: (names[id]?.[ch] || []).filter(t => t.category === 'speaker'),
+    mode: figurativeMode(extras.outline[ch], notes.imagery[ch] || [], last),
   };
   for (const [layer, tags] of Object.entries(generated)) {
     if (!tags?.length) continue;
