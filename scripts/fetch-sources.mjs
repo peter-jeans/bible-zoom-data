@@ -34,6 +34,10 @@ await mkdir(`${CACHE}/theographic`, { recursive: true });
 for (const f of ['verses', 'people', 'events']) await download(`https://raw.githubusercontent.com/robertrouse/theographic-bible-metadata/master/json/${f}.json`, `${CACHE}/theographic/${f}.json`);
 await mkdir(`${CACHE}/naves`, { recursive: true });
 await download('https://raw.githubusercontent.com/BradyStephenson/bible-data/main/NavesTopicalDictionary.csv', `${CACHE}/naves/naves.csv`);
+// STEPBible TAHOT (CC BY 4.0): tagged Hebrew OT, for Original words, Grammar and ketiv/qere.
+await mkdir(`${CACHE}/stepbible`, { recursive: true });
+const TAHOT = { 'Gen-Deu': 'tahot-gen-deu', 'Jos-Est': 'tahot-jos-est', 'Job-Sng': 'tahot-job-sng', 'Isa-Mal': 'tahot-isa-mal' };
+for (const [range, name] of Object.entries(TAHOT)) await download(`https://raw.githubusercontent.com/STEPBible/STEPBible-Data/master/Translators%20Amalgamated%20OT%2BNT/TAHOT%20${range}%20-%20Translators%20Amalgamated%20Hebrew%20OT%20-%20STEPBible.org%20CC%20BY.txt`, `${CACHE}/stepbible/${name}.txt`);
 let fetched = 0;
 for (const b of registry.books) {
   if (await download(`https://git.door43.org/unfoldingWord/en_tn/raw/branch/master/tn_${b.id}.tsv`, `${CACHE}/tn/tn_${b.id}.tsv`)) fetched++;

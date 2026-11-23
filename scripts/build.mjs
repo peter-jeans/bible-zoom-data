@@ -22,6 +22,7 @@ import { loadTheographic, names as nameTags, events as eventTags, bookSetting } 
 import { themes as themeTags } from './lib/themes.mjs';
 import { poeticLines, acrostics } from './lib/poetry.mjs';
 import { formsFor, formsFromNotes, voiceFromNotes } from './lib/form.mjs';
+import { loadTahot, originalTags, grammarTags, manuscriptTags } from './lib/stepbible.mjs';
 
 const out = argv.find((a, i) => i >= 2 && !a.startsWith('--')) || 'dist';
 const buildAll = argv.includes('--all');
@@ -132,6 +133,9 @@ for (const b of books) for (const [c, vs] of Object.entries((await bookText(b.id
   const list = occurrences.get(w.strong);
   if (list.length < 500) list.push({ book: b.id, ch: +c, verse: v.number, text: w.text.replace(/[^\p{L}'’-]/gu, ''), id: w.id });
 }
+const tahotFiles = existsSync(`${CACHE}/stepbible`) ? (await readdir(`${CACHE}/stepbible`)).filter(f => f.startsWith('tahot-')).map(f => `${CACHE}/stepbible/${f}`) : [];
+const tahot = await loadTahot(tahotFiles, books);
+const [hebrew, parsing, ketiv] = [originalTags(tahot), grammarTags(tahot), manuscriptTags(tahot)];
 const theo = await loadTheographic(`${CACHE}/theographic`, books);
 const names = nameTags(theo, (book, ch) => textCache[book]?.WEB[ch]);
 const dated = eventTags(theo);
@@ -197,6 +201,7 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv),
     structure: extras.outline[ch], history, themes: topical[id]?.[ch],
     form: formsFor(id, ch, kjv, extras.noteForms),
+    original: hebrew[id]?.[ch], grammar: parsing[id]?.[ch], manuscripts: ketiv[id]?.[ch],
     names: (names[id]?.[ch] || []).filter(t => t.category !== 'speaker'),
     voice: [...(names[id]?.[ch] || []).filter(t => t.category === 'speaker'), ...(extras.voice[ch] || [])].sort((a, b) => a.start - b.start),
     mode: figurativeMode(extras.outline[ch], notes.imagery[ch] || [], last),

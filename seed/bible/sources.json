@@ -177,5 +177,15 @@
     "license": "CC BY-SA 4.0",
     "url": "https://github.com/peter-jeans/bible-zoom-data/blob/main/scripts/lib/form.mjs",
     "attribution": "Forms from the Bible Zoom form table and text rules; psalm types follow Gunkel's classification, on which scholars differ."
+  },
+  {
+    "id": "stepbible-tahot",
+    "title": "TAHOT: Translators Amalgamated Hebrew OT",
+    "author": "Tyndale House Cambridge / STEPBible.org",
+    "date": "2026",
+    "tradition": "Leningrad Codex text with morphology, glosses and Masoretic ketiv/qere",
+    "license": "CC BY 4.0",
+    "url": "https://github.com/STEPBible/STEPBible-Data",
+    "attribution": "Hebrew text, glosses and grammar from STEP Bible (www.STEPBible.org), TAHOT, CC BY 4.0. Reformatted by Bible Zoom."
   }
 ]
