@@ -8,6 +8,8 @@ const assert=(ok,message)=>{if(!ok)throw Error(message);};
 const [registry,sources,coverage,bible]=await Promise.all(['registry','sources','coverage','rollups/bible'].map(file));
 const allowed=/^(Public domain \(US, AU\)|CC0(?: 1\.0)?|CC BY 4\.0|CC BY-SA 4\.0|Link only)$/;
 assert(new Set(registry.layers.map(l=>l.id)).size===registry.layers.length,'Duplicate layer IDs');
+// Spec v0.10 §5.12: every official layer and category explains itself.
+for(const l of registry.layers){assert(l.about&&l.implications,`Layer ${l.id} lacks about/implications`);for(const c of l.categories)assert(c.about&&c.implications,`Category ${l.id}.${c.id} lacks about/implications`);}
 for(const s of sources){assert(s.id&&s.title&&s.author&&s.date&&s.tradition&&allowed.test(s.license),`Uncleared or incomplete source: ${s.id}`);assert(new URL(s.url).protocol==='https:',`Non-HTTPS source: ${s.id}`);assert(s.license!=='Link only'||(!s.text&&!s.body&&!s.excerpt),`Link-out contains copied text: ${s.id}`);}
 for(const l of registry.layers){assert(new Set(l.categories.map(c=>c.id)).size===l.categories.length,`Duplicate category in ${l.id}`);assert(l.categories.every(c=>c.label&&/^#[\da-f]{6}$/i.test(c.color)&&/^#[\da-f]{6}$/i.test(c.darkColor)),`Missing legend colour: ${l.id}`);}
 for(const b of registry.books){const [{chapters}]=await file(`rollups/${b.id}`);assert(chapters.length===b.chapters&&JSON.stringify(chapters)===JSON.stringify(bible.find(s=>s.id===b.id)?.chapters),`Book and Bible rollups disagree: ${b.id}`);for(let ch=1;ch<=b.chapters;ch++)assert(JSON.stringify(chapters[ch-1])===JSON.stringify(coverage[`${b.id}/${ch}`]??null),`Coverage and rollup disagree: ${b.id}/${ch}`);}

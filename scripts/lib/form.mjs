@@ -150,6 +150,7 @@ export function formsFor(book, ch, verses, noteForms = {}) {
     if (ch === 1) for (const v of verses.slice(0, 12)) if (/\bI thank (?:my )?God\b|\bWe give thanks\b|\bBlessed be the God\b/.test(textOf(v))) { out.push(tag('letter', 'thanksgiving', v.number, v.number, rule('letter-thanksgiving', 'Found by a rule: the letter\'s opening thanksgiving or blessing.'))); break; }
   }
   if (EPISTLES.has(book)) for (const v of verses) if (/\b[Gg]race (?:be )?with (?:you|thee)\b|\bThe grace of (?:our |the )?Lord\b/.test(textOf(v))) out.push(tag('letter', 'closing and benediction', v.number, v.number, rule('benediction', 'Found by a rule: a closing grace or blessing.')));
+  for (const v of verses) if (/\b(?:unto|to) this day\b|\btherefore (?:the name (?:of (?:it|that place|the place|the city|the well))? ?(?:was|is) called|was (?:the name of )?(?:it|that place) called|(?:he|she|they) called the name)\b/i.test(textOf(v))) out.push(tag('narrative', 'etiological note', v.number, v.number, rule('etiology-formula', 'Found by a rule: "unto this day" or "therefore it was called…" explains a name, custom or landmark (cf. Brevard Childs on the "until this day" formula).')));
   for (const t of noteForms[ch] || []) if (!out.some(x => x.label === t.label && x.start === t.start)) out.push(t);
   return out.sort((a, b) => a.start - b.start || b.end - a.end);
 }
@@ -176,6 +177,21 @@ export function voiceFromNotes(tsv) {
     } else if (/writing-quotations/.test(sup)) {
       if (!list.some(t => t.category === 'quotation' && t.start === start)) list.push({ category: 'quotation', label: 'Direct speech begins', start, end: start, status: 'SETTLED', source: 'uw-tn', witnesses: 1, detail: 'unfoldingWord marks a quotation (speech introduced by a quote margin) here.' });
     }
+  }
+  return out;
+}
+
+// Speech formulas (spec v0.10 §5.11). Rule-found; the category explanations give the readings.
+export function speechFormulas(verses) {
+  const out = [];
+  const R = [
+    ['messenger', /\bThus saith the LORD\b|\bthus saith the Lord GOD\b|\bThus saith the LORD of hosts\b/i, 'Messenger formula: “Thus saith the LORD”'],
+    ['speech-formula', /\b(?:the LORD|God) (?:spake|said|called) unto (?:Moses|Aaron|Joshua)\b/i, 'Narrative speech formula: “the LORD spake unto …, saying”'],
+    ['word-event', /\bthe word of the LORD came\b|\bthe word of the LORD that came\b|\bThe word of the LORD which came\b/i, 'Word-event formula: “the word of the LORD came”'],
+  ];
+  for (const v of verses) {
+    const t = textOf(v);
+    for (const [cat, re, label] of R) if (re.test(t)) out.push({ category: cat, label, start: v.number, end: v.number, status: 'SINGLE_PROPOSAL', method: 'rule', rule: `${cat}-formula`, source: 'bz-forms', witnesses: 1, detail: 'Found by a rule. Open the layer card for what this formula is and how it is read.' });
   }
   return out;
 }

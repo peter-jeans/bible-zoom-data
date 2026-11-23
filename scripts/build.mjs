@@ -21,7 +21,7 @@ import { outlineFromNotes } from './lib/structure.mjs';
 import { loadTheographic, names as nameTags, events as eventTags, bookSetting } from './lib/theographic.mjs';
 import { themes as themeTags } from './lib/themes.mjs';
 import { poeticLines, acrostics } from './lib/poetry.mjs';
-import { formsFor, formsFromNotes, voiceFromNotes } from './lib/form.mjs';
+import { formsFor, formsFromNotes, voiceFromNotes, speechFormulas } from './lib/form.mjs';
 import { loadTahot, originalTags, grammarTags, manuscriptTags } from './lib/stepbible.mjs';
 import { natureTags, objectTags } from './lib/world.mjs';
 
@@ -115,7 +115,7 @@ function figurativeMode(sections = [], tropes, last) {
     let hit = 0;
     for (let v = a; v <= z; v++) if (covered.has(v)) hit++;
     if (n >= 2 && hit / n >= FIG_THRESHOLD) out.push({
-      category: 'figurative', label: `Figurative (metaphor-rich) · ${Math.round(100 * hit / n)}% of verses`, start: a, end: z,
+      category: 'symbolic', label: 'figurative (metaphor-rich)', share: Math.round(100 * hit / n), start: a, end: z,
       status: 'SINGLE_PROPOSAL', method: 'rule', rule: 'trope-density', source: 'uw-tn', witnesses: 1,
       detail: `Found by a rule: ${hit} of ${n} verses here carry a metaphor or simile in unfoldingWord's notes (threshold ${Math.round(FIG_THRESHOLD * 100)}%). Rules can be wrong; check the text.`,
     });
@@ -205,7 +205,7 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     original: hebrew[id]?.[ch], grammar: parsing[id]?.[ch], manuscripts: ketiv[id]?.[ch],
     nature: natureTags(kjv), objects: objectTags(kjv),
     names: (names[id]?.[ch] || []).filter(t => t.category !== 'speaker'),
-    voice: [...(names[id]?.[ch] || []).filter(t => t.category === 'speaker'), ...(extras.voice[ch] || [])].sort((a, b) => a.start - b.start),
+    voice: [...(names[id]?.[ch] || []).filter(t => t.category === 'speaker'), ...(extras.voice[ch] || []), ...speechFormulas(kjv)].sort((a, b) => a.start - b.start),
     mode: figurativeMode(extras.outline[ch], notes.imagery[ch] || [], last),
   };
   for (const [layer, tags] of Object.entries(generated)) {
