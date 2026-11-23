@@ -1,0 +1,302 @@
+{
+  "version": 1,
+  "note": "Ask-AI trial set (spec v0.8 §6.3). Automatic scoring: accuracy = expected words present; invented sources = an author-and-year citation not found in the prompt; fairness (contested items) = more than one reading mentioned and no \"definitely\"/\"certainly\". Automatic scores are indicative; review answers by hand.",
+  "questions": [
+    {
+      "id": 1,
+      "book": "PSA",
+      "ch": 23,
+      "question": "Who is described as the shepherd?",
+      "any": [
+        "LORD",
+        "Yahweh",
+        "God"
+      ]
+    },
+    {
+      "id": 2,
+      "book": "PSA",
+      "ch": 23,
+      "question": "Beside what does the shepherd lead the speaker?",
+      "any": [
+        "still waters",
+        "waters"
+      ]
+    },
+    {
+      "id": 3,
+      "book": "PSA",
+      "ch": 23,
+      "question": "Which two objects comfort the speaker in verse 4?",
+      "all": [
+        "rod",
+        "staff"
+      ]
+    },
+    {
+      "id": 4,
+      "book": "PSA",
+      "ch": 23,
+      "question": "Where will the speaker dwell for ever?",
+      "any": [
+        "house of the LORD",
+        "house"
+      ]
+    },
+    {
+      "id": 5,
+      "book": "PSA",
+      "ch": 23,
+      "question": "What is anointed with oil?",
+      "any": [
+        "head"
+      ]
+    },
+    {
+      "id": 6,
+      "book": "PSA",
+      "ch": 23,
+      "question": "What figure of speech is \"The LORD is my shepherd\"?",
+      "any": [
+        "metaphor"
+      ]
+    },
+    {
+      "id": 7,
+      "book": "PSA",
+      "ch": 23,
+      "question": "Do the layers mark this psalm as figurative?",
+      "any": [
+        "figurative",
+        "metaphor"
+      ]
+    },
+    {
+      "id": 8,
+      "book": "PSA",
+      "ch": 23,
+      "question": "What happens to the speaker’s cup?",
+      "any": [
+        "runneth over",
+        "overflow",
+        "runs over"
+      ]
+    },
+    {
+      "id": 9,
+      "book": "JHN",
+      "ch": 1,
+      "question": "What was in the beginning, according to verse 1?",
+      "any": [
+        "Word"
+      ]
+    },
+    {
+      "id": 10,
+      "book": "JHN",
+      "ch": 1,
+      "question": "Who was sent from God to bear witness to the Light?",
+      "any": [
+        "John"
+      ]
+    },
+    {
+      "id": 11,
+      "book": "JHN",
+      "ch": 1,
+      "question": "What does John call Jesus in verse 29?",
+      "any": [
+        "Lamb"
+      ]
+    },
+    {
+      "id": 12,
+      "book": "JHN",
+      "ch": 1,
+      "question": "Who brought his brother Simon to Jesus?",
+      "any": [
+        "Andrew"
+      ]
+    },
+    {
+      "id": 13,
+      "book": "JHN",
+      "ch": 1,
+      "question": "What new name does Jesus give Simon?",
+      "any": [
+        "Cephas",
+        "Peter",
+        "stone"
+      ]
+    },
+    {
+      "id": 14,
+      "book": "JHN",
+      "ch": 1,
+      "question": "Which town was Philip from?",
+      "any": [
+        "Bethsaida"
+      ]
+    },
+    {
+      "id": 15,
+      "book": "JHN",
+      "ch": 1,
+      "question": "Who asked whether any good thing could come out of Nazareth?",
+      "any": [
+        "Nathanael",
+        "Nathaniel"
+      ]
+    },
+    {
+      "id": 16,
+      "book": "JHN",
+      "ch": 1,
+      "question": "According to verse 14, the Word was made what?",
+      "any": [
+        "flesh"
+      ]
+    },
+    {
+      "id": 17,
+      "book": "GEN",
+      "ch": 1,
+      "question": "What did God create on the first day?",
+      "any": [
+        "light"
+      ]
+    },
+    {
+      "id": 18,
+      "book": "GEN",
+      "ch": 1,
+      "question": "What did God call the firmament?",
+      "any": [
+        "Heaven"
+      ]
+    },
+    {
+      "id": 19,
+      "book": "GEN",
+      "ch": 1,
+      "question": "On which day were the great lights made?",
+      "any": [
+        "fourth",
+        "4th",
+        "day 4"
+      ]
+    },
+    {
+      "id": 20,
+      "book": "GEN",
+      "ch": 1,
+      "question": "In whose image were humans created?",
+      "any": [
+        "God",
+        "his own image"
+      ]
+    },
+    {
+      "id": 21,
+      "book": "GEN",
+      "ch": 1,
+      "question": "Is the genre of Genesis 1 contested?",
+      "any": [
+        "contested",
+        "debated",
+        "disagree",
+        "readings"
+      ],
+      "contested": true
+    },
+    {
+      "id": 22,
+      "book": "GEN",
+      "ch": 1,
+      "question": "Name one reading of the genre of Genesis 1 shown in the layers.",
+      "any": [
+        "historical narrative",
+        "exalted prose",
+        "cosmology",
+        "temple"
+      ],
+      "contested": true
+    },
+    {
+      "id": 23,
+      "book": "GEN",
+      "ch": 1,
+      "question": "What did God say about everything he had made at the end of the chapter?",
+      "any": [
+        "very good"
+      ]
+    },
+    {
+      "id": 24,
+      "book": "GEN",
+      "ch": 1,
+      "question": "What was the earth like in verse 2?",
+      "any": [
+        "without form",
+        "void",
+        "formless"
+      ]
+    },
+    {
+      "id": 25,
+      "book": "RUT",
+      "ch": 1,
+      "question": "Why did Elimelech’s family go to Moab?",
+      "any": [
+        "famine"
+      ]
+    },
+    {
+      "id": 26,
+      "book": "RUT",
+      "ch": 1,
+      "question": "What were the names of Naomi’s daughters-in-law?",
+      "all": [
+        "Orpah",
+        "Ruth"
+      ]
+    },
+    {
+      "id": 27,
+      "book": "RUT",
+      "ch": 1,
+      "question": "Which daughter-in-law went back to her people?",
+      "any": [
+        "Orpah"
+      ]
+    },
+    {
+      "id": 28,
+      "book": "RUT",
+      "ch": 1,
+      "question": "What did Naomi ask to be called?",
+      "any": [
+        "Mara"
+      ]
+    },
+    {
+      "id": 29,
+      "book": "RUT",
+      "ch": 1,
+      "question": "Where did Naomi and Ruth arrive at the end of the chapter?",
+      "any": [
+        "Bethlehem"
+      ]
+    },
+    {
+      "id": 30,
+      "book": "RUT",
+      "ch": 1,
+      "question": "At what time of year did they arrive?",
+      "any": [
+        "barley harvest",
+        "harvest"
+      ]
+    }
+  ]
+}
