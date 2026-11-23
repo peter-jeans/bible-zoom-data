@@ -1,5 +1,5 @@
 {
-  "about": "Scheduler settings. Queue order: reader requests, top-passages.json, popular_books, then everything else (spec v0.5 §8.3). Canonical-source imports are fast, so the budget covers the whole Bible every run; the queue order drives AI-suggestion batches and the admin view.",
+  "about": "Scheduler settings. Queue order: reader requests, top-passages.json, popular_books, then everything else (spec v0.5 \u00a78.3). Canonical-source imports are fast, so the budget covers the whole Bible every run; the queue order drives AI-suggestion batches and the admin view. focus_books (spec v0.9 \u00a78.8) go first of all, before reader requests; a workflow run can override them with the focus input.",
   "start_date": "2026-11-24",
   "initial_chapters": 1189,
   "chapters_per_day": 150,
@@ -10,5 +10,8 @@
     "ROM",
     "MAT"
   ],
-  "requests_file": "queue/requests.json"
+  "requests_file": "queue/requests.json",
+  "focus_books": [
+    "GEN"
+  ]
 }

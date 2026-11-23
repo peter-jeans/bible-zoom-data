@@ -21,6 +21,7 @@ import { outlineFromNotes } from './lib/structure.mjs';
 import { loadTheographic, names as nameTags, events as eventTags, bookSetting } from './lib/theographic.mjs';
 import { themes as themeTags } from './lib/themes.mjs';
 import { poeticLines, acrostics } from './lib/poetry.mjs';
+import { formsFor, formsFromNotes, voiceFromNotes } from './lib/form.mjs';
 
 const out = argv.find((a, i) => i >= 2 && !a.startsWith('--')) || 'dist';
 const buildAll = argv.includes('--all');
@@ -46,6 +47,9 @@ const refToKeys = ref => {
   if (!m || !bookIds.has(m[1]) || +m[2] < 1 || +m[2] > chaptersOf(m[1])) throw Error(`Bad queue reference: ${ref}`);
   return [`${m[1]}/${+m[2]}`];
 };
+// Focus books first (spec v0.9 §8.8): FOCUS_BOOKS env (workflow input) overrides queue/config.json.
+const focusBooks = (process.env.FOCUS_BOOKS ? process.env.FOCUS_BOOKS.split(',') : config.focus_books || []).map(b => b.trim().toUpperCase()).filter(b => bookIds.has(b));
+for (const id of focusBooks) for (let c = 1; c <= chaptersOf(id); c++) enqueue(`${id}/${c}`);
 for (const key of requests) if (/^[1-3A-Z]{3}\/\d+$/.test(key)) enqueue(key);
 for (const ref of top.passages) refToKeys(ref).forEach(enqueue);
 for (const id of config.popular_books) for (let c = 1; c <= chaptersOf(id); c++) enqueue(`${id}/${c}`);
@@ -84,6 +88,8 @@ async function bookExtras(id) {
     const tn = existsSync(`${CACHE}/tn/tn_${id}.tsv`) ? await readFile(`${CACHE}/tn/tn_${id}.tsv`, 'utf8') : '';
     bookCache[id] = {
       outline: tn ? outlineFromNotes(tn, last) : {},
+      noteForms: tn ? formsFromNotes(tn) : {},
+      voice: tn ? voiceFromNotes(tn) : {},
       setting: tn ? bookSetting(tn) : [],
       lines: poeticLines(await readFile(`${CACHE}/web/${await usfmFile('web', id)}`, 'utf8')),
     };
@@ -190,8 +196,9 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     figures: notes.figures[ch], imagery: notes.imagery[ch], poetry, genre: genreFor(id, ch),
     intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv),
     structure: extras.outline[ch], history, themes: topical[id]?.[ch],
+    form: formsFor(id, ch, kjv, extras.noteForms),
     names: (names[id]?.[ch] || []).filter(t => t.category !== 'speaker'),
-    voice: (names[id]?.[ch] || []).filter(t => t.category === 'speaker'),
+    voice: [...(names[id]?.[ch] || []).filter(t => t.category === 'speaker'), ...(extras.voice[ch] || [])].sort((a, b) => a.start - b.start),
     mode: figurativeMode(extras.outline[ch], notes.imagery[ch] || [], last),
   };
   for (const [layer, tags] of Object.entries(generated)) {
@@ -249,7 +256,8 @@ const progress = {
     built: r.chapters.filter(Boolean).length,
     layers: Object.fromEntries(layerIds.map(l => [l, r.chapters.filter(c => c?.[l]).length]).filter(([, n]) => n)),
   }])),
-  queue: { order: ['reader requests', 'top 200 passages', `popular books: ${config.popular_books.join(', ')}`, 'everything else'], requests: requests.length, next: remaining.slice(0, 25), remaining: remaining.length },
+  focus: focusBooks,
+  queue: { order: [...(focusBooks.length ? [`focus: ${focusBooks.join(', ')}`] : []), 'reader requests', 'top 200 passages', `popular books: ${config.popular_books.join(', ')}`, 'everything else'], requests: requests.length, next: remaining.slice(0, 25), remaining: remaining.length },
 };
 await save(`${out}/progress.json`, progress);
 

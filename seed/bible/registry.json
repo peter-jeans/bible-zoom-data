@@ -1,5 +1,5 @@
 {
-  "version": 7,
+  "version": 8,
   "layers": [
     {
       "id": "reception",
@@ -439,6 +439,18 @@
           "label": "speaker",
           "color": "#3f6fa0",
           "darkColor": "#b6c8db"
+        },
+        {
+          "id": "quotation",
+          "label": "direct speech",
+          "color": "#2f7f8f",
+          "darkColor": "#b0ced4"
+        },
+        {
+          "id": "aside",
+          "label": "narrator’s aside",
+          "color": "#8a5a2a",
+          "darkColor": "#d3c0ae"
         }
       ]
     },

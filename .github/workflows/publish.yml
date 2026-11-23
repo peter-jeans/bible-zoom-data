@@ -13,6 +13,14 @@ on:
         description: "Build every chapter now (ignore the daily budget)"
         type: boolean
         default: false
+      focus:
+        description: "Focus books first, e.g. GEN or GEN,EXO (blank = queue/config.json)"
+        type: string
+        default: ""
+      layers:
+        description: "Note for the run log: layers the admin asked to refresh (all engines always run)"
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -39,6 +47,8 @@ jobs:
       - name: Fetch open sources (skipped when cached)
         run: node scripts/fetch-sources.mjs
       - name: Build (scheduler)
+        env:
+          FOCUS_BOOKS: ${{ github.event.inputs.focus }}
         run: node scripts/build.mjs dist ${{ github.event.inputs.all == 'true' && '--all' || '' }}
       - name: Validate release (registry, licences, coverage, tags, progress)
         run: node scripts/validate.mjs dist
@@ -48,7 +58,7 @@ jobs:
           const p=require("./dist/progress.json");
           const lines=["### Bible Zoom data","",`Chapters built: ${p.chapters.built} / ${p.chapters.total} (budget ${p.chapters.allowed_today})`,"",
           "| Layer | Chapters |","|---|---|",...Object.entries(p.layers).filter(([,v])=>v.built).map(([k,v])=>`| ${k} | ${v.built} (${v.percent}%) |`),"",
-          `Next in queue: ${p.queue.next.slice(0,10).join(", ")}`];
+          `Focus: ${(p.focus||[]).join(", ")||"none"}`,`Next in queue: ${p.queue.next.slice(0,10).join(", ")}`];
           require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n")+"\n");'
           echo "Size: $(du -sh dist | cut -f1), files: $(find dist -type f | wc -l) (GitHub Pages limit about 1 GB)" >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-pages-artifact@v3
