@@ -1,8 +1,14 @@
 {
-  "about": "Scheduler settings. The queue order is: reader requests, then top-passages.json, then popular_books, then everything else in canonical order (spec v0.5 §8.3).",
+  "about": "Scheduler settings. Queue order: reader requests, top-passages.json, popular_books, then everything else (spec v0.5 §8.3). Canonical-source imports are fast, so the budget covers the whole Bible every run; the queue order drives AI-suggestion batches and the admin view.",
   "start_date": "2026-11-24",
-  "initial_chapters": 300,
+  "initial_chapters": 1189,
   "chapters_per_day": 150,
-  "popular_books": ["PSA", "JHN", "GEN", "ROM", "MAT"],
+  "popular_books": [
+    "PSA",
+    "JHN",
+    "GEN",
+    "ROM",
+    "MAT"
+  ],
   "requests_file": "queue/requests.json"
 }
