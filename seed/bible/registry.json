@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "layers": [
     {
       "id": "reception",
@@ -29,7 +29,10 @@
           "color": "#986276",
           "darkColor": "#d8c3cb"
         }
-      ]
+      ],
+      "ai_suggest": {
+        "instruction": "Identify type-antitype links that published interpreters propose, naming them."
+      }
     },
     {
       "id": "intertext",
@@ -182,7 +185,10 @@
           "color": "#5a6f2a",
           "darkColor": "#c0c8ae"
         }
-      ]
+      ],
+      "ai_suggest": {
+        "instruction": "Identify how passages refer (mode). Where published scholars disagree, give each reading as a separate contested option naming its proponent."
+      }
     },
     {
       "id": "themes",
@@ -347,7 +353,55 @@
           "color": "#5f6b7a",
           "darkColor": "#c2c7cc"
         }
-      ]
+      ],
+      "vocabulary": {
+        "narrative": [
+          "genealogy",
+          "infancy narrative",
+          "call narrative",
+          "theophany",
+          "miracle story",
+          "pronouncement (controversy) story",
+          "parable",
+          "speech or sermon",
+          "passion narrative",
+          "resurrection account"
+        ],
+        "law": [
+          "apodictic law",
+          "casuistic law",
+          "ritual instruction"
+        ],
+        "poetry": [
+          "hymn of praise",
+          "lament",
+          "thanksgiving",
+          "royal psalm",
+          "wisdom psalm",
+          "love song"
+        ],
+        "wisdom": [
+          "proverb",
+          "wisdom dialogue"
+        ],
+        "prophecy": [
+          "judgement oracle",
+          "woe oracle",
+          "salvation oracle",
+          "vision report",
+          "symbolic act"
+        ],
+        "letter": [
+          "opening and greeting",
+          "thanksgiving",
+          "household code",
+          "vice or virtue list",
+          "closing and benediction"
+        ]
+      },
+      "ai_suggest": {
+        "instruction": "Identify passages that match a form in the vocabulary. Label each tag with the exact vocabulary term."
+      }
     },
     {
       "id": "structure",
@@ -368,7 +422,10 @@
           "color": "#2f5f8a",
           "darkColor": "#b0c2d3"
         }
-      ]
+      ],
+      "ai_suggest": {
+        "instruction": "Propose literary patterns (chiasm, inclusio, parallel panels) held by a published scholar."
+      }
     },
     {
       "id": "voice",
@@ -440,7 +497,10 @@
           "color": "#3f8a3f",
           "darkColor": "#b6d3b6"
         }
-      ]
+      ],
+      "ai_suggest": {
+        "instruction": "Identify figures of speech the existing tags miss."
+      }
     },
     {
       "id": "imagery",
@@ -551,7 +611,10 @@
           "color": "#5c7f6e",
           "darkColor": "#c1cec8"
         }
-      ]
+      ],
+      "ai_suggest": {
+        "instruction": "Identify metaphors and similes the existing tags miss, grouped by image family category."
+      }
     },
     {
       "id": "poetry",
@@ -1235,5 +1298,6 @@
       },
       "figurative_threshold": 0.4
     }
-  ]
+  ],
+  "ai_vocab_version": 1
 }
