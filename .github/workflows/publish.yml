@@ -1,0 +1,50 @@
+name: Build and publish data
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Weekly scheduled build (Mondays 03:00 UTC). Later runs will generate the
+    # next batch of chapters from the priority queue.
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build static data
+        run: node scripts/build.mjs dist
+      - name: Validate release (registry, licences, coverage, tags)
+        run: node scripts/validate.mjs dist
+      - name: Size report
+        run: |
+          echo "### Data site size" >> "$GITHUB_STEP_SUMMARY"
+          echo "Files: $(find dist -type f | wc -l)" >> "$GITHUB_STEP_SUMMARY"
+          echo "Size: $(du -sh dist | cut -f1) (GitHub Pages limit is about 1 GB)" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,17 @@
+// Offline validation for a proposed static Pages release. Run with Node before deployment.
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { argv } from 'node:process';
+const root=argv[2]||'public/bible';
+const file=async key=>JSON.parse(await readFile(join(root,`${key}.json`),'utf8'));
+const assert=(ok,message)=>{if(!ok)throw Error(message);};
+const [registry,sources,coverage,bible]=await Promise.all(['registry','sources','coverage','rollups/bible'].map(file));
+const allowed=/^(Public domain \(US, AU\)|CC0(?: 1\.0)?|CC BY 4\.0|CC BY-SA 4\.0|Link only)$/;
+assert(new Set(registry.layers.map(l=>l.id)).size===registry.layers.length,'Duplicate layer IDs');
+for(const s of sources){assert(s.id&&s.title&&s.author&&s.date&&s.tradition&&allowed.test(s.license),`Uncleared or incomplete source: ${s.id}`);assert(new URL(s.url).protocol==='https:',`Non-HTTPS source: ${s.id}`);assert(s.license!=='Link only'||(!s.text&&!s.body&&!s.excerpt),`Link-out contains copied text: ${s.id}`);}
+for(const l of registry.layers){assert(new Set(l.categories.map(c=>c.id)).size===l.categories.length,`Duplicate category in ${l.id}`);assert(l.categories.every(c=>c.label&&/^#[\da-f]{6}$/i.test(c.color)&&/^#[\da-f]{6}$/i.test(c.darkColor)),`Missing legend colour: ${l.id}`);}
+for(const b of registry.books){const [{chapters}]=await file(`rollups/${b.id}`);assert(chapters.length===b.chapters&&JSON.stringify(chapters)===JSON.stringify(bible.find(s=>s.id===b.id)?.chapters),`Book and Bible rollups disagree: ${b.id}`);for(let ch=1;ch<=b.chapters;ch++)assert(JSON.stringify(chapters[ch-1])===JSON.stringify(coverage[`${b.id}/${ch}`]??null),`Coverage and rollup disagree: ${b.id}/${ch}`);}
+for(const [key,layers] of Object.entries(coverage)){for(const tr of ['KJV','WEB']){const chapter=await file(`text/${tr}/${key}`);const ids=chapter.verses.flatMap(v=>v.words.map(w=>w.id));assert(ids.length&&new Set(ids).size===ids.length,`Missing or duplicate tokens: ${tr}/${key}`);}
+ for(const [id,category] of Object.entries(layers)){const layer=registry.layers.find(l=>l.id===id);assert(layer&&(!category||layer.categories.some(c=>c.id===category)),`Unknown layer or category: ${id}/${key}`);if(!category)continue;const tags=await file(`layers/${id}/${key}`);assert(tags.length,`Non-empty coverage without tags: ${id}/${key}`);for(const t of tags){assert(layer.categories.some(c=>c.id===t.category)&&t.start>0&&t.start<=t.end&&['SETTLED','CONTESTED','SINGLE_PROPOSAL'].includes(t.status),`Malformed tag: ${id}/${key}`);assert(t.status!=='CONTESTED'||t.group,`Missing contest group: ${id}/${key}`);assert(!t.source||sources.some(s=>s.id===t.source),`Unknown source: ${id}/${key}`);}}}
+const library=await file('library/index');for(const [key,layers] of Object.entries(library)){assert(coverage[key],`Library entry for an unbuilt chapter: ${key}`);for(const layer of layers){assert(registry.layers.some(l=>l.id===layer),`Unknown library layer: ${layer}`);const entries=await file(`library/${layer}/${key}`);for(const e of entries){const source=sources.find(s=>s.id===e.source);assert(source&&e.title&&(!e.text||source.license!=='Link only'),`Library entry lacks redistribution permission: ${e.title}`);if(e.url)assert(new URL(e.url).protocol==='https:',`Non-HTTPS library link: ${e.title}`);}}}
+console.log(`${registry.books.length} books; ${Object.keys(coverage).length} built sample chapters; static release passed validation.`);

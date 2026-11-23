@@ -1,0 +1,13 @@
+{
+  "name": "bible-zoom-data",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Static open data for the Bible Zoom layered Bible reader",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs dist",
+    "validate": "node scripts/validate.mjs dist",
+    "check": "node scripts/build.mjs dist && node scripts/validate.mjs dist"
+  },
+  "engines": { "node": ">=20" }
+}
