@@ -1,126 +1,129 @@
 {
- "batch": "2026-11-24-genesis-1-11",
- "drafted": "2026-11-24",
- "curated_by": "Owner-approved curation, drafted by Claude (Claude Code); each reading names a published proponent. Owner review pending.",
- "note": "Curated, sourced readings (not AI). Options are equal and unranked. Spans: end 0 = last verse of the chapter.",
- "groups": [
-  {
-   "layer": "genre",
-   "group": "gen-creation",
-   "join": true,
-   "passages": [
-    [
-     "GEN",
-     1,
-     1,
-     2,
-     3
-    ]
-   ],
-   "options": [
+  "batch": "2026-11-24-genesis-1-11",
+  "drafted": "2026-11-24",
+  "curated_by": "Owner-approved curation, drafted by Claude (Claude Code); each reading names a published proponent. Owner review pending.",
+  "note": "Curated, sourced readings (not AI). Options are equal and unranked. Spans: end 0 = last verse of the chapter.",
+  "groups": [
     {
-     "category": "symbolic",
-     "label": "Framework: the days as a literary pattern",
-     "source": "kline-framework",
-     "detail": "Meredith Kline reads the six days as a literary framework (two matching sets of three days), arranging creation by theme rather than giving a chronological sequence."
+      "layer": "genre",
+      "group": "gen-creation",
+      "join": true,
+      "passages": [
+        [
+          "GEN",
+          1,
+          1,
+          2,
+          3
+        ]
+      ],
+      "options": [
+        {
+          "category": "symbolic",
+          "label": "Framework: the days as a literary pattern",
+          "source": "kline-framework",
+          "detail": "Meredith Kline reads the six days as a literary framework (two matching sets of three days), arranging creation by theme rather than giving a chronological sequence."
+        },
+        {
+          "category": "mythic",
+          "label": "Creation story drawing on ancient myth",
+          "source": "gunkel-chaos",
+          "detail": "Hermann Gunkel argued that Genesis 1 reworks older Near Eastern creation myths, especially the image of God mastering the waters of chaos."
+        }
+      ],
+      "title": "Genesis 1:1–2:3"
     },
     {
-     "category": "mythic",
-     "label": "Creation story drawing on ancient myth",
-     "source": "gunkel-chaos",
-     "detail": "Hermann Gunkel argued that Genesis 1 reworks older Near Eastern creation myths, especially the image of God mastering the waters of chaos."
+      "layer": "genre",
+      "group": "gen-primeval",
+      "passages": [
+        [
+          "GEN",
+          1,
+          1,
+          11,
+          0
+        ]
+      ],
+      "options": [
+        {
+          "category": "historiographic",
+          "label": "History of real events",
+          "source": "halton-hoffmeier",
+          "detail": "James Hoffmeier argues that Genesis 1–11 presents itself as history and is meant to be read as an account of real events, told with theological purpose."
+        },
+        {
+          "category": "historiographic",
+          "label": "Protohistory: real events told in a figurative way",
+          "source": "halton-wenham",
+          "detail": "Gordon Wenham calls Genesis 1–11 “protohistory”: it refers to real people and events but tells them in a stylised, symbolic way to explain humanity’s condition."
+        },
+        {
+          "category": "mythic",
+          "label": "Ancient-style history, not history in our sense",
+          "source": "halton-sparks",
+          "detail": "Kenton Sparks argues that Genesis 1–11 is ancient historiography that uses traditional stories, so it should not be read as accurate modern history."
+        },
+        {
+          "category": "mythic",
+          "label": "Founding legends of Israel and humanity",
+          "source": "gunkel-genesis",
+          "detail": "Hermann Gunkel read Genesis as a collection of legends (Sagen): traditional stories that explain origins, names and customs."
+        }
+      ],
+      "title": "Genesis 1–11"
+    },
+    {
+      "layer": "genre",
+      "group": "gen-adam-eve",
+      "passages": [
+        [
+          "GEN",
+          2,
+          4,
+          3,
+          0
+        ]
+      ],
+      "options": [
+        {
+          "category": "historiographic",
+          "label": "Adam and Eve: the first couple, ancestors of all",
+          "source": "fourviews-barrick",
+          "detail": "William Barrick holds that Adam and Eve were a real, specially created first pair, the sole ancestors of all people, living a few thousand years ago."
+        },
+        {
+          "category": "historiographic",
+          "label": "Adam and Eve: a real couple heading humanity",
+          "source": "collins-adam",
+          "detail": "C. John Collins argues that Adam and Eve were real people at the headwaters of humanity, possibly as leaders of a wider early population."
+        },
+        {
+          "category": "symbolic",
+          "label": "Adam and Eve as archetypes of all humanity",
+          "source": "walton-adam",
+          "detail": "John Walton reads Adam and Eve mainly as archetypes: the text uses them to represent every human being. He thinks they may also have been real people, but that is not the text’s main point."
+        },
+        {
+          "category": "scripture-shaped",
+          "label": "Israel’s story told through Adam",
+          "source": "enns-adam",
+          "detail": "Peter Enns reads the Adam story as a portrait of Israel in miniature: placed in a good land, given a command, disobeying and being exiled."
+        },
+        {
+          "category": "mythic",
+          "label": "Not a historical couple: an ancient picture of origins",
+          "source": "fourviews-lamoureux",
+          "detail": "Denis Lamoureux holds that Adam never existed: the story uses the ancient science of its time to teach spiritual truths about God and sin."
+        },
+        {
+          "category": "historiographic",
+          "label": "Genealogical Adam: a real couple, ancestors of all by descent",
+          "source": "swamidass-adam",
+          "detail": "Joshua Swamidass argues that a recently created Adam and Eve could be genealogical ancestors of everyone alive by about AD 1, alongside an evolving wider population."
+        }
+      ],
+      "title": "Adam and Eve"
     }
-   ]
-  },
-  {
-   "layer": "genre",
-   "group": "gen-primeval",
-   "passages": [
-    [
-     "GEN",
-     1,
-     1,
-     11,
-     0
-    ]
-   ],
-   "options": [
-    {
-     "category": "historiographic",
-     "label": "History of real events",
-     "source": "halton-hoffmeier",
-     "detail": "James Hoffmeier argues that Genesis 1–11 presents itself as history and is meant to be read as an account of real events, told with theological purpose."
-    },
-    {
-     "category": "historiographic",
-     "label": "Protohistory: real events told in a figurative way",
-     "source": "halton-wenham",
-     "detail": "Gordon Wenham calls Genesis 1–11 “protohistory”: it refers to real people and events but tells them in a stylised, symbolic way to explain humanity’s condition."
-    },
-    {
-     "category": "mythic",
-     "label": "Ancient-style history, not history in our sense",
-     "source": "halton-sparks",
-     "detail": "Kenton Sparks argues that Genesis 1–11 is ancient historiography that uses traditional stories, so it should not be read as accurate modern history."
-    },
-    {
-     "category": "mythic",
-     "label": "Founding legends of Israel and humanity",
-     "source": "gunkel-genesis",
-     "detail": "Hermann Gunkel read Genesis as a collection of legends (Sagen): traditional stories that explain origins, names and customs."
-    }
-   ]
-  },
-  {
-   "layer": "genre",
-   "group": "gen-adam-eve",
-   "passages": [
-    [
-     "GEN",
-     2,
-     4,
-     3,
-     0
-    ]
-   ],
-   "options": [
-    {
-     "category": "historiographic",
-     "label": "Adam and Eve: the first couple, ancestors of all",
-     "source": "fourviews-barrick",
-     "detail": "William Barrick holds that Adam and Eve were a real, specially created first pair, the sole ancestors of all people, living a few thousand years ago."
-    },
-    {
-     "category": "historiographic",
-     "label": "Adam and Eve: a real couple heading humanity",
-     "source": "collins-adam",
-     "detail": "C. John Collins argues that Adam and Eve were real people at the headwaters of humanity, possibly as leaders of a wider early population."
-    },
-    {
-     "category": "symbolic",
-     "label": "Adam and Eve as archetypes of all humanity",
-     "source": "walton-adam",
-     "detail": "John Walton reads Adam and Eve mainly as archetypes: the text uses them to represent every human being. He thinks they may also have been real people, but that is not the text’s main point."
-    },
-    {
-     "category": "scripture-shaped",
-     "label": "Israel’s story told through Adam",
-     "source": "enns-adam",
-     "detail": "Peter Enns reads the Adam story as a portrait of Israel in miniature: placed in a good land, given a command, disobeying and being exiled."
-    },
-    {
-     "category": "mythic",
-     "label": "Not a historical couple: an ancient picture of origins",
-     "source": "fourviews-lamoureux",
-     "detail": "Denis Lamoureux holds that Adam never existed: the story uses the ancient science of its time to teach spiritual truths about God and sin."
-    },
-    {
-     "category": "historiographic",
-     "label": "Genealogical Adam: a real couple, ancestors of all by descent",
-     "source": "swamidass-adam",
-     "detail": "Joshua Swamidass argues that a recently created Adam and Eve could be genealogical ancestors of everyone alive by about AD 1, alongside an evolving wider population."
-    }
-   ]
-  }
- ]
+  ]
 }

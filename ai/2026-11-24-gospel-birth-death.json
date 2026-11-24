@@ -37,7 +37,8 @@
           "label": "Birth section of an ancient biography",
           "reasoning": "Greco-Roman lives often open with ancestry and portents at birth. Richard A. Burridge, 'What Are the Gospels?' (1992), classes the Gospels as ancient biography (bios)."
         }
-      ]
+      ],
+      "title": "Matthew’s birth account"
     },
     {
       "layer": "genre",
@@ -72,7 +73,8 @@
           "label": "Birth section of an ancient biography",
           "reasoning": "Childhood portents and a precocious boy in the temple (2:41–52) are familiar features of ancient lives. Richard A. Burridge, 'What Are the Gospels?' (1992)."
         }
-      ]
+      ],
+      "title": "Luke’s birth account"
     },
     {
       "layer": "genre",
@@ -128,7 +130,8 @@
           "label": "Passion narrative (the Gospel's core)",
           "reasoning": "Martin Kähler, 'The So-Called Historical Jesus and the Historic, Biblical Christ' (1892), called the Gospels 'passion narratives with extended introductions'."
         }
-      ]
+      ],
+      "title": "The passion accounts"
     },
     {
       "layer": "genre",
@@ -184,7 +187,8 @@
           "label": "Translation / empty-tomb story",
           "reasoning": "Mark's empty tomb is compared with ancient stories of a hero's body taken up and not found. Adela Yarbro Collins, 'Mark: A Commentary' (Hermeneia, 2007)."
         }
-      ]
+      ],
+      "title": "The resurrection accounts"
     },
     {
       "layer": "genre",
@@ -209,7 +213,8 @@
           "label": "Apocalyptic imagery",
           "reasoning": "The signs are read as apocalyptic symbolism marking the turn of the ages (cf. Ezek 37, Joel 2). Michael R. Licona, 'The Resurrection of Jesus: A New Historiographical Approach' (2010), proposed this reading."
         }
-      ]
+      ],
+      "title": "The risen saints (Matthew 27:51–53)"
     },
     {
       "layer": "manuscripts",
@@ -234,7 +239,8 @@
           "label": "Original ending",
           "reasoning": "The longer ending is in the great majority of manuscripts and was known by the 2nd century. Nicholas P. Lunn, 'The Original Ending of Mark' (2014), argues it is authentic."
         }
-      ]
+      ],
+      "title": "The ending of Mark (16:9–20)"
     }
   ]
 }

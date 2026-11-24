@@ -259,7 +259,7 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     const file = `${out}/layers/${a.g.layer}/${id}/${ch}.json`;
     const existing = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : [];
     const end = a.to || last;
-    const span = { start: Math.min(a.from, last), end: Math.min(end, last), status: 'CONTESTED', group: a.group };
+    const span = { start: Math.min(a.from, last), end: Math.min(end, last), status: 'CONTESTED', group: a.group, ...(a.g.title ? { group_title: a.g.title } : {}) };
     const tags = a.g.options.map(o => (a.curated
       ? { category: o.category, label: o.label, ...span, source: o.source, witnesses: 1, detail: o.detail, curated: a.batch.batch }
       : { category: o.category, label: o.label, ...span, method: 'ai-suggested', reasoning: o.reasoning, drafted: a.batch.drafted, batch: a.batch.batch }));
@@ -327,11 +327,16 @@ let packs = 0, packBytes = 0;
 const overviewByBook = new Map();
 for (const [key, entry] of Object.entries(ordered)) {
   const layersOut = {}, details = {};
+  // Spec v0.25: every span stays inside the chapter's real verses (no "to the end" markers reach the app).
+  const textFile = `${out}/text/KJV/${key}.json`;
+  const last = existsSync(textFile) ? JSON.parse(await readFile(textFile, 'utf8')).verses.at(-1)?.number || 1 : 1;
   for (const layer of Object.keys(entry)) {
     if (!entry[layer]) continue;
     const file = `${out}/layers/${layer}/${key}.json`;
     if (!existsSync(file)) continue;
-    const tags = JSON.parse(await readFile(file, 'utf8'));
+    const raw = JSON.parse(await readFile(file, 'utf8'));
+    const tags = raw.map(t => (t.end > last || t.start > last ? { ...t, start: Math.min(t.start, last), end: Math.min(t.end, last) } : t));
+    if (tags.some((t, i) => t !== raw[i])) await save(file, tags);
     layersOut[layer] = tags.map((t, i) => {
       if (!t.detail) return t;
       (details[layer] ||= {})[i] = t.detail;
@@ -346,9 +351,8 @@ for (const [key, entry] of Object.entries(ordered)) {
   packs++;
   // Spec v0.24: chapter overview from the same tags (with detail text, which overviews do not use).
   const [ob, oc] = key.split('/');
-  const textFile = `${out}/text/KJV/${key}.json`;
-  const last = existsSync(textFile) ? JSON.parse(await readFile(textFile, 'utf8')).verses.at(-1)?.number || 1 : 1;
-  const full = Object.fromEntries(Object.entries(layersOut).map(([k, v]) => [k, v.filter(t => !(t.start === 1 && t.end === 9999 && k !== 'history'))]));
+  // Whole-chapter notes (reception, translation compare) are not overview items.
+  const full = Object.fromEntries(Object.entries(layersOut).map(([k, v]) => [k, ['reception', 'translation'].includes(k) ? [] : v]));
   await save(`${out}/overview/${key}.json`, chapterOverview(ob, +oc, full, last));
   if (!overviewByBook.has(ob)) overviewByBook.set(ob, []);
   overviewByBook.get(ob).push({ ch: +oc, layers: full });
