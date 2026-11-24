@@ -157,14 +157,16 @@ function rareWords(verses = []) {
   return tags;
 }
 
-// AI-suggested batches (spec §8.7): drafted by Claude in batches, labelled, never settled.
+// Batches spanning many chapters (spec §8.7, v0.22). ai/: AI-suggested, labelled, never settled.
+// curated/: readings curated by the owner, each with a named published source (not AI). A group with
+// "join": true keeps its exact group id, so it joins a seed group of the same name.
 const aiByChapter = new Map();
-if (existsSync('ai')) for (const f of (await readdir('ai')).filter(n => n.endsWith('.json')).sort()) {
-  const batch = await json(`ai/${f}`);
+for (const dir of ['ai', 'curated']) if (existsSync(dir)) for (const f of (await readdir(dir)).filter(n => n.endsWith('.json')).sort()) {
+  const batch = await json(`${dir}/${f}`);
   for (const g of batch.groups) for (const [book, c1, v1, c2, v2] of g.passages) for (let c = c1; c <= c2; c++) {
     const key = `${book}/${c}`;
     if (!aiByChapter.has(key)) aiByChapter.set(key, []);
-    aiByChapter.get(key).push({ g, batch, from: c === c1 ? v1 : 1, to: c === c2 ? v2 : 0, group: `${g.group}-${book}` });
+    aiByChapter.get(key).push({ g, batch, curated: dir === 'curated', from: c === c1 ? v1 : 1, to: c === c2 ? v2 : 0, group: g.join ? g.group : `${g.group}-${book}` });
   }
 }
 
@@ -172,6 +174,20 @@ if (existsSync('ai')) for (const f of (await readdir('ai')).filter(n => n.endsWi
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
 await cp(SEED, out, { recursive: true });
+// v0.22: fold any seed files of the retired layers into the merged ones (imagery → figures, mode → genre).
+const MERGED = { imagery: 'figures', mode: 'genre' };
+for (const [from, to] of Object.entries(MERGED)) {
+  const dir = `${out}/layers/${from}`;
+  if (!existsSync(dir)) continue;
+  for (const book of await readdir(dir)) for (const f of await readdir(`${dir}/${book}`)) {
+    const target = `${out}/layers/${to}/${book}/${f}`;
+    const add = JSON.parse(await readFile(`${dir}/${book}/${f}`, 'utf8'));
+    const have = existsSync(target) ? JSON.parse(await readFile(target, 'utf8')) : [];
+    await save(target, [...have, ...add].sort((a, b) => a.start - b.start));
+  }
+  await rm(dir, { recursive: true, force: true });
+}
+for (const entry of Object.values(seedCoverage)) for (const [from, to] of Object.entries(MERGED)) if (from in entry) { if (!entry[to]) entry[to] = entry[from]; delete entry[from]; }
 
 const coverage = {};
 const layerIds = registry.layers.map(l => l.id);
@@ -198,7 +214,10 @@ for (const key of queue.filter(k => toBuild.has(k))) {
   const poetry = [...(acrostic[id]?.[ch] || []), ...(extras.lines[ch] || []), ...(notes.poetry[ch] || [])];
   const history = [...setting, ...(dated[id]?.[ch] || [])];
   const generated = {
-    figures: notes.figures[ch], imagery: notes.imagery[ch], poetry, genre: genreFor(id, ch),
+    // v0.22: "Figures & images" holds both rhetorical figures and metaphor/image families, and
+    // "Ways of reading" (id genre) holds both the kind of writing and how it refers (former Mode).
+    figures: [...(notes.figures[ch] || []), ...(notes.imagery[ch] || [])].sort((a, b) => a.start - b.start), poetry,
+    genre: [...(genreFor(id, ch) || []), ...figurativeMode(extras.outline[ch], notes.imagery[ch] || [], last)],
     intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv),
     structure: extras.outline[ch], history, themes: topical[id]?.[ch],
     form: formsFor(id, ch, kjv, extras.noteForms),
@@ -206,7 +225,6 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     nature: natureTags(kjv), objects: objectTags(kjv),
     names: (names[id]?.[ch] || []).filter(t => t.category !== 'speaker'),
     voice: [...(names[id]?.[ch] || []).filter(t => t.category === 'speaker'), ...(extras.voice[ch] || []), ...speechFormulas(kjv)].sort((a, b) => a.start - b.start),
-    mode: figurativeMode(extras.outline[ch], notes.imagery[ch] || [], last),
   };
   for (const [layer, tags] of Object.entries(generated)) {
     if (!tags?.length) continue;
@@ -228,10 +246,10 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     const file = `${out}/layers/${a.g.layer}/${id}/${ch}.json`;
     const existing = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : [];
     const end = a.to || last;
-    const tags = a.g.options.map(o => ({
-      category: o.category, label: o.label, start: Math.min(a.from, last), end: Math.min(end, last), status: 'CONTESTED', group: a.group,
-      method: 'ai-suggested', reasoning: o.reasoning, drafted: a.batch.drafted, batch: a.batch.batch,
-    }));
+    const span = { start: Math.min(a.from, last), end: Math.min(end, last), status: 'CONTESTED', group: a.group };
+    const tags = a.g.options.map(o => (a.curated
+      ? { category: o.category, label: o.label, ...span, source: o.source, witnesses: 1, detail: o.detail, curated: a.batch.batch }
+      : { category: o.category, label: o.label, ...span, method: 'ai-suggested', reasoning: o.reasoning, drafted: a.batch.drafted, batch: a.batch.batch }));
     await save(file, [...existing, ...tags]);
     if (!entry[a.g.layer]) entry[a.g.layer] = tags[0].category;
   }

@@ -1,6 +1,276 @@
 {
-  "version": 10,
+  "version": 11,
   "layers": [
+    {
+      "id": "genre",
+      "name": "Ways of reading",
+      "side": "above",
+      "description": "What kind of text this is and how it speaks: history, poem, origin story, vision… Disputed readings are shown side by side, with who holds each.",
+      "group": "Interpretation",
+      "categories": [
+        {
+          "id": "narrative",
+          "label": "narrative",
+          "color": "#74618d",
+          "darkColor": "#cac3d4",
+          "about": "Narrative: an account told as a story.",
+          "implications": "Read for plot, character and the narrator’s perspective."
+        },
+        {
+          "id": "exalted prose",
+          "label": "exalted prose",
+          "color": "#3e7481",
+          "darkColor": "#b6cacf",
+          "about": "Exalted prose: elevated, patterned prose between narrative and poetry (a proposed reading of Genesis 1).",
+          "implications": "Reading as exalted prose emphasises pattern and liturgy over chronology."
+        },
+        {
+          "id": "cosmology and polemic",
+          "label": "cosmology and polemic",
+          "color": "#9a653e",
+          "darkColor": "#d9c4b6",
+          "about": "Ancient Near Eastern cosmology and polemic: a creation account answering neighbouring myths.",
+          "implications": "This reading asks what the text affirms against rival views of the gods and the world."
+        },
+        {
+          "id": "temple inauguration",
+          "label": "temple inauguration",
+          "color": "#537849",
+          "darkColor": "#beccba",
+          "about": "Temple inauguration: creation read as God dedicating the cosmos as a temple (proposed by John Walton).",
+          "implications": "This reading stresses function and God taking up residence rather than material origins."
+        },
+        {
+          "id": "poetry",
+          "label": "poetry",
+          "color": "#925880",
+          "darkColor": "#d6c0cf",
+          "about": "Poetry: lines in parallel, imagery, sound.",
+          "implications": "Read line by line; images are central."
+        },
+        {
+          "id": "law",
+          "label": "law",
+          "color": "#8c5d3c",
+          "darkColor": "#d3c1b5",
+          "about": "Law: commands and case laws for the community.",
+          "implications": "Read in its covenant setting and with its form."
+        },
+        {
+          "id": "wisdom",
+          "label": "wisdom",
+          "color": "#6d7a3e",
+          "darkColor": "#c8ccb6",
+          "about": "Wisdom: reflection on how life works (Proverbs, Job, Ecclesiastes).",
+          "implications": "General truths and searching questions, not guarantees."
+        },
+        {
+          "id": "prophecy",
+          "label": "prophecy",
+          "color": "#9b4f4f",
+          "darkColor": "#d9bcbc",
+          "about": "Prophecy: messages from God through prophets, often poetic.",
+          "implications": "Usually addresses its own time first; future elements are debated."
+        },
+        {
+          "id": "gospel",
+          "label": "gospel",
+          "color": "#3d6e8f",
+          "darkColor": "#b5c8d4",
+          "about": "Gospel: an account of Jesus’ life, death and resurrection.",
+          "implications": "Compared with ancient biography; each Gospel shapes its material for its readers."
+        },
+        {
+          "id": "epistle",
+          "label": "epistle",
+          "color": "#5f6b7a",
+          "darkColor": "#c2c7cc",
+          "about": "Letter (epistle) to a church or person.",
+          "implications": "Read as one side of a conversation with real recipients."
+        },
+        {
+          "id": "apocalyptic",
+          "label": "apocalyptic",
+          "color": "#7a4f8a",
+          "darkColor": "#ccbcd3",
+          "about": "Apocalyptic: symbolic revelation of hidden or end-time realities.",
+          "implications": "Images are coded; read them as symbols."
+        },
+        {
+          "id": "biography",
+          "label": "ancient biography",
+          "color": "#6a5a2a",
+          "darkColor": "#c6c0ae",
+          "about": "Ancient biography (bios).",
+          "implications": "Ancient lives selected and arranged material to show character, unlike modern biography."
+        },
+        {
+          "id": "midrash",
+          "label": "scripture-shaped retelling",
+          "color": "#2a6f5a",
+          "darkColor": "#aec8c0",
+          "about": "Scripture-shaped retelling.",
+          "implications": "Read alongside the earlier scriptures it uses."
+        },
+        {
+          "id": "type-scene",
+          "label": "type-scene",
+          "color": "#7a3f6a",
+          "darkColor": "#ccb6c6",
+          "about": "A type-scene or patterned story (e.g. annunciation, the Moses pattern).",
+          "implications": "Readers compare it with other examples to see what is distinctive."
+        },
+        {
+          "id": "testimony",
+          "label": "eyewitness testimony",
+          "color": "#4a5aa0",
+          "darkColor": "#bac0db",
+          "about": "Eyewitness testimony.",
+          "implications": "Read as resting on named witnesses."
+        },
+        {
+          "id": "vision",
+          "label": "visionary / symbolic",
+          "color": "#b0477a",
+          "darkColor": "#e1b9cc",
+          "about": "Vision account.",
+          "implications": "Read as describing visionary experience."
+        },
+        {
+          "id": "historiographic",
+          "label": "told as history",
+          "color": "#4a5aa0",
+          "darkColor": "#bac0db",
+          "about": "Presents itself as an account of past events: historical report, theological history, schematic history, annal.",
+          "implications": "Readers ask what happened and why the writer tells it this way. Readings differ on how far selection, theology and schemes (ages, round numbers) shape the account."
+        },
+        {
+          "id": "mythic",
+          "label": "origin story or myth",
+          "color": "#a0522d",
+          "darkColor": "#dbbdaf",
+          "about": "Myth in the scholarly sense: stories that found a people’s identity, world-order and practices. Includes founding myth, cosmogony, primeval history and etiology.",
+          "implications": "Reading a passage as founding myth asks what it establishes about God, humanity and Israel. It does not by itself mean the passage is untrue; many hold this together with historical or theological truth-claims."
+        },
+        {
+          "id": "polemic",
+          "label": "answering other beliefs",
+          "color": "#7a3f6a",
+          "darkColor": "#ccb6c6",
+          "about": "A passage that answers or rewrites a rival story, such as Genesis 1 alongside Mesopotamian creation accounts.",
+          "implications": "Readers notice what is denied or reversed, for example the sun and moon made as mere lamps rather than gods."
+        },
+        {
+          "id": "heroic",
+          "label": "hero story or legend",
+          "color": "#5a6f2a",
+          "darkColor": "#c0c8ae",
+          "about": "Stories of ancestors, deliverers and tricksters: hero tale, ancestral saga, legend, folk tale (cf. Gunkel’s Sagen).",
+          "implications": "Readers attend to type-scenes, character and moral ambiguity, and how a people’s story is told through individuals. Heroes are often flawed."
+        },
+        {
+          "id": "comic",
+          "label": "humour and irony",
+          "color": "#b0477a",
+          "darkColor": "#e1b9cc",
+          "about": "Humour, irony, satire and comic reversal, such as Jonah’s reluctant prophet, Esther’s reversals or Balaam’s donkey.",
+          "implications": "Humour carries meaning. Readers ask who is being laughed at and why. Comic does not mean trivial."
+        },
+        {
+          "id": "symbolic",
+          "label": "symbol and figure",
+          "color": "#2a6f5a",
+          "darkColor": "#aec8c0",
+          "about": "Meaning carried by images and patterns: figurative, symbolic, allegorical, parabolic, typological.",
+          "implications": "Readers follow the images rather than a plain sequence of events. \"Figurative (metaphor-rich)\" is found by a rule from the density of metaphors."
+        },
+        {
+          "id": "visionary",
+          "label": "vision",
+          "color": "#7a4f8a",
+          "darkColor": "#ccbcd3",
+          "about": "Revealed, symbolic portrayals of heavenly realities or the end: visionary, apocalyptic, prophetic vision.",
+          "implications": "Images are decoded rather than read as plain narrative. Numbers, beasts and colours are usually symbolic."
+        },
+        {
+          "id": "liturgical",
+          "label": "worship and teaching",
+          "color": "#6a5a2a",
+          "darkColor": "#c6c0ae",
+          "about": "Text shaped for worship, teaching or reflection: hymnic, instruction (torah), exemplary tale, wisdom reflection.",
+          "implications": "Readers ask how the text was used, in worship or teaching, as well as what it says."
+        },
+        {
+          "id": "scripture-shaped",
+          "label": "retelling earlier scripture",
+          "color": "#8a5a2a",
+          "darkColor": "#d3c0ae",
+          "about": "Composed from earlier scripture: midrashic retelling, prophecy historicised, intertextual retelling.",
+          "implications": "Readers trace the source texts and notice what the retelling changes."
+        }
+      ],
+      "about": "What kind of writing a passage is (a story, a poem, a law, a vision) and how it speaks about reality: as history, as an origin story, as worship, or as symbol.",
+      "implications": "Reading a passage as history, as an origin story or as worship changes the questions you ask of it and what counts as its truth. Where readers disagree, every reading is shown with who holds it, and none is ranked.",
+      "vocabulary": {
+        "historiographic": [
+          "historical report",
+          "theological history",
+          "idealised or schematic history",
+          "royal annal"
+        ],
+        "mythic": [
+          "myth",
+          "founding myth (origin story)",
+          "cosmogony (creation account)",
+          "primeval history",
+          "etiology"
+        ],
+        "polemic": [
+          "anti-myth polemic",
+          "counter-story"
+        ],
+        "heroic": [
+          "hero tale",
+          "ancestral saga",
+          "legend",
+          "folk tale",
+          "trickster tale"
+        ],
+        "comic": [
+          "comedy",
+          "satire",
+          "irony",
+          "comic reversal",
+          "parody"
+        ],
+        "symbolic": [
+          "figurative (metaphor-rich)",
+          "symbolic",
+          "allegorical",
+          "parabolic",
+          "typological"
+        ],
+        "visionary": [
+          "visionary",
+          "apocalyptic",
+          "prophetic vision"
+        ],
+        "liturgical": [
+          "hymnic or liturgical",
+          "instruction (torah)",
+          "exemplary tale",
+          "wisdom reflection"
+        ],
+        "scripture-shaped": [
+          "scripture-shaped (midrashic)",
+          "prophecy historicised",
+          "intertextual retelling"
+        ]
+      },
+      "ai_suggest": {
+        "instruction": "Identify how passages speak about reality (history, origin story, worship, symbol and so on). Use the exact mode terms from the vocabulary, grouped by family. Where published scholars disagree, give each reading as a separate contested option with the same contested_group, naming its proponent (author, title, year). Always include more than one reading where scholars differ; never rank them."
+      }
+    },
     {
       "id": "reception",
       "name": "Reception",
@@ -67,7 +337,7 @@
       "name": "Historical setting",
       "side": "above",
       "description": "Authorship, date and dated events (unfoldingWord; Theographic traditional chronology)",
-      "group": null,
+      "group": "World",
       "categories": [
         {
           "id": "context",
@@ -254,311 +524,10 @@
       "implications": "Archaeology can illuminate daily life and settings, but rarely proves or disproves a story by itself. Evidence quality varies and is labelled."
     },
     {
-      "id": "mode",
-      "name": "Mode (how it refers)",
-      "side": "above",
-      "description": "How a passage refers: historiographic, figurative, symbolic… Contested readings name who holds them",
-      "group": "Literature",
-      "categories": [
-        {
-          "id": "historiographic",
-          "label": "historiographic",
-          "color": "#4a5aa0",
-          "darkColor": "#bac0db",
-          "about": "Presents itself as an account of past events: historical report, theological history, schematic history, annal.",
-          "implications": "Readers ask what happened and why the writer tells it this way. Readings differ on how far selection, theology and schemes (ages, round numbers) shape the account."
-        },
-        {
-          "id": "mythic",
-          "label": "mythic",
-          "color": "#a0522d",
-          "darkColor": "#dbbdaf",
-          "about": "Myth in the scholarly sense: stories that found a people’s identity, world-order and practices. Includes founding myth, cosmogony, primeval history and etiology.",
-          "implications": "Reading a passage as founding myth asks what it establishes about God, humanity and Israel. It does not by itself mean the passage is untrue; many hold this together with historical or theological truth-claims."
-        },
-        {
-          "id": "polemic",
-          "label": "polemic",
-          "color": "#7a3f6a",
-          "darkColor": "#ccb6c6",
-          "about": "A passage that answers or rewrites a rival story, such as Genesis 1 alongside Mesopotamian creation accounts.",
-          "implications": "Readers notice what is denied or reversed, for example the sun and moon made as mere lamps rather than gods."
-        },
-        {
-          "id": "heroic",
-          "label": "heroic and legendary",
-          "color": "#5a6f2a",
-          "darkColor": "#c0c8ae",
-          "about": "Stories of ancestors, deliverers and tricksters: hero tale, ancestral saga, legend, folk tale (cf. Gunkel’s Sagen).",
-          "implications": "Readers attend to type-scenes, character and moral ambiguity, and how a people’s story is told through individuals. Heroes are often flawed."
-        },
-        {
-          "id": "comic",
-          "label": "comic and ironic",
-          "color": "#b0477a",
-          "darkColor": "#e1b9cc",
-          "about": "Humour, irony, satire and comic reversal, such as Jonah’s reluctant prophet, Esther’s reversals or Balaam’s donkey.",
-          "implications": "Humour carries meaning. Readers ask who is being laughed at and why. Comic does not mean trivial."
-        },
-        {
-          "id": "symbolic",
-          "label": "symbolic and figurative",
-          "color": "#2a6f5a",
-          "darkColor": "#aec8c0",
-          "about": "Meaning carried by images and patterns: figurative, symbolic, allegorical, parabolic, typological.",
-          "implications": "Readers follow the images rather than a plain sequence of events. \"Figurative (metaphor-rich)\" is found by a rule from the density of metaphors."
-        },
-        {
-          "id": "visionary",
-          "label": "visionary and apocalyptic",
-          "color": "#7a4f8a",
-          "darkColor": "#ccbcd3",
-          "about": "Revealed, symbolic portrayals of heavenly realities or the end: visionary, apocalyptic, prophetic vision.",
-          "implications": "Images are decoded rather than read as plain narrative. Numbers, beasts and colours are usually symbolic."
-        },
-        {
-          "id": "liturgical",
-          "label": "liturgical and didactic",
-          "color": "#6a5a2a",
-          "darkColor": "#c6c0ae",
-          "about": "Text shaped for worship, teaching or reflection: hymnic, instruction (torah), exemplary tale, wisdom reflection.",
-          "implications": "Readers ask how the text was used, in worship or teaching, as well as what it says."
-        },
-        {
-          "id": "scripture-shaped",
-          "label": "scripture-shaped",
-          "color": "#8a5a2a",
-          "darkColor": "#d3c0ae",
-          "about": "Composed from earlier scripture: midrashic retelling, prophecy historicised, intertextual retelling.",
-          "implications": "Readers trace the source texts and notice what the retelling changes."
-        }
-      ],
-      "ai_suggest": {
-        "instruction": "Identify how passages refer (mode). Use the exact mode terms from the vocabulary, grouped by family. Where published scholars disagree, give each reading as a separate contested option with the same contested_group, naming its proponent (author, title, year). Always include more than one reading where scholars differ; never rank them."
-      },
-      "vocabulary": {
-        "historiographic": [
-          "historical report",
-          "theological history",
-          "idealised or schematic history",
-          "royal annal"
-        ],
-        "mythic": [
-          "myth",
-          "founding myth (origin story)",
-          "cosmogony (creation account)",
-          "primeval history",
-          "etiology"
-        ],
-        "polemic": [
-          "anti-myth polemic",
-          "counter-story"
-        ],
-        "heroic": [
-          "hero tale",
-          "ancestral saga",
-          "legend",
-          "folk tale",
-          "trickster tale"
-        ],
-        "comic": [
-          "comedy",
-          "satire",
-          "irony",
-          "comic reversal",
-          "parody"
-        ],
-        "symbolic": [
-          "figurative (metaphor-rich)",
-          "symbolic",
-          "allegorical",
-          "parabolic",
-          "typological"
-        ],
-        "visionary": [
-          "visionary",
-          "apocalyptic",
-          "prophetic vision"
-        ],
-        "liturgical": [
-          "hymnic or liturgical",
-          "instruction (torah)",
-          "exemplary tale",
-          "wisdom reflection"
-        ],
-        "scripture-shaped": [
-          "scripture-shaped (midrashic)",
-          "prophecy historicised",
-          "intertextual retelling"
-        ]
-      },
-      "about": "How a passage refers and what kind of truth-claim it makes: history, founding myth, saga, satire, vision and more.",
-      "implications": "Deciding whether a passage is history, founding myth or satire changes what questions you ask of it and what counts as its truth. Many passages are read in several modes at once; readings are shown unranked, with who holds them.",
-      "caution": "Myth is a scholarly term for stories that found identity and order; it does not by itself mean untrue. Comic does not mean trivial. Modes describe how a text works; readers differ on what follows."
-    },
-    {
-      "id": "themes",
-      "name": "Motifs & themes",
-      "side": "above",
-      "description": "Topics from Nave’s Topical Bible",
-      "group": "Literature",
-      "categories": [
-        {
-          "id": "theme",
-          "label": "theme",
-          "color": "#6d7650",
-          "darkColor": "#c8cbbd",
-          "about": "A topic from Nave’s Topical Bible.",
-          "implications": "An index to related passages, not a claim about the main point."
-        }
-      ],
-      "about": "Topics and recurring motifs (from Nave’s Topical Bible).",
-      "implications": "Themes connect a passage to the rest of the Bible. They are a reader’s index, not a claim about the author’s main point."
-    },
-    {
-      "id": "genre",
-      "name": "Kind (genre)",
-      "side": "above",
-      "description": "Literary forms and competing readings",
-      "group": "Literature",
-      "categories": [
-        {
-          "id": "narrative",
-          "label": "narrative",
-          "color": "#74618d",
-          "darkColor": "#cac3d4",
-          "about": "Narrative: an account told as a story.",
-          "implications": "Read for plot, character and the narrator’s perspective."
-        },
-        {
-          "id": "exalted prose",
-          "label": "exalted prose",
-          "color": "#3e7481",
-          "darkColor": "#b6cacf",
-          "about": "Exalted prose: elevated, patterned prose between narrative and poetry (a proposed reading of Genesis 1).",
-          "implications": "Reading as exalted prose emphasises pattern and liturgy over chronology."
-        },
-        {
-          "id": "cosmology and polemic",
-          "label": "cosmology and polemic",
-          "color": "#9a653e",
-          "darkColor": "#d9c4b6",
-          "about": "Ancient Near Eastern cosmology and polemic: a creation account answering neighbouring myths.",
-          "implications": "This reading asks what the text affirms against rival views of the gods and the world."
-        },
-        {
-          "id": "temple inauguration",
-          "label": "temple inauguration",
-          "color": "#537849",
-          "darkColor": "#beccba",
-          "about": "Temple inauguration: creation read as God dedicating the cosmos as a temple (proposed by John Walton).",
-          "implications": "This reading stresses function and God taking up residence rather than material origins."
-        },
-        {
-          "id": "poetry",
-          "label": "poetry",
-          "color": "#925880",
-          "darkColor": "#d6c0cf",
-          "about": "Poetry: lines in parallel, imagery, sound.",
-          "implications": "Read line by line; images are central."
-        },
-        {
-          "id": "law",
-          "label": "law",
-          "color": "#8c5d3c",
-          "darkColor": "#d3c1b5",
-          "about": "Law: commands and case laws for the community.",
-          "implications": "Read in its covenant setting and with its form."
-        },
-        {
-          "id": "wisdom",
-          "label": "wisdom",
-          "color": "#6d7a3e",
-          "darkColor": "#c8ccb6",
-          "about": "Wisdom: reflection on how life works (Proverbs, Job, Ecclesiastes).",
-          "implications": "General truths and searching questions, not guarantees."
-        },
-        {
-          "id": "prophecy",
-          "label": "prophecy",
-          "color": "#9b4f4f",
-          "darkColor": "#d9bcbc",
-          "about": "Prophecy: messages from God through prophets, often poetic.",
-          "implications": "Usually addresses its own time first; future elements are debated."
-        },
-        {
-          "id": "gospel",
-          "label": "gospel",
-          "color": "#3d6e8f",
-          "darkColor": "#b5c8d4",
-          "about": "Gospel: an account of Jesus’ life, death and resurrection.",
-          "implications": "Compared with ancient biography; each Gospel shapes its material for its readers."
-        },
-        {
-          "id": "epistle",
-          "label": "epistle",
-          "color": "#5f6b7a",
-          "darkColor": "#c2c7cc",
-          "about": "Letter (epistle) to a church or person.",
-          "implications": "Read as one side of a conversation with real recipients."
-        },
-        {
-          "id": "apocalyptic",
-          "label": "apocalyptic",
-          "color": "#7a4f8a",
-          "darkColor": "#ccbcd3",
-          "about": "Apocalyptic: symbolic revelation of hidden or end-time realities.",
-          "implications": "Images are coded; read them as symbols."
-        },
-        {
-          "id": "biography",
-          "label": "ancient biography",
-          "color": "#6a5a2a",
-          "darkColor": "#c6c0ae",
-          "about": "Ancient biography (bios).",
-          "implications": "Ancient lives selected and arranged material to show character, unlike modern biography."
-        },
-        {
-          "id": "midrash",
-          "label": "scripture-shaped retelling",
-          "color": "#2a6f5a",
-          "darkColor": "#aec8c0",
-          "about": "Scripture-shaped retelling.",
-          "implications": "Read alongside the earlier scriptures it uses."
-        },
-        {
-          "id": "type-scene",
-          "label": "type-scene",
-          "color": "#7a3f6a",
-          "darkColor": "#ccb6c6",
-          "about": "A type-scene or patterned story (e.g. annunciation, the Moses pattern).",
-          "implications": "Readers compare it with other examples to see what is distinctive."
-        },
-        {
-          "id": "testimony",
-          "label": "eyewitness testimony",
-          "color": "#4a5aa0",
-          "darkColor": "#bac0db",
-          "about": "Eyewitness testimony.",
-          "implications": "Read as resting on named witnesses."
-        },
-        {
-          "id": "vision",
-          "label": "visionary / symbolic",
-          "color": "#b0477a",
-          "darkColor": "#e1b9cc",
-          "about": "Vision account.",
-          "implications": "Read as describing visionary experience."
-        }
-      ],
-      "about": "The kind of writing the whole book or section is (the \"kind\" or genre).",
-      "implications": "Genre sets expectations: you read a law, a psalm, a letter and an apocalypse differently. Where genre is disputed, the options are shown together."
-    },
-    {
       "id": "form",
-      "name": "Form",
+      "name": "Form (story, poem, law…)",
       "side": "above",
-      "description": "A passage’s recognisable shape (form criticism): coloured by family, labelled with the specific form",
+      "description": "A passage’s recognisable shape: a family tree, a call story, a lament, a law code… Coloured by family, labelled with the exact shape.",
       "group": "Literature",
       "categories": [
         {
@@ -660,11 +629,12 @@
         "instruction": "Identify passages that match a form in the vocabulary. Label each tag with the exact vocabulary term."
       },
       "about": "The recognisable shape of a passage: genealogy, call narrative, lament, woe oracle, household code and so on.",
-      "implications": "Forms follow conventions. Knowing the form tells you which features are standard and which stand out, which is often where the meaning is."
+      "implications": "Forms follow conventions. Knowing the form tells you which features are standard and which stand out, which is often where the meaning is.",
+      "subgroup": "What kind of text"
     },
     {
       "id": "structure",
-      "name": "Structure",
+      "name": "Outline",
       "side": "above",
       "description": "Book outlines and sections (unfoldingWord book introductions)",
       "group": "Literature",
@@ -690,11 +660,12 @@
         "instruction": "Propose literary patterns (chiasm, inclusio, parallel panels) held by a published scholar."
       },
       "about": "How the book and passage are divided into sections and larger parts.",
-      "implications": "Seeing where a section starts and ends shows what belongs together and how an argument or story develops."
+      "implications": "Seeing where a section starts and ends shows what belongs together and how an argument or story develops.",
+      "subgroup": "How it’s built"
     },
     {
       "id": "voice",
-      "name": "Voice",
+      "name": "Who is speaking",
       "side": "above",
       "description": "Narrator and direct speech: who is speaking, quotations and asides",
       "group": "Literature",
@@ -758,13 +729,50 @@
       ],
       "about": "Who is speaking and how speech is framed: narrator, characters, God, prophets, speech formulas and proposed sources.",
       "implications": "Whose words these are matters: a promise from God, a character’s claim and a narrator’s comment carry different weight. Formulas like \"Thus says the LORD\" are read in different ways, which the layer explains.",
-      "caution": "Source voices (Priestly, Yahwist and others) are a contested scholarly model and are always shown with the alternatives."
+      "caution": "Source voices (Priestly, Yahwist and others) are a contested scholarly model and are always shown with the alternatives.",
+      "subgroup": "How it’s built"
+    },
+    {
+      "id": "poetry",
+      "name": "Poetry & sound",
+      "side": "above",
+      "description": "Poetic lines, acrostics and parallelism",
+      "group": "Literature",
+      "categories": [
+        {
+          "id": "parallelism",
+          "label": "parallelism",
+          "color": "#956f42",
+          "darkColor": "#d7c8b7",
+          "about": "Parallel lines (noted by unfoldingWord).",
+          "implications": "The second line usually develops the first."
+        },
+        {
+          "id": "line",
+          "label": "poetic lines",
+          "color": "#2f7f8f",
+          "darkColor": "#b0ced4",
+          "about": "Verses set as poetry, with line counts.",
+          "implications": "Read line by line."
+        },
+        {
+          "id": "acrostic",
+          "label": "acrostic",
+          "color": "#b0477a",
+          "darkColor": "#e1b9cc",
+          "about": "An alphabetic acrostic: lines or stanzas start with successive Hebrew letters.",
+          "implications": "Signals completeness, \"A to Z\"; not visible in translation."
+        }
+      ],
+      "about": "How the text is set as poetry: lines, parallelism and acrostics.",
+      "implications": "Hebrew poetry works by pairing lines. Reading the second line as developing the first, not repeating it, often unlocks the meaning.",
+      "subgroup": "How it’s built"
     },
     {
       "id": "figures",
-      "name": "Tropes › Figures of speech",
+      "name": "Figures & images",
       "side": "above",
-      "description": "Named rhetorical figures",
+      "description": "Figures of speech and the pictures a writer uses: metaphor, simile, exaggeration, rhetorical questions…",
       "group": "Literature",
       "categories": [
         {
@@ -830,21 +838,7 @@
           "darkColor": "#b6d3b6",
           "about": "Figure of speech family: idiom.",
           "implications": "Not meant literally; recognising it shows how the writer persuades or moves the reader."
-        }
-      ],
-      "ai_suggest": {
-        "instruction": "Identify figures of speech the existing tags miss."
-      },
-      "about": "Figures of speech: metaphor, metonymy, hyperbole, rhetorical questions and more (from unfoldingWord Translation Notes).",
-      "implications": "Figures are not meant literally. Recognising one prevents over-literal reading and shows how the writer is persuading or moving the reader."
-    },
-    {
-      "id": "imagery",
-      "name": "Tropes › Metaphor & imagery",
-      "side": "above",
-      "description": "Image families",
-      "group": "Literature",
-      "categories": [
+        },
         {
           "id": "pastoral",
           "label": "shepherd and flock",
@@ -983,45 +977,31 @@
         }
       ],
       "ai_suggest": {
-        "instruction": "Identify metaphors and similes the existing tags miss, grouped by image family category."
+        "instruction": "Identify figures of speech, metaphors and similes the existing tags miss. Use the image-family categories for metaphors and similes."
       },
-      "about": "Metaphors and similes grouped by image family (shepherd, light, water, refuge…).",
-      "implications": "Images build meaning across the Bible. An image family shows which picture the writer reaches for and links it to other passages using the same picture."
+      "about": "Figures of speech (metaphor, exaggeration, rhetorical questions and more) and the families of images they use (shepherd, light, water, refuge…), from unfoldingWord Translation Notes.",
+      "implications": "Figures are not meant literally. Spotting one prevents an over-literal reading, and an image family links a passage to others that use the same picture.",
+      "subgroup": "Pictures & ideas"
     },
     {
-      "id": "poetry",
-      "name": "Schemes (poetry & sound)",
+      "id": "themes",
+      "name": "Themes",
       "side": "above",
-      "description": "Poetic lines, acrostics and parallelism",
+      "description": "Topics from Nave’s Topical Bible",
       "group": "Literature",
       "categories": [
         {
-          "id": "parallelism",
-          "label": "parallelism",
-          "color": "#956f42",
-          "darkColor": "#d7c8b7",
-          "about": "Parallel lines (noted by unfoldingWord).",
-          "implications": "The second line usually develops the first."
-        },
-        {
-          "id": "line",
-          "label": "poetic lines",
-          "color": "#2f7f8f",
-          "darkColor": "#b0ced4",
-          "about": "Verses set as poetry, with line counts.",
-          "implications": "Read line by line."
-        },
-        {
-          "id": "acrostic",
-          "label": "acrostic",
-          "color": "#b0477a",
-          "darkColor": "#e1b9cc",
-          "about": "An alphabetic acrostic: lines or stanzas start with successive Hebrew letters.",
-          "implications": "Signals completeness, \"A to Z\"; not visible in translation."
+          "id": "theme",
+          "label": "theme",
+          "color": "#6d7650",
+          "darkColor": "#c8cbbd",
+          "about": "A topic from Nave’s Topical Bible.",
+          "implications": "An index to related passages, not a claim about the main point."
         }
       ],
-      "about": "How the text is set as poetry: lines, parallelism and acrostics.",
-      "implications": "Hebrew poetry works by pairing lines. Reading the second line as developing the first, not repeating it, often unlocks the meaning."
+      "about": "Topics and recurring motifs (from Nave’s Topical Bible).",
+      "implications": "Themes connect a passage to the rest of the Bible. They are a reader’s index, not a claim about the author’s main point.",
+      "subgroup": "Pictures & ideas"
     },
     {
       "id": "translation",
@@ -1159,12 +1139,34 @@
   ],
   "defaults": [
     "genre",
-    "form",
-    "mode",
-    "figures",
-    "imagery"
+    "structure"
   ],
   "presets": {
+    "Getting started": [
+      "genre",
+      "structure"
+    ],
+    "How people read it": [
+      "genre",
+      "reception",
+      "typology",
+      "intertext"
+    ],
+    "Literary study": [
+      "form",
+      "structure",
+      "voice",
+      "poetry",
+      "figures",
+      "themes"
+    ],
+    "World": [
+      "history",
+      "places",
+      "nature",
+      "objects",
+      "archaeology"
+    ],
     "Language study": [
       "translation",
       "grammar",
@@ -1173,24 +1175,8 @@
       "names",
       "syntax"
     ],
-    "Literary": [
-      "mode",
-      "themes",
-      "genre",
-      "form",
-      "structure",
-      "voice",
-      "figures",
-      "imagery",
-      "poetry"
-    ],
-    "World": [
-      "places",
-      "nature",
-      "objects",
-      "archaeology"
-    ],
     "Everything": [
+      "genre",
       "reception",
       "typology",
       "intertext",
@@ -1199,15 +1185,12 @@
       "nature",
       "objects",
       "archaeology",
-      "mode",
-      "themes",
-      "genre",
       "form",
       "structure",
       "voice",
-      "figures",
-      "imagery",
       "poetry",
+      "figures",
+      "themes",
       "translation",
       "names",
       "syntax",
@@ -1687,25 +1670,30 @@
   "groups": [
     {
       "id": "Interpretation",
+      "name": "How people read it",
+      "description": "What this passage is taken to be and mean, by tradition and by scholars. Where readers disagree, every reading is shown with its source.",
       "collapsed": false
     },
     {
       "id": "World",
+      "name": "The world of the text",
+      "description": "Places, plants and animals, everyday objects, archaeology and historical setting.",
       "collapsed": false
     },
     {
       "id": "Literature",
+      "name": "How it’s written",
+      "description": "What you can see in the writing itself: its form, how it is built, who is speaking, its sound, its pictures and its themes.",
       "collapsed": true,
       "summary": [
-        "genre",
         "form"
       ],
-      "notch": {
-        "layer": "mode",
-        "status": "CONTESTED"
-      },
       "figurative_threshold": 0.4
     }
   ],
-  "ai_vocab_version": 2
+  "ai_vocab_version": 3,
+  "retired_layers": {
+    "mode": "genre",
+    "imagery": "figures"
+  }
 }

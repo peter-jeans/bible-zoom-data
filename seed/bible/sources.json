@@ -207,5 +207,113 @@
     "license": "Per image: CC0, public domain, CC BY or CC BY-SA (credited)",
     "url": "https://commons.wikimedia.org/",
     "attribution": "Thumbnails from Wikimedia Commons, each credited with its author and licence. Images chosen through OpenBible.info, Wikidata and Wikipedia; they illustrate, and are not evidence."
+  },
+  {
+    "id": "gunkel-chaos",
+    "title": "Schöpfung und Chaos in Urzeit und Endzeit",
+    "author": "Hermann Gunkel",
+    "date": "1895",
+    "tradition": "Historical-critical (history of religions)",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=Sch%C3%B6pfung%20und%20Chaos%20in%20Urzeit%20und%20Endzeit%20Hermann%20Gunkel"
+  },
+  {
+    "id": "gunkel-genesis",
+    "title": "Genesis (Handkommentar zum Alten Testament)",
+    "author": "Hermann Gunkel",
+    "date": "1901",
+    "tradition": "Historical-critical (form criticism)",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=Genesis%20Hermann%20Gunkel"
+  },
+  {
+    "id": "kline-framework",
+    "title": "Space and Time in the Genesis Cosmogony (Perspectives on Science and Christian Faith 48)",
+    "author": "Meredith G. Kline",
+    "date": "1996",
+    "tradition": "Reformed; framework interpretation",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=Space%20and%20Time%20in%20the%20Genesis%20Cosmogony%20Meredith%20G.%20Kline"
+  },
+  {
+    "id": "halton-hoffmeier",
+    "title": "Genesis: History, Fiction, or Neither? Three Views on the Bible’s Earliest Chapters (view: history)",
+    "author": "James K. Hoffmeier (in Charles Halton, ed.)",
+    "date": "2015",
+    "tradition": "Evangelical; historical reading",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=Genesis%3A%20History%2C%20Fiction%2C%20or%20Neither%3F%20Three%20Views%20on%20the%20Bible%E2%80%99s%20Earliest%20Chapters%20James%20K.%20Hoffmeier"
+  },
+  {
+    "id": "halton-wenham",
+    "title": "Genesis: History, Fiction, or Neither? Three Views on the Bible’s Earliest Chapters (view: protohistory)",
+    "author": "Gordon J. Wenham (in Charles Halton, ed.)",
+    "date": "2015",
+    "tradition": "Evangelical; protohistory",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=Genesis%3A%20History%2C%20Fiction%2C%20or%20Neither%3F%20Three%20Views%20on%20the%20Bible%E2%80%99s%20Earliest%20Chapters%20Gordon%20J.%20Wenham"
+  },
+  {
+    "id": "halton-sparks",
+    "title": "Genesis: History, Fiction, or Neither? Three Views on the Bible’s Earliest Chapters (view: ancient historiography)",
+    "author": "Kenton L. Sparks (in Charles Halton, ed.)",
+    "date": "2015",
+    "tradition": "Critical evangelical",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=Genesis%3A%20History%2C%20Fiction%2C%20or%20Neither%3F%20Three%20Views%20on%20the%20Bible%E2%80%99s%20Earliest%20Chapters%20Kenton%20L.%20Sparks"
+  },
+  {
+    "id": "fourviews-barrick",
+    "title": "Four Views on the Historical Adam (view: young-earth creation)",
+    "author": "William D. Barrick (in Matthew Barrett and Ardel B. Caneday, eds.)",
+    "date": "2013",
+    "tradition": "Evangelical; young-earth creation",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=Four%20Views%20on%20the%20Historical%20Adam%20William%20D.%20Barrick"
+  },
+  {
+    "id": "fourviews-lamoureux",
+    "title": "Four Views on the Historical Adam (view: evolutionary creation)",
+    "author": "Denis O. Lamoureux (in Matthew Barrett and Ardel B. Caneday, eds.)",
+    "date": "2013",
+    "tradition": "Evangelical; evolutionary creation",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=Four%20Views%20on%20the%20Historical%20Adam%20Denis%20O.%20Lamoureux"
+  },
+  {
+    "id": "collins-adam",
+    "title": "Did Adam and Eve Really Exist? Who They Were and Why You Should Care",
+    "author": "C. John Collins",
+    "date": "2011",
+    "tradition": "Evangelical; old-earth creation",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=Did%20Adam%20and%20Eve%20Really%20Exist%3F%20Who%20They%20Were%20and%20Why%20You%20Should%20Care%20C.%20John%20Collins"
+  },
+  {
+    "id": "walton-adam",
+    "title": "The Lost World of Adam and Eve: Genesis 2–3 and the Human Origins Debate",
+    "author": "John H. Walton",
+    "date": "2015",
+    "tradition": "Evangelical; archetypal reading",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=The%20Lost%20World%20of%20Adam%20and%20Eve%3A%20Genesis%202%E2%80%933%20and%20the%20Human%20Origins%20Debate%20John%20H.%20Walton"
+  },
+  {
+    "id": "enns-adam",
+    "title": "The Evolution of Adam: What the Bible Does and Doesn’t Say about Human Origins",
+    "author": "Peter Enns",
+    "date": "2012",
+    "tradition": "Progressive evangelical",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=The%20Evolution%20of%20Adam%3A%20What%20the%20Bible%20Does%20and%20Doesn%E2%80%99t%20Say%20about%20Human%20Origins%20Peter%20Enns"
+  },
+  {
+    "id": "swamidass-adam",
+    "title": "The Genealogical Adam and Eve: The Surprising Science of Universal Ancestry",
+    "author": "S. Joshua Swamidass",
+    "date": "2019",
+    "tradition": "Scientist; genealogical reading",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=The%20Genealogical%20Adam%20and%20Eve%3A%20The%20Surprising%20Science%20of%20Universal%20Ancestry%20S.%20Joshua%20Swamidass"
   }
 ]
