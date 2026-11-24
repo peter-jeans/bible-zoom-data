@@ -170,6 +170,18 @@ for (const dir of ['ai', 'curated']) if (existsSync(dir)) for (const f of (await
   }
 }
 
+// Spec v0.23: saved AI suggestions copied from the app (ai/export/<BOOK>.json, by
+// scripts/fetch-ai-export.mjs). Merged as AI-suggested, unreviewed tags; never settled.
+const exportByChapter = new Map();
+if (existsSync('ai/export')) for (const f of (await readdir('ai/export')).filter(n => n.endsWith('.json')).sort()) {
+  const data = await json(`ai/export/${f}`);
+  for (const c of data.chapters || []) {
+    const key = `${data.book}/${c.chapter}`;
+    if (!exportByChapter.has(key)) exportByChapter.set(key, []);
+    exportByChapter.get(key).push(c);
+  }
+}
+
 // ---- 3. Build ---------------------------------------------------------------------------
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
@@ -252,6 +264,26 @@ for (const key of queue.filter(k => toBuild.has(k))) {
       : { category: o.category, label: o.label, ...span, method: 'ai-suggested', reasoning: o.reasoning, drafted: a.batch.drafted, batch: a.batch.batch }));
     await save(file, [...existing, ...tags]);
     if (!entry[a.g.layer]) entry[a.g.layer] = tags[0].category;
+  }
+  for (const c of exportByChapter.get(key) || []) {
+    const layer = registry.layers.find(l => l.id === c.layer);
+    if (!layer) continue;
+    const cats = new Set(layer.categories.map(x => x.id));
+    const file = `${out}/layers/${layer.id}/${id}/${ch}.json`;
+    const existing = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : [];
+    const known = new Set(existing.map(t => `${t.start}|${t.end}|${t.label}`));
+    const tags = c.tags
+      .filter(t => cats.has(t.category) && typeof t.reasoning === 'string' && t.reasoning.trim().length >= 10 && Number.isInteger(t.start) && Number.isInteger(t.end) && t.start >= 1 && t.start <= last)
+      .map(t => ({ category: t.category, label: String(t.label).slice(0, 120), start: t.start, end: Math.min(Math.max(t.start, t.end), last),
+        status: t.status === 'CONTESTED' && t.group ? 'CONTESTED' : 'SINGLE_PROPOSAL', ...(t.status === 'CONTESTED' && t.group ? { group: t.group } : {}),
+        method: 'ai-suggested', reasoning: t.reasoning, drafted: t.drafted, model: t.model, review_state: t.review_state || 'UNREVIEWED', batch: 'app-export' }))
+      .filter(t => !known.has(`${t.start}|${t.end}|${t.label}`));
+    // A contested group needs two readings; a lone survivor becomes a single proposal.
+    const sizes = tags.reduce((m, t) => (t.group ? m.set(t.group, (m.get(t.group) || 0) + 1) : m), new Map());
+    for (const t of tags) if (t.group && sizes.get(t.group) < 2) { t.status = 'SINGLE_PROPOSAL'; delete t.group; }
+    if (!tags.length) continue;
+    await save(file, [...existing, ...tags].sort((a, b) => a.start - b.start));
+    if (!entry[layer.id]) entry[layer.id] = tags[0].category;
   }
   if (!Object.keys(entry).length) entry.genre = null;
   coverage[key] = Object.fromEntries(layerIds.filter(l => l in entry).map(l => [l, entry[l]]));

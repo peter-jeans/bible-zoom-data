@@ -23,7 +23,7 @@ on:
         default: ""
 
 permissions:
-  contents: read
+  contents: write # v0.23: commit the app's AI export (ai/export) to this repository only
   pages: write
   id-token: write
 
@@ -47,6 +47,13 @@ jobs:
         with:
           path: .cache
           key: sources-v1-${{ hashFiles('scripts/fetch-sources.mjs') }}-${{ steps.week.outputs.week }}
+      - name: Copy saved AI suggestions from the app (spec v0.23)
+        run: |
+          node scripts/fetch-ai-export.mjs
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -d ai/export ]; then git add -A ai/export; fi
+          if git diff --cached --quiet; then echo "AI export unchanged"; else git commit -q -m "AI export: saved suggestions from the app" && (git push -q || echo "::warning title=AI export::Push failed; the next run will retry"); fi
       - name: Fetch open sources (skipped when cached)
         run: node scripts/fetch-sources.mjs
       - name: Build (scheduler)
