@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "passage": { "book": "GEN", "ch": 1, "verse": 1 },
+  "about": "Intro walkthrough (spec v0.11 §6.5). Steps target data-tour attributes in the reader; a missing target shows a centred caption. Edit wording here; no code change needed.",
+  "steps": [
+    { "id": "welcome", "target": null, "view": { "book": "GEN", "ch": 1, "verse": 1, "zoom": 3, "layers": "genre,structure,figures,imagery", "fold": "-" }, "title": "Welcome to Bible Zoom", "text": "Bible Zoom shows the layers of meaning around the text: how it is written, what it refers to, and how it has been read. Let’s explore the six days of creation in Genesis 1." },
+    { "id": "navigate", "target": "navigate", "view": { "zoom": 2 }, "title": "Move around the Bible", "text": "Choose a book and chapter, or type a reference like “John 3:16”. Zoom from the whole Bible down to single words. At Chapter zoom the layers show as colour only." },
+    { "id": "zoom", "target": "zoom", "view": { "zoom": 3 }, "title": "Zoom in for detail", "text": "At Section zoom the coloured bands get labels. Go further to Verse or Sentence to see every word." },
+    { "id": "layers", "target": "layers", "title": "Choose your layers", "text": "Layers above the text are interpretive: genre, structure, metaphor, modes of reading. Layers below are evidence about the words themselves: names, grammar, the original Hebrew and Greek. Tick any layer on or off." },
+    { "id": "readings", "target": "genre-band", "title": "One chapter, several readings", "text": "Scholars read Genesis 1 in different ways: {genre}. Bible Zoom shows them side by side in a striped band, never ranked." },
+    { "id": "card", "target": "reading-guide", "action": "open-genre", "title": "Open any band", "text": "Every band opens a card. “What this means for reading” explains the layer and each reading, and every reading names who holds it." },
+    { "id": "structure", "target": "structure-stave", "action": "close-card", "title": "See the pattern", "text": "The structure layer shows the days one to seven. Some readings of the chapter build on exactly this pattern." },
+    { "id": "ask", "target": "ask-bubble", "action": "ask-select", "title": "Ask about any words", "text": "Select words, like “And God said”, and the Ask bubble opens about them. Send it to your own ChatGPT or Claude, or run a model on this device. Nothing is sent until you press a button." },
+    { "id": "notes", "target": "my-layers", "action": "close-ask", "title": "Keep your own notes", "text": "Add your own layers, tags and notes to any passage, and share them with friends. Notes need a free account." },
+    { "id": "done", "target": "help", "title": "Find it all again", "text": "Everything you write is gathered in My notes, in the account menu. Replay this tour any time from the ? button. Enjoy exploring!" }
+  ]
+}
