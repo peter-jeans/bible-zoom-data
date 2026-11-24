@@ -268,6 +268,34 @@ const progress = {
 };
 await save(`${out}/progress.json`, progress);
 
+// Chapter packs (speed): one file per chapter with every layer, card-only detail text moved to a
+// separate details file loaded when a card opens. build.json stamps the release so the app fetches
+// matching files after an update. The per-layer files stay for the AI server and older clients.
+const BUILD = new Date().toISOString().replace(/\D/g, '').slice(0, 14);
+let packs = 0, packBytes = 0;
+for (const [key, entry] of Object.entries(ordered)) {
+  const layersOut = {}, details = {};
+  for (const layer of Object.keys(entry)) {
+    if (!entry[layer]) continue;
+    const file = `${out}/layers/${layer}/${key}.json`;
+    if (!existsSync(file)) continue;
+    const tags = JSON.parse(await readFile(file, 'utf8'));
+    layersOut[layer] = tags.map((t, i) => {
+      if (!t.detail) return t;
+      (details[layer] ||= {})[i] = t.detail;
+      const { detail, ...rest } = t;
+      return { ...rest, k: i, d: 1 };
+    });
+  }
+  const pack = JSON.stringify({ build: BUILD, key, layers: layersOut });
+  packBytes += pack.length;
+  await save(`${out}/packs/${key}.json`, JSON.parse(pack));
+  if (Object.keys(details).length) await save(`${out}/details/${key}.json`, details);
+  packs++;
+}
+await save(`${out}/build.json`, { build: BUILD, generated: progress.generated, chapters: Object.keys(ordered).length });
+console.log(`Chapter packs: ${packs} (${(packBytes / 1e6).toFixed(1)} MB raw); build ${BUILD}.`);
+
 // Whole-Bible concordance: one file per Strong's number (first 500 occurrences, with the total).
 let lexFiles = 0;
 for (const [strong, list] of occurrences) {

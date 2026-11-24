@@ -39,11 +39,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Week stamp (refresh open sources weekly)
+        id: week
+        run: echo "week=$(date -u +%G-%V)" >> "$GITHUB_OUTPUT"
       - name: Restore source cache
         uses: actions/cache@v4
         with:
           path: .cache
-          key: sources-v1-${{ hashFiles('scripts/fetch-sources.mjs') }}
+          key: sources-v1-${{ hashFiles('scripts/fetch-sources.mjs') }}-${{ steps.week.outputs.week }}
       - name: Fetch open sources (skipped when cached)
         run: node scripts/fetch-sources.mjs
       - name: Build (scheduler)
@@ -61,6 +64,8 @@ jobs:
           `Focus: ${(p.focus||[]).join(", ")||"none"}`,`Next in queue: ${p.queue.next.slice(0,10).join(", ")}`];
           require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n")+"\n");'
           echo "Size: $(du -sh dist | cut -f1), files: $(find dist -type f | wc -l) (GitHub Pages limit about 1 GB)" >> "$GITHUB_STEP_SUMMARY"
+          MB=$(du -sm dist | cut -f1)
+          if [ "$MB" -gt 600 ]; then echo "::warning title=Data size::The data site is ${MB} MB (warning at 600 MB; GitHub Pages limit about 1 GB). Plan to split or slim the data."; echo "⚠️ Size warning: ${MB} MB (over 600 MB)" >> "$GITHUB_STEP_SUMMARY"; fi
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
