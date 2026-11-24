@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "note": "Ask-AI trial set (spec v0.8 §6.3). Automatic scoring: accuracy = expected words present; invented sources = an author-and-year citation not found in the prompt; fairness (contested items) = more than one reading mentioned and no \"definitely\"/\"certainly\". Automatic scores are indicative; review answers by hand.",
+  "version": 2,
+  "note": "Ask-AI trial set (spec v0.8 §6.3). Automatic scoring: accuracy = expected words present; invented sources = an author-and-year citation not found in the prompt; fairness (contested items) = more than one reading mentioned and no \"definitely\"/\"certainly\". Automatic scores are indicative; review answers by hand. v2: kind (fact | interpretive) and forbid (known wrong answers).",
   "questions": [
     {
       "id": 1,
@@ -11,7 +11,8 @@
         "LORD",
         "Yahweh",
         "God"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 2,
@@ -21,7 +22,8 @@
       "any": [
         "still waters",
         "waters"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 3,
@@ -31,7 +33,8 @@
       "all": [
         "rod",
         "staff"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 4,
@@ -41,7 +44,8 @@
       "any": [
         "house of the LORD",
         "house"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 5,
@@ -50,7 +54,8 @@
       "question": "What is anointed with oil?",
       "any": [
         "head"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 6,
@@ -59,7 +64,8 @@
       "question": "What figure of speech is \"The LORD is my shepherd\"?",
       "any": [
         "metaphor"
-      ]
+      ],
+      "kind": "interpretive"
     },
     {
       "id": 7,
@@ -69,7 +75,8 @@
       "any": [
         "figurative",
         "metaphor"
-      ]
+      ],
+      "kind": "interpretive"
     },
     {
       "id": 8,
@@ -80,7 +87,8 @@
         "runneth over",
         "overflow",
         "runs over"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 9,
@@ -89,7 +97,8 @@
       "question": "What was in the beginning, according to verse 1?",
       "any": [
         "Word"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 10,
@@ -98,7 +107,8 @@
       "question": "Who was sent from God to bear witness to the Light?",
       "any": [
         "John"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 11,
@@ -107,7 +117,8 @@
       "question": "What does John call Jesus in verse 29?",
       "any": [
         "Lamb"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 12,
@@ -116,7 +127,8 @@
       "question": "Who brought his brother Simon to Jesus?",
       "any": [
         "Andrew"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 13,
@@ -127,7 +139,8 @@
         "Cephas",
         "Peter",
         "stone"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 14,
@@ -136,6 +149,10 @@
       "question": "Which town was Philip from?",
       "any": [
         "Bethsaida"
+      ],
+      "kind": "fact",
+      "forbid": [
+        "Bethabara"
       ]
     },
     {
@@ -146,7 +163,8 @@
       "any": [
         "Nathanael",
         "Nathaniel"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 16,
@@ -155,7 +173,8 @@
       "question": "According to verse 14, the Word was made what?",
       "any": [
         "flesh"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 17,
@@ -164,6 +183,10 @@
       "question": "What did God create on the first day?",
       "any": [
         "light"
+      ],
+      "kind": "fact",
+      "forbid": [
+        "heaven and earth"
       ]
     },
     {
@@ -173,7 +196,8 @@
       "question": "What did God call the firmament?",
       "any": [
         "Heaven"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 19,
@@ -184,6 +208,11 @@
         "fourth",
         "4th",
         "day 4"
+      ],
+      "kind": "fact",
+      "forbid": [
+        "first day",
+        "third day"
       ]
     },
     {
@@ -194,7 +223,8 @@
       "any": [
         "God",
         "his own image"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 21,
@@ -207,7 +237,8 @@
         "disagree",
         "readings"
       ],
-      "contested": true
+      "contested": true,
+      "kind": "interpretive"
     },
     {
       "id": 22,
@@ -220,7 +251,8 @@
         "cosmology",
         "temple"
       ],
-      "contested": true
+      "contested": true,
+      "kind": "interpretive"
     },
     {
       "id": 23,
@@ -229,7 +261,8 @@
       "question": "What did God say about everything he had made at the end of the chapter?",
       "any": [
         "very good"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 24,
@@ -240,7 +273,8 @@
         "without form",
         "void",
         "formless"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 25,
@@ -249,7 +283,8 @@
       "question": "Why did Elimelech’s family go to Moab?",
       "any": [
         "famine"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 26,
@@ -259,7 +294,8 @@
       "all": [
         "Orpah",
         "Ruth"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 27,
@@ -268,7 +304,8 @@
       "question": "Which daughter-in-law went back to her people?",
       "any": [
         "Orpah"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 28,
@@ -277,6 +314,10 @@
       "question": "What did Naomi ask to be called?",
       "any": [
         "Mara"
+      ],
+      "kind": "fact",
+      "forbid": [
+        "Ruth"
       ]
     },
     {
@@ -286,7 +327,8 @@
       "question": "Where did Naomi and Ruth arrive at the end of the chapter?",
       "any": [
         "Bethlehem"
-      ]
+      ],
+      "kind": "fact"
     },
     {
       "id": 30,
@@ -296,7 +338,8 @@
       "any": [
         "barley harvest",
         "harvest"
-      ]
+      ],
+      "kind": "fact"
     }
   ]
 }
