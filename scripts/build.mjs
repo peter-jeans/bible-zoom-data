@@ -304,8 +304,9 @@ for (const [strong, list] of occurrences) {
 }
 console.log(`Concordance index: ${lexFiles} Strong's numbers.`);
 // Image index (spec v0.21): thumbnail links and licence credits only; no images are stored.
-if (existsSync(`${CACHE}/images-index.json`)) {
-  const idx = await json(`${CACHE}/images-index.json`);
+const imageIndex = [`${CACHE}/images-index.json`, `${SEED}/images-index.json`].find(f => existsSync(f));
+if (imageIndex) {
+  const idx = await json(imageIndex);
   const trim = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, { ...v, t: v.t.split('?')[0] }]));
   await save(`${out}/library/images.json`, { ...idx, places: trim(idx.places), words: trim(idx.words) });
   console.log(`Image index: ${Object.keys(idx.places).length} places, ${Object.keys(idx.words).length} words.`);

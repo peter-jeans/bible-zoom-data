@@ -18,12 +18,13 @@ const chunks = (list, n) => Array.from({ length: Math.ceil(list.length / n) }, (
 
 async function api(host, params, tries = 4) {
   const url = `https://${host}/w/api.php?${new URLSearchParams({ format: 'json', formatversion: '2', maxlag: '5', ...params })}`;
+  let last = '';
   for (let i = 0; i < tries; i++) {
     const res = await fetch(url, { headers: { 'User-Agent': UA } }).catch(() => null);
-    if (res?.ok) { const j = await res.json(); if (!j.error) return j; }
+    if (res?.ok) { const j = await res.json(); if (!j.error) return j; last = j.error.code || 'api error'; } else last = res ? `HTTP ${res.status}` : 'network error';
     await sleep(1500 * (i + 1));
   }
-  throw new Error(`Wikimedia API failed: ${host}`);
+  throw new Error(`Wikimedia API failed: ${host} (${last})`);
 }
 const strip = html => String(html || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().slice(0, 120);
 
@@ -101,10 +102,14 @@ export async function buildImageIndex(ancientFile) {
     const q = Object.values(p.linked_data || {}).map(x => x?.id).find(id => /^Q\d+$/.test(id || ''));
     if (q) placeQ[p.id] = q;
   }
-  const qFile = {};
+  // Each source is optional: if one service refuses (e.g. rate limits on shared CI addresses), the
+  // others still contribute and the build carries on.
+  const qFile = {}, problems = [];
   for (const batch of chunks([...new Set(Object.values(placeQ))], 50)) {
-    const j = await api('www.wikidata.org', { action: 'wbgetentities', ids: batch.join('|'), props: 'claims' });
-    for (const [id, e] of Object.entries(j.entities || {})) { const f = e.claims?.P18?.[0]?.mainsnak?.datavalue?.value; if (f) qFile[id] = f; }
+    try {
+      const j = await api('www.wikidata.org', { action: 'wbgetentities', ids: batch.join('|'), props: 'claims' });
+      for (const [id, e] of Object.entries(j.entities || {})) { const f = e.claims?.P18?.[0]?.mainsnak?.datavalue?.value; if (f) qFile[id] = f; }
+    } catch (e) { problems.push(e.message); break; }
     await sleep(300);
   }
   for (const [pid, q] of Object.entries(placeQ)) if (qFile[q]) placeFile[pid] = qFile[q];
@@ -112,7 +117,8 @@ export async function buildImageIndex(ancientFile) {
   // Words
   const articles = wordArticles(), titleFile = {};
   for (const batch of chunks([...new Set(Object.values(articles))], 50)) {
-    const j = await api('en.wikipedia.org', { action: 'query', prop: 'pageimages', piprop: 'name', pilicense: 'free', redirects: '1', titles: batch.join('|') });
+    let j;
+    try { j = await api('en.wikipedia.org', { action: 'query', prop: 'pageimages', piprop: 'name', pilicense: 'free', redirects: '1', titles: batch.join('|') }); } catch (e) { problems.push(e.message); break; }
     const back = {};
     for (const n of [...(j.query?.normalized || []), ...(j.query?.redirects || [])]) back[n.to] = [...(back[n.to] || []), n.from];
     for (const p of j.query?.pages || []) {
@@ -129,5 +135,6 @@ export async function buildImageIndex(ancientFile) {
   const places = {}, words = {};
   for (const [pid, f] of Object.entries(placeFile)) if (info[f]) places[pid] = info[f];
   for (const [w, { f, article }] of Object.entries(wordFile)) if (info[f]) words[w] = { ...info[f], s: article };
-  return { generated: new Date().toISOString(), source: 'Wikimedia Commons (via OpenBible.info, Wikidata and Wikipedia)', places, words };
+  if (!Object.keys(places).length && !Object.keys(words).length) throw new Error(`No images found (${problems.join('; ')})`);
+  return { generated: new Date().toISOString(), problems, source: 'Wikimedia Commons (via OpenBible.info, Wikidata and Wikipedia)', places, words };
 }
