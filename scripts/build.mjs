@@ -24,6 +24,7 @@ import { poeticLines, acrostics } from './lib/poetry.mjs';
 import { formsFor, formsFromNotes, voiceFromNotes, speechFormulas } from './lib/form.mjs';
 import { loadTahot, originalTags, grammarTags, manuscriptTags } from './lib/stepbible.mjs';
 import { natureTags, objectTags } from './lib/world.mjs';
+import { chapterOverview, bookOverview } from './lib/overview.mjs';
 
 const out = argv.find((a, i) => i >= 2 && !a.startsWith('--')) || 'dist';
 const buildAll = argv.includes('--all');
@@ -323,6 +324,7 @@ await save(`${out}/progress.json`, progress);
 // matching files after an update. The per-layer files stay for the AI server and older clients.
 const BUILD = new Date().toISOString().replace(/\D/g, '').slice(0, 14);
 let packs = 0, packBytes = 0;
+const overviewByBook = new Map();
 for (const [key, entry] of Object.entries(ordered)) {
   const layersOut = {}, details = {};
   for (const layer of Object.keys(entry)) {
@@ -342,7 +344,17 @@ for (const [key, entry] of Object.entries(ordered)) {
   await save(`${out}/packs/${key}.json`, JSON.parse(pack));
   if (Object.keys(details).length) await save(`${out}/details/${key}.json`, details);
   packs++;
+  // Spec v0.24: chapter overview from the same tags (with detail text, which overviews do not use).
+  const [ob, oc] = key.split('/');
+  const textFile = `${out}/text/KJV/${key}.json`;
+  const last = existsSync(textFile) ? JSON.parse(await readFile(textFile, 'utf8')).verses.at(-1)?.number || 1 : 1;
+  const full = Object.fromEntries(Object.entries(layersOut).map(([k, v]) => [k, v.filter(t => !(t.start === 1 && t.end === 9999 && k !== 'history'))]));
+  await save(`${out}/overview/${key}.json`, chapterOverview(ob, +oc, full, last));
+  if (!overviewByBook.has(ob)) overviewByBook.set(ob, []);
+  overviewByBook.get(ob).push({ ch: +oc, layers: full });
 }
+const genreLabels = Object.fromEntries((registry.layers.find(l => l.id === 'genre')?.categories || []).map(c => [c.id, c.label]));
+for (const [b, chs] of overviewByBook) await save(`${out}/overview/${b}.json`, bookOverview(b, chs.sort((x, y) => x.ch - y.ch), genreLabels));
 await save(`${out}/build.json`, { build: BUILD, generated: progress.generated, chapters: Object.keys(ordered).length });
 console.log(`Chapter packs: ${packs} (${(packBytes / 1e6).toFixed(1)} MB raw); build ${BUILD}.`);
 
