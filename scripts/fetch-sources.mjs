@@ -3,6 +3,8 @@
 import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
+import { statSync } from 'node:fs';
+import { buildImageIndex } from './lib/images.mjs';
 
 const UA = 'bible-zoom-data-build/0.2 (+https://github.com/peter-jeans/bible-zoom-data)';
 const CACHE = '.cache';
@@ -41,5 +43,15 @@ for (const [range, name] of Object.entries(TAHOT)) await download(`https://raw.g
 let fetched = 0;
 for (const b of registry.books) {
   if (await download(`https://git.door43.org/unfoldingWord/en_tn/raw/branch/master/tn_${b.id}.tsv`, `${CACHE}/tn/tn_${b.id}.tsv`)) fetched++;
+}
+// Image index (spec v0.21): links and credits for openly licensed Wikimedia Commons thumbnails.
+// Rebuilt weekly; a failure keeps the previous index and never stops the data build.
+const IMAGES = `${CACHE}/images-index.json`;
+if (!existsSync(IMAGES) || Date.now() - statSync(IMAGES).mtimeMs > 7 * 86400000) {
+  try {
+    const idx = await buildImageIndex(`${CACHE}/openbible/ancient.jsonl`);
+    await writeFile(IMAGES, JSON.stringify(idx));
+    console.log(`Image index: ${Object.keys(idx.places).length} places, ${Object.keys(idx.words).length} words.`);
+  } catch (e) { console.warn(`Image index not refreshed: ${e.message}`); }
 }
 console.log(`Sources ready (${fetched} translation-note files downloaded this run).`);
