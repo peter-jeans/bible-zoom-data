@@ -73,7 +73,7 @@ export function themes(csv, books, { exclude = new Set(), perVerse = 3, lastVers
       const k = `${r.book}|${r.ch}|${v}`;
       if (!perV.has(k)) perV.set(k, new Map());
       const m = perV.get(k);
-      if (!m.has(t.subj)) m.set(t.subj, { subj: t.subj, sub: it.sub, size: t.size });
+      if (!m.has(t.subj)) m.set(t.subj, { subj: t.subj, sub: it.sub, size: t.size, refs: it.refs });
     }
   }
   const out = {};
@@ -84,17 +84,19 @@ export function themes(csv, books, { exclude = new Set(), perVerse = 3, lastVers
     for (const t of top) tags.push({ v: +v, ...t });
   }
   // Merge consecutive verses with the same subject into one band.
-  for (const chs of Object.values(out)) for (const [ch, list] of Object.entries(chs)) {
+  for (const [book, chs] of Object.entries(out)) for (const [ch, list] of Object.entries(chs)) {
     list.sort((a, b) => a.subj.localeCompare(b.subj) || a.v - b.v);
     const merged = [];
     for (const t of list) {
       const prev = merged[merged.length - 1];
       if (prev && prev.subj === t.subj && prev.end === t.v - 1) { prev.end = t.v; continue; }
-      merged.push({ subj: t.subj, sub: t.sub, start: t.v, end: t.v });
+      merged.push({ subj: t.subj, sub: t.sub, start: t.v, end: t.v, refs: t.refs });
     }
     chs[ch] = merged.sort((a, b) => a.start - b.start).map(t => ({
       category: 'theme', label: t.sub ? `${t.subj}: ${t.sub.length > 70 ? t.sub.slice(0, 69).replace(/\s+\S*$/, '') + '…' : t.sub}` : t.subj,
       start: t.start, end: t.end, status: 'SETTLED', source: 'naves', witnesses: 1, topic: t.subj,
+      // Other passages Nave's lists under the same topic entry, for the card's "Connected passages".
+      links: [...new Map((t.refs || []).filter(r => !(r.book === book && r.ch === +ch)).map(r => [`${r.book}.${r.ch}.${r.v1 || 1}`, { ref: `${r.book}.${r.ch}.${r.v1 || 1}`, ...(r.v2 && r.v2 !== r.v1 ? { to: Math.min(r.v2, 999) } : {}) }])).values()].slice(0, 6),
     }));
   }
   return out;
