@@ -183,6 +183,28 @@ if (existsSync('ai/export')) for (const f of (await readdir('ai/export')).filter
   }
 }
 
+// v0.28: Form families. The kind table becomes Form's family level: specific forms are labelled
+// "Family › form", and verses with no specific form get the family alone, so the two never stack.
+const KIND_TO_FAMILY = { narrative: 'narrative', law: 'law', poetry: 'poetry', wisdom: 'wisdom', prophecy: 'prophecy', gospel: 'narrative', epistle: 'letter', apocalyptic: 'apocalyptic' };
+const FAMILY_LABEL = { narrative: 'Narrative', law: 'Law', poetry: 'Poetry', wisdom: 'Wisdom', prophecy: 'Prophecy', letter: 'Letter', apocalyptic: 'Apocalyptic' };
+function formWithFamilies(forms, kinds, last) {
+  const named = (forms || []).map(t => (FAMILY_LABEL[t.category] && !String(t.label).includes('›') ? { ...t, label: `${FAMILY_LABEL[t.category]} › ${t.label}` } : t));
+  const kind = (kinds || [])[0];
+  if (!kind || !KIND_TO_FAMILY[kind.category]) return named;
+  const family = KIND_TO_FAMILY[kind.category];
+  const label = kind.category === 'gospel' ? 'Gospel narrative' : FAMILY_LABEL[family];
+  const covered = new Set();
+  for (const t of named) for (let v = t.start; v <= Math.min(t.end, last); v++) covered.add(v);
+  const fill = [];
+  for (let v = 1; v <= last; v++) {
+    if (covered.has(v)) continue;
+    const prev = fill.at(-1);
+    if (prev && prev.end === v - 1) prev.end = v;
+    else fill.push({ category: family, label, start: v, end: v, status: 'SETTLED', source: 'bz-genre', witnesses: 1 });
+  }
+  return [...named, ...fill].sort((a, b) => a.start - b.start || b.end - a.end);
+}
+
 // ---- 3. Build ---------------------------------------------------------------------------
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
@@ -230,10 +252,12 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     // v0.22: "Figures & images" holds both rhetorical figures and metaphor/image families, and
     // "Ways of reading" (id genre) holds both the kind of writing and how it refers (former Mode).
     figures: [...(notes.figures[ch] || []), ...(notes.imagery[ch] || [])].sort((a, b) => a.start - b.start), poetry,
-    genre: [...(genreFor(id, ch) || []), ...figurativeMode(extras.outline[ch], notes.imagery[ch] || [], last)],
+    // v0.28: Ways of reading holds how a passage is taken; the kind table (narrative, poetry, law…)
+    // fills Form at family level instead.
+    genre: figurativeMode(extras.outline[ch], notes.imagery[ch] || [], last),
     intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv),
     structure: extras.outline[ch], history, themes: topical[id]?.[ch],
-    form: formsFor(id, ch, kjv, extras.noteForms),
+    form: formWithFamilies(formsFor(id, ch, kjv, extras.noteForms), genreFor(id, ch), last),
     original: hebrew[id]?.[ch], grammar: parsing[id]?.[ch], manuscripts: ketiv[id]?.[ch],
     nature: natureTags(kjv), objects: objectTags(kjv),
     names: (names[id]?.[ch] || []).filter(t => t.category !== 'speaker'),
@@ -286,6 +310,16 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     await save(file, [...existing, ...tags].sort((a, b) => a.start - b.start));
     if (!entry[layer.id]) entry[layer.id] = tags[0].category;
   }
+  // v0.28: retired kind categories in Ways of reading are mapped (narrative → told as history,
+  // apocalyptic → vision) or left out (poetry, law, wisdom, prophecy, gospel, letter: shown by Form).
+  { const file = `${out}/layers/genre/${key}.json`, map = registry.retired_categories?.genre || {};
+    if (existsSync(file)) {
+      const raw = JSON.parse(await readFile(file, 'utf8'));
+      let tags = raw.flatMap(t => (t.category in map ? (map[t.category] ? [{ ...t, category: map[t.category] }] : []) : [t]));
+      const sizes = tags.reduce((m, t) => (t.status === 'CONTESTED' && t.group ? m.set(t.group, (m.get(t.group) || 0) + 1) : m), new Map());
+      tags = tags.map(t => (t.status === 'CONTESTED' && t.group && sizes.get(t.group) < 2 ? (({ group, group_title, ...rest }) => ({ ...rest, status: 'SINGLE_PROPOSAL' }))(t) : t));
+      if (tags.length) { await save(file, tags); entry.genre = tags[0].category; } else { await rm(file); delete entry.genre; }
+    } }
   if (!Object.keys(entry).length) entry.genre = null;
   coverage[key] = Object.fromEntries(layerIds.filter(l => l in entry).map(l => [l, entry[l]]));
   builtCount++;
@@ -357,7 +391,7 @@ for (const [key, entry] of Object.entries(ordered)) {
   if (!overviewByBook.has(ob)) overviewByBook.set(ob, []);
   overviewByBook.get(ob).push({ ch: +oc, layers: full });
 }
-const genreLabels = Object.fromEntries((registry.layers.find(l => l.id === 'genre')?.categories || []).map(c => [c.id, c.label]));
+const genreLabels = Object.fromEntries(Object.entries(FAMILY_LABEL)); // v0.28: book overview kinds come from Form families
 for (const [b, chs] of overviewByBook) await save(`${out}/overview/${b}.json`, bookOverview(b, chs.sort((x, y) => x.ch - y.ch), genreLabels));
 await save(`${out}/build.json`, { build: BUILD, generated: progress.generated, chapters: Object.keys(ordered).length });
 console.log(`Chapter packs: ${packs} (${(packBytes / 1e6).toFixed(1)} MB raw); build ${BUILD}.`);

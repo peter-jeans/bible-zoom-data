@@ -1,21 +1,13 @@
 {
-  "version": 11,
+  "version": 12,
   "layers": [
     {
       "id": "genre",
       "name": "Ways of reading",
       "side": "above",
-      "description": "What kind of text this is and how it speaks: history, poem, origin story, vision… Disputed readings are shown side by side, with who holds each.",
+      "description": "How people take this passage: as history, origin story, symbol, worship… Where readers disagree, every reading is shown with who holds it.",
       "group": "Interpretation",
       "categories": [
-        {
-          "id": "narrative",
-          "label": "narrative",
-          "color": "#74618d",
-          "darkColor": "#cac3d4",
-          "about": "Narrative: an account told as a story.",
-          "implications": "Read for plot, character and the narrator’s perspective."
-        },
         {
           "id": "exalted prose",
           "label": "exalted prose",
@@ -39,62 +31,6 @@
           "darkColor": "#beccba",
           "about": "Temple inauguration: creation read as God dedicating the cosmos as a temple (proposed by John Walton).",
           "implications": "This reading stresses function and God taking up residence rather than material origins."
-        },
-        {
-          "id": "poetry",
-          "label": "poetry",
-          "color": "#925880",
-          "darkColor": "#d6c0cf",
-          "about": "Poetry: lines in parallel, imagery, sound.",
-          "implications": "Read line by line; images are central."
-        },
-        {
-          "id": "law",
-          "label": "law",
-          "color": "#8c5d3c",
-          "darkColor": "#d3c1b5",
-          "about": "Law: commands and case laws for the community.",
-          "implications": "Read in its covenant setting and with its form."
-        },
-        {
-          "id": "wisdom",
-          "label": "wisdom",
-          "color": "#6d7a3e",
-          "darkColor": "#c8ccb6",
-          "about": "Wisdom: reflection on how life works (Proverbs, Job, Ecclesiastes).",
-          "implications": "General truths and searching questions, not guarantees."
-        },
-        {
-          "id": "prophecy",
-          "label": "prophecy",
-          "color": "#9b4f4f",
-          "darkColor": "#d9bcbc",
-          "about": "Prophecy: messages from God through prophets, often poetic.",
-          "implications": "Usually addresses its own time first; future elements are debated."
-        },
-        {
-          "id": "gospel",
-          "label": "gospel",
-          "color": "#3d6e8f",
-          "darkColor": "#b5c8d4",
-          "about": "Gospel: an account of Jesus’ life, death and resurrection.",
-          "implications": "Compared with ancient biography; each Gospel shapes its material for its readers."
-        },
-        {
-          "id": "epistle",
-          "label": "epistle",
-          "color": "#5f6b7a",
-          "darkColor": "#c2c7cc",
-          "about": "Letter (epistle) to a church or person.",
-          "implications": "Read as one side of a conversation with real recipients."
-        },
-        {
-          "id": "apocalyptic",
-          "label": "apocalyptic",
-          "color": "#7a4f8a",
-          "darkColor": "#ccbcd3",
-          "about": "Apocalyptic: symbolic revelation of hidden or end-time realities.",
-          "implications": "Images are coded; read them as symbols."
         },
         {
           "id": "biography",
@@ -209,7 +145,7 @@
           "implications": "Readers trace the source texts and notice what the retelling changes."
         }
       ],
-      "about": "What kind of writing a passage is (a story, a poem, a law, a vision) and how it speaks about reality: as history, as an origin story, as worship, or as symbol.",
+      "about": "How people take this passage: as history, origin story, symbol, worship… Where readers disagree, every reading is shown with who holds it.",
       "implications": "Reading a passage as history, as an origin story or as worship changes the questions you ask of it and what counts as its truth. Where readers disagree, every reading is shown with who holds it, and none is ranked.",
       "vocabulary": {
         "historiographic": [
@@ -527,12 +463,12 @@
       "id": "form",
       "name": "Form (story, poem, law…)",
       "side": "above",
-      "description": "A passage’s recognisable shape: a family tree, a call story, a lament, a law code… Coloured by family, labelled with the exact shape.",
+      "description": "The shape you can see in the text: a family tree, a lament, a parable, a law… Coloured by family (narrative, poetry, law…), labelled with the exact shape.",
       "group": "Literature",
       "categories": [
         {
           "id": "narrative",
-          "label": "narrative form",
+          "label": "narrative",
           "color": "#74618d",
           "darkColor": "#cac3d4",
           "about": "A narrative form: genealogy, call narrative, theophany, miracle story, parable, sermon, passion or resurrection account, etiological note.",
@@ -540,7 +476,7 @@
         },
         {
           "id": "law",
-          "label": "law form",
+          "label": "law",
           "color": "#8c5d3c",
           "darkColor": "#d3c1b5",
           "about": "A legal form: apodictic law (\"You shall not…\"), case law (\"If a man…\") or ritual instruction.",
@@ -548,7 +484,7 @@
         },
         {
           "id": "poetry",
-          "label": "poetic form",
+          "label": "poetry",
           "color": "#925880",
           "darkColor": "#d6c0cf",
           "about": "A poetic form: hymn, lament, thanksgiving, royal or wisdom psalm, love song (psalm types after Gunkel; scholars differ).",
@@ -556,7 +492,7 @@
         },
         {
           "id": "wisdom",
-          "label": "wisdom form",
+          "label": "wisdom",
           "color": "#6d7a3e",
           "darkColor": "#c8ccb6",
           "about": "A wisdom form: proverb or wisdom dialogue.",
@@ -564,15 +500,23 @@
         },
         {
           "id": "prophecy",
-          "label": "prophetic form",
+          "label": "prophecy",
           "color": "#9b4f4f",
           "darkColor": "#d9bcbc",
           "about": "A prophetic form: judgement, woe or salvation oracle, vision report, symbolic act.",
           "implications": "Oracles follow patterns (accusation, then announcement). Symbolic acts are enacted messages."
         },
         {
+          "id": "apocalyptic",
+          "label": "apocalyptic",
+          "color": "#6a4c7d",
+          "darkColor": "#cbb6dc",
+          "about": "Apocalyptic writing: revealed visions of heavenly realities and the end, told in symbols (Daniel 7–12, Revelation, Mark 13, Matthew 24).",
+          "implications": "Apocalyptic images are read as symbols to decode, not as plain description."
+        },
+        {
           "id": "letter",
-          "label": "letter form",
+          "label": "letter",
           "color": "#5f6b7a",
           "darkColor": "#c2c7cc",
           "about": "A letter form: opening and greeting, thanksgiving, household code, vice or virtue list, closing benediction.",
@@ -628,7 +572,7 @@
       "ai_suggest": {
         "instruction": "Identify passages that match a form in the vocabulary. Label each tag with the exact vocabulary term."
       },
-      "about": "The recognisable shape of a passage: genealogy, call narrative, lament, woe oracle, household code and so on.",
+      "about": "The shape you can see in the text: a family tree, a lament, a parable, a law… Each passage belongs to a family (narrative, poetry, law, wisdom, prophecy, apocalyptic, letter), and often to a specific form within it.",
       "implications": "Forms follow conventions. Knowing the form tells you which features are standard and which stand out, which is often where the meaning is.",
       "subgroup": "What kind of text"
     },
@@ -1695,5 +1639,17 @@
   "retired_layers": {
     "mode": "genre",
     "imagery": "figures"
+  },
+  "retired_categories": {
+    "genre": {
+      "narrative": "historiographic",
+      "apocalyptic": "visionary",
+      "poetry": null,
+      "law": null,
+      "wisdom": null,
+      "prophecy": null,
+      "gospel": null,
+      "epistle": null
+    }
   }
 }

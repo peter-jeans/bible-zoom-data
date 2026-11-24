@@ -53,7 +53,7 @@ export function bookOverview(book, chapters, genreLabels) {
       .map(e => ({ label: e.label, chapters: e.chapters.size, first: Math.min(...e.chapters), peak: [...e.byCh.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0][0] }));
   };
   const kindMix = new Map();
-  for (const c of chapters) { const cats = new Set((c.layers.genre || []).filter(sourced).map(t => t.category)); for (const k of cats) kindMix.set(k, (kindMix.get(k) || 0) + 1); }
+  for (const c of chapters) { const cats = new Set((c.layers.form || []).filter(sourced).map(t => t.category)); for (const k of cats) kindMix.set(k, (kindMix.get(k) || 0) + 1); }
   const linkBooks = new Map();
   for (const t of of('intertext')) for (const x of t.links || []) { const b = String(x.ref || '').split('.')[0]; if (b && b !== book) linkBooks.set(b, (linkBooks.get(b) || 0) + 1); }
   const layerChapters = {};
