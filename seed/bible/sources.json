@@ -369,5 +369,25 @@
     "tradition": "Historical-critical; independent blocks of tradition",
     "license": "Link only",
     "url": "https://search.worldcat.org/search?q=The%20Problem%20of%20the%20Process%20of%20Transmission%20in%20the%20Pentateuch%20Rolf%20Rendtorff"
+  },
+  {
+    "id": "natural-earth",
+    "title": "Natural Earth: coastlines, rivers and lakes",
+    "author": "Natural Earth contributors",
+    "date": "2026",
+    "tradition": "Physical geography of the modern world; no borders used",
+    "license": "Public domain (US, AU)",
+    "url": "https://www.naturalearthdata.com",
+    "attribution": "Made with Natural Earth."
+  },
+  {
+    "id": "easton",
+    "title": "Easton's Bible Dictionary",
+    "author": "Matthew George Easton",
+    "date": "1897",
+    "tradition": "Nineteenth-century Protestant reference work; dated in its scholarship",
+    "license": "Public domain (US, AU)",
+    "url": "https://github.com/robertrouse/theographic-bible-metadata",
+    "attribution": "Easton's Bible Dictionary (1897), public domain, text via Theographic Bible Metadata."
   }
 ]

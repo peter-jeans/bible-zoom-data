@@ -20,13 +20,34 @@ export const OBJECTS = {
   vessel: ['Vessels', L('cup, cups, bowl, bowls, basin, pot, pots, pitcher, pitchers, jar, bottle, bottles, cruse, vessel, vessels, basket, baskets, laver, censer')],
 };
 
+// v0.33: words that are usually something else in the KJV are kept only where the underlying Hebrew or
+// Greek word (its Strong's number) is the real thing: "rose of Sharon" but not "rose up".
+const ONLY = Object.fromEntries(Object.entries({
+  rose: 'H2261', bear: 'H1677 H1678 G715', bears: 'H1677', fly: 'H2070', flies: 'H2070 H6157',
+  well: 'H875 H953 H4599 H4726 H5869 G4077 G5421', wells: 'H875 H953 H4599 H5869 G4077',
+  bow: 'H7198 G5115', bows: 'H7198', spring: 'H4161 H4726 H5869 H1530',
+}).map(([w, s]) => [w, new Set(s.split(' '))]));
+// Words dropped where the underlying word is plainly another thing (month, palm of the hand, greeting…).
+const NOT = Object.fromEntries(Object.entries({
+  plain: 'H8535', moon: 'H2320', palm: 'H3709', palms: 'H3709 G4475', hail: 'G5463 G5464', fish: 'H1770', nails: 'H2953 H6856', leaves: 'H1817',
+}).map(([w, s]) => [w, new Set(s.split(' '))]));
+// "ayin" (H5869) is both "eye" and "spring": "pleased Absalom well" carries it too, so a well needs an article.
+const ARTICLE = new Set(['a', 'the', 'this', 'that', 'dragon']);
+function keep(word, token, before) {
+  if (word === 'flies' && before === 'of') return true; // "swarms of flies": the number sits on "swarms"
+  if (/^bows?$/.test(word) && !token.strong && ['his', 'their'].includes(before)) return true; // "bendeth his bow"
+  if (ONLY[word]) return ONLY[word].has(token.strong) && (token.strong !== 'H5869' || word === 'wells' || ARTICLE.has(before));
+  return !NOT[word]?.has(token.strong);
+}
+const bare = t => String(t || '').toLowerCase().replace(/^[^a-z]+|[^a-z]+$/g, '').replace(/[’']s$/, '');
+
 function scan(verses, table, layerSource) {
-  const res = Object.fromEntries(Object.entries(table).map(([cat, [, words]]) => [cat, new RegExp(`\\b(${words.join('|')})\\b`, 'gi')]));
+  const sets = Object.fromEntries(Object.entries(table).map(([cat, [, words]]) => [cat, new Set(words)]));
   const out = [];
   for (const v of verses) {
-    const text = v.words.map(w => w.text).join(' ');
-    for (const [cat, re] of Object.entries(res)) {
-      const found = [...new Set((text.match(re) || []).map(w => w.toLowerCase()))];
+    const tokens = v.words.flatMap((w, i) => w.text.split(/[-\s—–]+/).map(t => ({ w, t: bare(t), before: bare(v.words[i - 1]?.text) }))).filter(x => x.t);
+    for (const [cat, set] of Object.entries(sets)) {
+      const found = [...new Set(tokens.filter(x => set.has(x.t) && keep(x.t, x.w, x.before)).map(x => x.t))];
       if (!found.length) continue;
       out.push({
         category: cat, label: `${table[cat][0]}: ${found.slice(0, 5).join(', ')}${found.length > 5 ? '…' : ''}`, start: v.number, end: v.number,

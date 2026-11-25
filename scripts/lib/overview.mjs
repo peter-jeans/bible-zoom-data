@@ -6,8 +6,9 @@ const sourced = t => t.method !== 'ai-suggested';
 const head = label => String(label || '').split(/[:·]/)[0].trim();
 const place = label => head(label).replace(/\s+\d+(?=\s*\(|$)/, ''); // "Beersheba 2" → "Beersheba"
 const single = tags => tags.filter(t => !/named in the passage/i.test(t.label)).flatMap(t => [...new Set(String(t.label).split(' · '))].map(label => ({ ...t, label: label.trim() })));
-// Words that are often something else in the KJV ("rose up", "bear a son", "well") are not illustrated.
-const AMBIGUOUS = new Set(['rose', 'bear', 'bears', 'well', 'seed', 'house', 'fly', 'hart', 'ass', 'host', 'span', 'reed', 'spring', 'bow', 'ring', 'net']);
+// Words that are often something else in the KJV are not illustrated. (v0.33: "rose", "bear", "well" and
+// the like are now filtered by the underlying word when the tags are made.)
+const AMBIGUOUS = new Set(['seed', 'house', 'hart', 'ass', 'host', 'span', 'reed', 'ring', 'net']);
 const kindOf = g => (g.layer === 'places' ? 'places' : g.ai ? 'ai' : 'sourced');
 function tally(items, key, limit) {
   const m = new Map();

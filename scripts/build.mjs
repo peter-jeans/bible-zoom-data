@@ -24,6 +24,7 @@ import { poeticLines, acrostics } from './lib/poetry.mjs';
 import { formsFor, formsFromNotes, voiceFromNotes, speechFormulas } from './lib/form.mjs';
 import { loadTahot, originalTags, grammarTags, manuscriptTags } from './lib/stepbible.mjs';
 import { natureTags, objectTags } from './lib/world.mjs';
+import { placeMaps, background, loadEaston } from './lib/background.mjs';
 import { chapterOverview, bookOverview } from './lib/overview.mjs';
 
 const out = argv.find((a, i) => i >= 2 && !a.startsWith('--')) || 'dist';
@@ -363,7 +364,7 @@ await save(`${out}/progress.json`, progress);
 // matching files after an update. The per-layer files stay for the AI server and older clients.
 const BUILD = new Date().toISOString().replace(/\D/g, '').slice(0, 14);
 let packs = 0, packBytes = 0;
-const overviewByBook = new Map();
+const overviewByBook = new Map(), textByKey = new Map();
 for (const [key, entry] of Object.entries(ordered)) {
   const layersOut = {}, details = {};
   // Spec v0.25: every span stays inside the chapter's real verses (no "to the end" markers reach the app).
@@ -395,9 +396,19 @@ for (const [key, entry] of Object.entries(ordered)) {
   await save(`${out}/overview/${key}.json`, chapterOverview(ob, +oc, full, last));
   if (!overviewByBook.has(ob)) overviewByBook.set(ob, []);
   overviewByBook.get(ob).push({ ch: +oc, layers: full });
+  if (existsSync(textFile)) textByKey.set(key, JSON.parse(await readFile(textFile, 'utf8')).verses);
 }
 const genreLabels = Object.fromEntries(Object.entries(FAMILY_LABEL)); // v0.28: book overview kinds come from Form families
 for (const [b, chs] of overviewByBook) await save(`${out}/overview/${b}.json`, bookOverview(b, chs.sort((x, y) => x.ch - y.ch), genreLabels));
+// Spec v0.33: maps and background per book.
+const maps = await placeMaps(`${CACHE}/openbible/ancient.jsonl`, books);
+const easton = await loadEaston(`${CACHE}/theographic/easton.json`);
+await save(`${out}/geo/basemap.json`, await json(`${SEED}/geo/basemap.json`));
+for (const [b, chs] of overviewByBook) {
+  const list = (maps[b] || []).map(p => ({ ...p, ch: Object.fromEntries(Object.entries(p.ch).filter(([c]) => chs.some(x => x.ch === +c))) })).filter(p => Object.keys(p.ch).length);
+  await save(`${out}/geo/books/${b}.json`, { source: 'openbible-geo', places: list });
+  await save(`${out}/background/${b}.json`, background(b, chs.map(c => ({ ...c, verses: textByKey.get(`${b}/${c.ch}`) || [] })), easton, list, dated[b]));
+}
 await save(`${out}/build.json`, { build: BUILD, generated: progress.generated, chapters: Object.keys(ordered).length });
 console.log(`Chapter packs: ${packs} (${(packBytes / 1e6).toFixed(1)} MB raw); build ${BUILD}.`);
 

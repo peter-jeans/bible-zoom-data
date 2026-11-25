@@ -33,7 +33,7 @@ if (await download('https://a.openbible.info/data/cross-references.zip', `${CACH
 }
 await download('https://raw.githubusercontent.com/openbibleinfo/Bible-Geocoding-Data/main/data/ancient.jsonl', `${CACHE}/openbible/ancient.jsonl`);
 await mkdir(`${CACHE}/theographic`, { recursive: true });
-for (const f of ['verses', 'people', 'events']) await download(`https://raw.githubusercontent.com/robertrouse/theographic-bible-metadata/master/json/${f}.json`, `${CACHE}/theographic/${f}.json`);
+for (const f of ['verses', 'people', 'events', 'easton']) await download(`https://raw.githubusercontent.com/robertrouse/theographic-bible-metadata/master/json/${f}.json`, `${CACHE}/theographic/${f}.json`);
 await mkdir(`${CACHE}/naves`, { recursive: true });
 await download('https://raw.githubusercontent.com/BradyStephenson/bible-data/main/NavesTopicalDictionary.csv', `${CACHE}/naves/naves.csv`);
 // STEPBible TAHOT (CC BY 4.0): tagged Hebrew OT, for Original words, Grammar and ketiv/qere.
