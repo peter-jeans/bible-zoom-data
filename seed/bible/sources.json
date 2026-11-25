@@ -315,5 +315,59 @@
     "tradition": "Scientist; genealogical reading",
     "license": "Link only",
     "url": "https://search.worldcat.org/search?q=The%20Genealogical%20Adam%20and%20Eve%3A%20The%20Surprising%20Science%20of%20Universal%20Ancestry%20S.%20Joshua%20Swamidass"
+  },
+  {
+    "id": "archer-survey",
+    "title": "A Survey of Old Testament Introduction",
+    "author": "Gleason L. Archer",
+    "date": "1964",
+    "tradition": "Evangelical; Mosaic authorship",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=A%20Survey%20of%20Old%20Testament%20Introduction%20Gleason%20L.%20Archer"
+  },
+  {
+    "id": "garrett-genesis",
+    "title": "Rethinking Genesis: The Sources and Authorship of the First Book of the Pentateuch",
+    "author": "Duane Garrett",
+    "date": "1991",
+    "tradition": "Evangelical; Moses using sources, later edited",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=Rethinking%20Genesis%3A%20The%20Sources%20and%20Authorship%20of%20the%20First%20Book%20of%20the%20Pentateuch%20Duane%20Garrett"
+  },
+  {
+    "id": "wellhausen-prolegomena",
+    "title": "Prolegomena to the History of Israel",
+    "author": "Julius Wellhausen",
+    "date": "1878",
+    "tradition": "Historical-critical; documentary hypothesis",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=Prolegomena%20to%20the%20History%20of%20Israel%20Julius%20Wellhausen"
+  },
+  {
+    "id": "baden-composition",
+    "title": "The Composition of the Pentateuch: Renewing the Documentary Hypothesis",
+    "author": "Joel S. Baden",
+    "date": "2012",
+    "tradition": "Historical-critical; neo-documentary",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=The%20Composition%20of%20the%20Pentateuch%3A%20Renewing%20the%20Documentary%20Hypothesis%20Joel%20S.%20Baden"
+  },
+  {
+    "id": "vanseters-pentateuch",
+    "title": "The Pentateuch: A Social-Science Commentary",
+    "author": "John Van Seters",
+    "date": "1999",
+    "tradition": "Historical-critical; supplementary hypothesis",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=The%20Pentateuch%3A%20A%20Social-Science%20Commentary%20John%20Van%20Seters"
+  },
+  {
+    "id": "rendtorff-problem",
+    "title": "The Problem of the Process of Transmission in the Pentateuch",
+    "author": "Rolf Rendtorff",
+    "date": "1977",
+    "tradition": "Historical-critical; independent blocks of tradition",
+    "license": "Link only",
+    "url": "https://search.worldcat.org/search?q=The%20Problem%20of%20the%20Process%20of%20Transmission%20in%20the%20Pentateuch%20Rolf%20Rendtorff"
   }
 ]

@@ -162,8 +162,11 @@ function rareWords(verses = []) {
 // curated/: readings curated by the owner, each with a named published source (not AI). A group with
 // "join": true keeps its exact group id, so it joins a seed group of the same name.
 const aiByChapter = new Map();
+// v0.32: curated statements of what the text itself says (checkable in the text).
+const statements = [];
 for (const dir of ['ai', 'curated']) if (existsSync(dir)) for (const f of (await readdir(dir)).filter(n => n.endsWith('.json')).sort()) {
   const batch = await json(`${dir}/${f}`);
+  if (dir === 'curated') statements.push(...(batch.statements || []));
   for (const g of batch.groups) for (const [book, c1, v1, c2, v2] of g.passages) for (let c = c1; c <= c2; c++) {
     const key = `${book}/${c}`;
     if (!aiByChapter.has(key)) aiByChapter.set(key, []);
@@ -245,9 +248,11 @@ for (const key of queue.filter(k => toBuild.has(k))) {
   const kjv = (await bookText(id)).KJV[ch];
   const extras = await bookExtras(id);
   const last = kjv.at(-1).number;
-  const setting = extras.setting.map(s => ({ category: 'context', label: `${s.kind}: ${s.sentence}`, start: 1, end: last, status: 'SETTLED', source: 'uw-tn', witnesses: 1, detail: s.detail }));
+  const setting = extras.setting.map(s => ({ category: 'context', label: `${s.kind}, according to unfoldingWord: ${s.sentence}`, start: 1, end: last, status: 'SINGLE_PROPOSAL', source: 'uw-tn', witnesses: 1, detail: s.detail }));
   const poetry = [...(acrostic[id]?.[ch] || []), ...(extras.lines[ch] || []), ...(notes.poetry[ch] || [])];
-  const history = [...setting, ...(dated[id]?.[ch] || [])];
+  // v0.32: one source's authorship, dates and chronology are views, never settled.
+  const said = statements.filter(x => x.layer === 'history' && x.book === id && x.ch === ch).map(x => ({ category: x.category, label: x.label, start: 1, end: last, status: 'SETTLED', source: x.source, witnesses: 1, detail: x.detail, statement: 'text' }));
+  const history = [...said, ...setting, ...(dated[id]?.[ch] || []).map(t => ({ ...t, status: 'SINGLE_PROPOSAL' }))];
   const generated = {
     // v0.22: "Figures & images" holds both rhetorical figures and metaphor/image families, and
     // "Ways of reading" (id genre) holds both the kind of writing and how it refers (former Mode).

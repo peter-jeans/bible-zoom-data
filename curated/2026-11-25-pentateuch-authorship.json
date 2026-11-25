@@ -1,0 +1,135 @@
+{
+  "batch": "2026-11-25-pentateuch-authorship",
+  "drafted": "2026-11-25",
+  "curated_by": "Owner-approved curation, drafted by Claude (Claude Code) from general knowledge; citations not checked against the books. Owner review pending.",
+  "note": "Curated, sourced readings (not AI). Options are equal and unranked.",
+  "groups": [
+    {
+      "layer": "history",
+      "group": "who-wrote-pentateuch",
+      "title": "Who wrote the Pentateuch?",
+      "passages": [
+        [
+          "GEN",
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          "EXO",
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          "LEV",
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          "NUM",
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          "DEU",
+          1,
+          1,
+          1,
+          0
+        ]
+      ],
+      "options": [
+        {
+          "category": "context",
+          "label": "Moses wrote it, as tradition holds",
+          "source": "archer-survey",
+          "detail": "The long-standing Jewish and Christian view: Moses wrote the five books, apart from small later notes such as his death. Gleason Archer defends it. Owner review pending."
+        },
+        {
+          "category": "context",
+          "label": "Moses used earlier sources; later editors added to it",
+          "source": "garrett-genesis",
+          "detail": "Duane Garrett argues that Moses drew on older sources and that the books were edited after him. Owner review pending."
+        },
+        {
+          "category": "context",
+          "label": "Four written sources combined over time",
+          "source": "wellhausen-prolegomena",
+          "detail": "The documentary hypothesis, classically stated by Julius Wellhausen: separate documents (J, E, D, P) were joined by editors. Owner review pending."
+        },
+        {
+          "category": "context",
+          "label": "Separate sources, joined once by a compiler",
+          "source": "baden-composition",
+          "detail": "Joel Baden’s renewed form of the documentary hypothesis: independent sources were combined by a single compiler. Owner review pending."
+        },
+        {
+          "category": "context",
+          "label": "A core text, expanded in stages",
+          "source": "vanseters-pentateuch",
+          "detail": "The supplementary view, argued by John Van Seters: later writers extended an earlier work. Owner review pending."
+        },
+        {
+          "category": "context",
+          "label": "Independent blocks of tradition, joined late",
+          "source": "rendtorff-problem",
+          "detail": "Rolf Rendtorff argues that larger units (such as the ancestors and the exodus) grew separately before being joined. Owner review pending."
+        }
+      ]
+    }
+  ],
+  "statements": [
+    {
+      "layer": "history",
+      "book": "GEN",
+      "ch": 1,
+      "category": "context",
+      "label": "What the text says: Genesis does not name its writer",
+      "source": "KJV",
+      "detail": "Genesis itself does not say who wrote it."
+    },
+    {
+      "layer": "history",
+      "book": "EXO",
+      "ch": 1,
+      "category": "context",
+      "label": "What the text says: Moses wrote some parts",
+      "source": "KJV",
+      "detail": "Exodus says that Moses wrote down certain things, such as the LORD’s words at Sinai (Exodus 24:4). It does not say who wrote the whole book."
+    },
+    {
+      "layer": "history",
+      "book": "LEV",
+      "ch": 1,
+      "category": "context",
+      "label": "What the text says: Leviticus does not name its writer",
+      "source": "KJV",
+      "detail": "Leviticus reports words the LORD spoke to Moses. It does not say who wrote the book."
+    },
+    {
+      "layer": "history",
+      "book": "NUM",
+      "ch": 1,
+      "category": "context",
+      "label": "What the text says: Moses wrote some parts",
+      "source": "KJV",
+      "detail": "Numbers says that Moses wrote down the stages of the journey (Numbers 33:2). It does not say who wrote the whole book."
+    },
+    {
+      "layer": "history",
+      "book": "DEU",
+      "ch": 1,
+      "category": "context",
+      "label": "What the text says: Moses wrote “this law”",
+      "source": "KJV",
+      "detail": "Deuteronomy says that Moses wrote “this law” (Deuteronomy 31:9). The book also reports Moses’ death (Deuteronomy 34)."
+    }
+  ]
+}
