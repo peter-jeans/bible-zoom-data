@@ -1,17 +1,191 @@
 {
-  "version": 1,
-  "passage": { "book": "GEN", "ch": 1, "verse": 1 },
-  "about": "Intro walkthrough (spec v0.11 §6.5). Steps target data-tour attributes in the reader; a missing target shows a centred caption. Edit wording here; no code change needed.",
+  "version": 2,
+  "about": "Intro walkthrough (spec v0.31 §6.5). Steps target data-tour attributes; a missing or hidden target shows a centred caption. Edit wording here; no code change needed.",
   "steps": [
-    { "id": "welcome", "target": null, "view": { "book": "GEN", "ch": 1, "verse": 1, "zoom": 3, "layers": "genre,structure,figures,imagery", "fold": "-" }, "title": "Welcome to Bible Zoom", "text": "Bible Zoom shows the layers of meaning around the text: how it is written, what it refers to, and how it has been read. Let’s explore the six days of creation in Genesis 1." },
-    { "id": "navigate", "target": "navigate", "view": { "zoom": 2 }, "title": "Move around the Bible", "text": "Choose a book and chapter, or type a reference like “John 3:16”. Zoom from the whole Bible down to single words. At Chapter zoom the layers show as colour only." },
-    { "id": "zoom", "target": "zoom", "view": { "zoom": 3 }, "title": "Zoom in for detail", "text": "At Section zoom the coloured bands get labels. Go further to Verse or Sentence to see every word." },
-    { "id": "layers", "target": "layers", "title": "Choose your layers", "text": "Layers above the text are interpretive: genre, structure, metaphor, modes of reading. Layers below are evidence about the words themselves: names, grammar, the original Hebrew and Greek. Tick any layer on or off." },
-    { "id": "readings", "target": "genre-band", "title": "One chapter, several readings", "text": "Scholars read Genesis 1 in different ways: {genre}. Bible Zoom shows them side by side in a striped band, never ranked." },
-    { "id": "card", "target": "reading-guide", "action": "open-genre", "title": "Open any band", "text": "Every band opens a card. “What this means for reading” explains the layer and each reading, and every reading names who holds it." },
-    { "id": "structure", "target": "structure-stave", "action": "close-card", "title": "See the pattern", "text": "The structure layer shows the days one to seven. Some readings of the chapter build on exactly this pattern." },
-    { "id": "ask", "target": "ask-bubble", "action": "ask-select", "title": "Ask about any words", "text": "Select words, like “And God said”, and the Ask bubble opens about them. Send it to your own ChatGPT or Claude, or run a model on this device. Nothing is sent until you press a button." },
-    { "id": "notes", "target": "my-layers", "action": "close-ask", "title": "Keep your own notes", "text": "Add your own layers, tags and notes to any passage, and share them with friends. Notes need a free account." },
-    { "id": "done", "target": "help", "title": "Find it all again", "text": "Everything you write is gathered in My notes, in the account menu. Replay this tour any time from the ? button. Enjoy exploring!" }
+    {
+      "id": "welcome",
+      "target": null,
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 3
+      },
+      "title": "Welcome to Bible Zoom",
+      "text": "See the layers around the text: how it is written, the world it comes from, and how people read it. Let’s explore Genesis 1."
+    },
+    {
+      "id": "navigate",
+      "target": "navigate",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 3
+      },
+      "title": "Move around the Bible",
+      "text": "Choose a book, chapter and verse, or type a reference like “John 3:16”."
+    },
+    {
+      "id": "zoom",
+      "target": "zoom",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 3
+      },
+      "title": "Zoom in and out",
+      "text": "Go from the whole Bible down to single words. Section shows labelled bands; Sentence shows every word, with its Hebrew or Greek."
+    },
+    {
+      "id": "size",
+      "target": "canvas-head",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "title": "Text size and Bible version",
+      "text": "Make the text larger or smaller here. Click the version, such as KJV, to switch to another Bible."
+    },
+    {
+      "id": "views",
+      "target": "views",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "title": "Choose a view",
+      "text": "One tap shows a ready-made set of layers. Tick your own and choose “Save as my view…” to keep them."
+    },
+    {
+      "id": "layers",
+      "target": "layers",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "title": "Or choose each layer",
+      "text": "Layers are grouped by question: how people read it, the world of the text, and how it’s written. Below the text are the original words and grammar. On a phone, open the panel with the Layers button."
+    },
+    {
+      "id": "glance",
+      "target": "glance",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 2
+      },
+      "title": "At a glance",
+      "text": "At Book and Chapter zoom, this card sums up the passage: its outline, people, places, themes, and where readers disagree."
+    },
+    {
+      "id": "readings",
+      "target": "genre-band",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "title": "Several readings, side by side",
+      "text": "Where readers disagree, each row names its question ({sets}) and shows every reading in its own colour. None is ranked."
+    },
+    {
+      "id": "card",
+      "target": "reading-guide",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "action": "open-genre",
+      "title": "Open any band",
+      "text": "A band opens to show what the layer means, each reading beside its colour, and who holds it. AI suggestions are always labelled."
+    },
+    {
+      "id": "highlight",
+      "target": "hl-toolbar",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "action": "hl-select",
+      "title": "Highlight and add a note",
+      "text": "Click a word, then another, or drag. Type a note if you like, then tap a colour: one tap saves both. You can rename the colours. Highlights need a free account. The tour saves nothing."
+    },
+    {
+      "id": "ask",
+      "target": "ask-bubble",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "action": "hl-ask",
+      "title": "Ask AI about those words",
+      "text": "The sparkle button asks about the words you selected. Use your own ChatGPT or Claude, or a model on this device. Nothing is sent until you press a button."
+    },
+    {
+      "id": "notes",
+      "target": "account",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "title": "Keep, print and back up your notes",
+      "text": "My notes, in the account menu, gathers everything you write. Print it, save a PDF, or download a backup you can restore later."
+    },
+    {
+      "id": "done",
+      "target": "share",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "title": "Share, and tell us what you think",
+      "text": "Share Bible Zoom or this passage from here. To report a problem or an idea, use Send feedback at the bottom of the page. Replay this tour any time from the ? button."
+    }
   ]
 }

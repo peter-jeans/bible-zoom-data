@@ -1,0 +1,106 @@
+{
+  "version": 2,
+  "about": "What’s new (spec v0.31): offered once to readers who saw the earlier tour.",
+  "steps": [
+    {
+      "id": "size",
+      "target": "canvas-head",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "title": "Text size and Bible version",
+      "text": "Make the text larger or smaller here. Click the version, such as KJV, to switch to another Bible."
+    },
+    {
+      "id": "views",
+      "target": "views",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "title": "Choose a view",
+      "text": "One tap shows a ready-made set of layers. Tick your own and choose “Save as my view…” to keep them."
+    },
+    {
+      "id": "glance",
+      "target": "glance",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 2
+      },
+      "title": "At a glance",
+      "text": "At Book and Chapter zoom, this card sums up the passage: its outline, people, places, themes, and where readers disagree."
+    },
+    {
+      "id": "highlight",
+      "target": "hl-toolbar",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "action": "hl-select",
+      "title": "Highlight and add a note",
+      "text": "Click a word, then another, or drag. Type a note if you like, then tap a colour: one tap saves both. You can rename the colours. Highlights need a free account. The tour saves nothing."
+    },
+    {
+      "id": "ask",
+      "target": "ask-bubble",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "action": "hl-ask",
+      "title": "Ask AI about those words",
+      "text": "The sparkle button asks about the words you selected. Use your own ChatGPT or Claude, or a model on this device. Nothing is sent until you press a button."
+    },
+    {
+      "id": "notes",
+      "target": "account",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "title": "Keep, print and back up your notes",
+      "text": "My notes, in the account menu, gathers everything you write. Print it, save a PDF, or download a backup you can restore later."
+    },
+    {
+      "id": "done",
+      "target": "share",
+      "view": {
+        "book": "GEN",
+        "ch": 1,
+        "verse": 1,
+        "layers": "genre,structure",
+        "fold": "-",
+        "zoom": 4
+      },
+      "title": "Share, and tell us what you think",
+      "text": "Share Bible Zoom or this passage from here. To report a problem or an idea, use Send feedback at the bottom of the page. Replay this tour any time from the ? button."
+    }
+  ]
+}
