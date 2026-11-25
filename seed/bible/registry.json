@@ -1,5 +1,5 @@
 {
-  "version": 12,
+  "version": 13,
   "layers": [
     {
       "id": "genre",
@@ -208,23 +208,23 @@
       }
     },
     {
-      "id": "reception",
-      "name": "Reception",
+      "id": "intertext",
+      "name": "Intertext",
       "side": "above",
-      "description": "Tradition & commentary",
+      "description": "Cross-references most voted by readers (OpenBible.info)",
       "group": "Interpretation",
       "categories": [
         {
-          "id": "tradition",
-          "label": "tradition",
-          "color": "#84619a",
-          "darkColor": "#d0c3d9",
-          "about": "A reading from the history of interpretation.",
-          "implications": "Shows how one tradition understood the passage."
+          "id": "echo",
+          "label": "cross-reference",
+          "color": "#6f699c",
+          "darkColor": "#c8c6d9",
+          "about": "A cross-reference that readers have found helpful (OpenBible votes).",
+          "implications": "Follow it to compare wording and context."
         }
       ],
-      "about": "How the passage has been read, preached, sung and pictured through history.",
-      "implications": "Shows that readings have a history: the same words have meant different things to different communities. It helps separate what the text says from what later tradition made of it."
+      "about": "Other passages this one quotes, echoes or is commonly linked with.",
+      "implications": "Scripture often interprets scripture. Following a link can show where an image or phrase comes from and how its meaning grows or shifts."
     },
     {
       "id": "typology",
@@ -250,23 +250,23 @@
       "caution": "Typology is an interpretive reading, mainly Christian, not a statement in the text itself."
     },
     {
-      "id": "intertext",
-      "name": "Intertext",
+      "id": "reception",
+      "name": "Reception",
       "side": "above",
-      "description": "Cross-references most voted by readers (OpenBible.info)",
+      "description": "Tradition & commentary",
       "group": "Interpretation",
       "categories": [
         {
-          "id": "echo",
-          "label": "cross-reference",
-          "color": "#6f699c",
-          "darkColor": "#c8c6d9",
-          "about": "A cross-reference that readers have found helpful (OpenBible votes).",
-          "implications": "Follow it to compare wording and context."
+          "id": "tradition",
+          "label": "tradition",
+          "color": "#84619a",
+          "darkColor": "#d0c3d9",
+          "about": "A reading from the history of interpretation.",
+          "implications": "Shows how one tradition understood the passage."
         }
       ],
-      "about": "Other passages this one quotes, echoes or is commonly linked with.",
-      "implications": "Scripture often interprets scripture. Following a link can show where an image or phrase comes from and how its meaning grows or shifts."
+      "about": "How the passage has been read, preached, sung and pictured through history.",
+      "implications": "Shows that readings have a history: the same words have meant different things to different communities. It helps separate what the text says from what later tradition made of it."
     },
     {
       "id": "history",
@@ -573,8 +573,7 @@
         "instruction": "Identify passages that match a form in the vocabulary. Label each tag with the exact vocabulary term."
       },
       "about": "The shape you can see in the text: a family tree, a lament, a parable, a law… Each passage belongs to a family (narrative, poetry, law, wisdom, prophecy, apocalyptic, letter), and often to a specific form within it.",
-      "implications": "Forms follow conventions. Knowing the form tells you which features are standard and which stand out, which is often where the meaning is.",
-      "subgroup": "What kind of text"
+      "implications": "Forms follow conventions. Knowing the form tells you which features are standard and which stand out, which is often where the meaning is."
     },
     {
       "id": "structure",
@@ -1628,7 +1627,7 @@
       "id": "Literature",
       "name": "How it’s written",
       "description": "What you can see in the writing itself: its form, how it is built, who is speaking, its sound, its pictures and its themes.",
-      "collapsed": true,
+      "collapsed": false,
       "summary": [
         "form"
       ],
