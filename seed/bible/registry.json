@@ -1,8 +1,9 @@
 {
-  "version": 15,
+  "version": 16,
   "layers": [
     {
       "id": "genre",
+      "source_note": "unfoldingWord Translation Notes; the scholars named on each reading; AI suggestions (unreviewed)",
       "name": "Ways of reading",
       "side": "above",
       "description": "How people take this passage: as history, origin story, symbol, worship… Where readers disagree, every reading is shown with who holds it.",
@@ -238,6 +239,7 @@
     },
     {
       "id": "intertext",
+      "source_note": "OpenBible.info cross-references (reader-voted)",
       "name": "Intertext",
       "side": "above",
       "description": "Cross-references most voted by readers (OpenBible.info)",
@@ -260,6 +262,7 @@
     },
     {
       "id": "typology",
+      "source_note": "AI suggestions (unreviewed)",
       "name": "Typology",
       "side": "above",
       "description": "Type and antitype",
@@ -286,6 +289,7 @@
     },
     {
       "id": "reception",
+      "source_note": "Matthew Henry, Commentary on the Whole Bible",
       "name": "Reception",
       "side": "above",
       "description": "Tradition & commentary",
@@ -308,6 +312,7 @@
     },
     {
       "id": "history",
+      "source_note": "unfoldingWord; Theographic (traditional chronology); the scholars named on each view",
       "name": "Historical setting",
       "side": "above",
       "description": "Authorship, date and dated events (unfoldingWord; Theographic traditional chronology)",
@@ -338,6 +343,7 @@
     },
     {
       "id": "places",
+      "source_note": "OpenBible.info geocoding; photos from Wikimedia Commons",
       "name": "Places",
       "side": "above",
       "description": "Sites and geographic candidates",
@@ -360,6 +366,7 @@
     },
     {
       "id": "nature",
+      "source_note": "Bible Zoom word lists; photos from Wikimedia Commons",
       "name": "Nature",
       "side": "above",
       "description": "Plants and animals",
@@ -422,6 +429,7 @@
     },
     {
       "id": "objects",
+      "source_note": "Bible Zoom word lists; photos from Wikimedia Commons",
       "name": "Objects & daily life",
       "side": "above",
       "description": "Objects and practices",
@@ -514,6 +522,7 @@
     },
     {
       "id": "form",
+      "source_note": "Bible Zoom form and genre tables; unfoldingWord Translation Notes; AI suggestions (unreviewed)",
       "name": "Form (story, poem, law…)",
       "side": "above",
       "description": "The shape you can see in the text: a family tree, a lament, a parable, a law… Coloured by family (narrative, poetry, law…), labelled with the exact shape.",
@@ -642,6 +651,7 @@
     },
     {
       "id": "structure",
+      "source_note": "unfoldingWord book introductions; AI suggestions (unreviewed)",
       "name": "Outline",
       "side": "above",
       "description": "Book outlines and sections (unfoldingWord book introductions)",
@@ -677,6 +687,7 @@
     },
     {
       "id": "voice",
+      "source_note": "unfoldingWord Translation Notes; World English Bible quotation marks; Bible Zoom rules",
       "name": "Who is speaking",
       "side": "above",
       "description": "Narrator and direct speech: who is speaking, quotations and asides",
@@ -755,6 +766,7 @@
     },
     {
       "id": "poetry",
+      "source_note": "unfoldingWord Translation Notes; World English Bible line layout; Bible Zoom acrostic table",
       "name": "Poetry & sound",
       "side": "above",
       "description": "Poetic lines, acrostics and parallelism",
@@ -800,6 +812,7 @@
     },
     {
       "id": "figures",
+      "source_note": "unfoldingWord Translation Notes; AI suggestions (unreviewed)",
       "name": "Figures & images",
       "side": "above",
       "description": "Figures of speech and the pictures a writer uses: metaphor, simile, exaggeration, rhetorical questions…",
@@ -1020,6 +1033,7 @@
     },
     {
       "id": "themes",
+      "source_note": "Nave’s Topical Bible",
       "name": "Themes",
       "side": "above",
       "description": "Topics from Nave’s Topical Bible",
@@ -1043,6 +1057,7 @@
     },
     {
       "id": "translation",
+      "source_note": "King James Version and World English Bible, compared by rule",
       "name": "Translation lens",
       "side": "centre",
       "description": "English translation choices",
@@ -1065,6 +1080,7 @@
     },
     {
       "id": "names",
+      "source_note": "Theographic Bible Metadata; speakers found by rule",
       "name": "Names",
       "side": "below",
       "description": "People named in each verse (Theographic) and speakers found by rule",
@@ -1110,6 +1126,7 @@
     },
     {
       "id": "grammar",
+      "source_note": "STEPBible TAHOT (Tyndale House, Cambridge)",
       "name": "Grammar",
       "side": "below",
       "description": "Morphology and parsing",
@@ -1132,6 +1149,7 @@
     },
     {
       "id": "concordance",
+      "source_note": "King James Version with Strong’s numbers (eBible.org)",
       "name": "Concordance",
       "side": "below",
       "description": "Occurrences in the aligned corpus",
@@ -1154,6 +1172,7 @@
     },
     {
       "id": "original",
+      "source_note": "STEPBible TAHOT (Tyndale House, Cambridge)",
       "name": "Original words",
       "side": "below",
       "description": "Original-language lemmas and Strong’s numbers",
@@ -1176,6 +1195,7 @@
     },
     {
       "id": "manuscripts",
+      "source_note": "STEPBible TAHOT variant notes (Tyndale House, Cambridge)",
       "name": "Manuscripts",
       "side": "below",
       "description": "Variants and textual witnesses",
