@@ -1,5 +1,5 @@
 {
-  "version": 14,
+  "version": 15,
   "layers": [
     {
       "id": "genre",
@@ -790,7 +790,7 @@
       "subgroup": "How it’s built",
       "ai_suggest": {
         "trial": true,
-        "instruction": "Identify parallelism and poetic lines the existing tags miss. Tag acrostics only where they are well established in the Hebrew text."
+        "instruction": "Tag only verses that are poetry: psalms, songs, hymns, wisdom sayings, prophetic oracles in verse and poems quoted inside a story. Prose is not poetry, even when its phrases repeat or balance: return no tags for narrative, law, ritual instructions, genealogies, lists, speeches in prose or letters. If the chapter has no poetry, return an empty list. Within poetry, identify parallelism and poetic lines the existing tags miss. Tag acrostics only where they are well established in the Hebrew text."
       },
       "filled_by": [
         "open sources",
