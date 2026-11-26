@@ -39,7 +39,7 @@ assert(sources.some(s=>s.id==='stepbible-tagnt'&&s.license==='CC BY 4.0'),'TAGNT
 {const {stem}=await import('./lib/search.mjs');for(const [w,x] of Object.entries({love:'lov',loved:'lov',loveth:'lov',loving:'lov',lovest:'lov',loves:'lov',cities:'city',goes:'goe',grass:'grass',God:'god',"Israel's":'israel'}))assert(stem(w)===x,`Search stem changed for ${w}: ${stem(w)} (the app expects ${x})`);}
 // Spec v0.35: the search index exists for both translations, Strong's numbers, lemmas and names.
 {const meta=await file('search/meta');assert(meta.verses>31000&&meta.books.length===66,'Search meta incomplete');
-for(const tr of ['KJV','WEB']){const w=await file(`search/${tr}/w/lov`);assert(w.forms&&Object.keys(w.forms).length>=3&&w.v.length,`Search: love forms missing in ${tr}`);const t=await file(`search/${tr}/text/JHN`);assert(t[3]?.[15]?.toLowerCase().includes('loved'),`Search text for John missing in ${tr}`);}
+for(const tr of ['KJV','WEB']){const w=await file(`search/${tr}/w/lov`);assert(w.forms&&Object.keys(w.forms).length>=3&&w.v.length,`Search: love forms missing in ${tr}`);const t=await file(`search/${tr}/text/JHN/3`);assert(t[15]?.toLowerCase().includes('loved'),`Search text for John missing in ${tr}`);}
 const g=await file('search/strong/G26'),h=await file('search/strong/H430');assert(g.KJV.length&&h.KJV.length&&h.WEB.length,"Search: Strong's verses missing");
 const a=await file('search/lemma/a');assert(a.some(r=>r[0]==='G26'&&r[2]==='agape'),'Search: lemma agape missing');
 const j=await file('search/names/j');assert(j.some(r=>r[0]==='Jesus'&&r[1]==='person')&&j.some(r=>r[0]==='Jerusalem'&&r[1]==='place'),'Search: names Jesus/Jerusalem missing');}

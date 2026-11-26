@@ -1,7 +1,7 @@
 // Search index (spec v0.35). Static files, split so one search loads only what it needs:
 //   search/meta.json                  books, verses per chapter (to turn a verse number into a reference)
 //   search/<TR>/w/<stem>.json         a word in one translation: its forms with counts, and the verses
-//   search/<TR>/text/<BOOK>.json      plain verse text of one book, to check exact phrases
+//   search/<TR>/text/<BOOK>/<ch>.json plain verse text of one chapter, to check phrases and show results
 //   search/strong/<G26>.json          verses where a Strong's number is translated (KJV and WEB)
 //   search/lemma/<letter>.json        Hebrew and Greek lemmas, their transliteration, gloss and Strong's
 //   search/names/<letter>.json        people and places by name, and the verses that name them
@@ -52,7 +52,6 @@ export async function buildSearchIndex(out, books) {
   for (const tr of ['KJV', 'WEB']) {
     const stems = new Map();
     for (const b of books) {
-      const text = {};
       for (let ch = 1; ch <= b.chapters; ch++) {
         const f = join(out, 'text', tr, b.id, `${ch}.json`);
         if (!existsSync(f)) continue;
@@ -71,9 +70,8 @@ export async function buildSearchIndex(out, books) {
             if (w.strong) { const k = w.strong.replace(/^([HG])0*/, '$1'); if (w.lemma && !lexInfo.has(k)) lexInfo.set(k, [w.lemma, '', w.gloss || '']); if (!strongs.has(k)) strongs.set(k, { KJV: [], WEB: [] }); strongs.get(k)[tr].push(at); }
           }
         }
-        text[ch] = rows;
+        await json(join(dir, tr, 'text', b.id, `${ch}.json`), rows);
       }
-      await json(join(dir, tr, 'text', `${b.id}.json`), text);
     }
     for (const [s, e] of stems) await json(join(dir, tr, 'w', `${safe(s)}.json`), { forms: e.forms, v: pack(e.v) });
     counts[tr] = stems.size;
