@@ -35,6 +35,8 @@ const jn=await file('layers/original/JHN/3');assert(jn.some(t=>t.start===16&&t.l
 for(const [b,c,v] of [['MRK',16,9],['JHN',8,1],['1JN',5,7],['ACT',8,37]]){const tags=await file(`layers/manuscripts/${b}/${c}`);const t=tags.find(x=>x.start===v&&x.category==='variant');assert(t&&/ is in .*; not in /.test(t.detail),`Edition difference missing at ${b} ${c}:${v}`);}
 const agape=await file('library/lexicon/G26');assert(agape.greek?.lemma==='ἀγάπη'&&agape.greek.na28>100,'Greek lemma missing for G26');
 assert(sources.some(s=>s.id==='stepbible-tagnt'&&s.license==='CC BY 4.0'),'TAGNT source entry missing');}
+// Spec v0.35: word stems must match the app's (src/lib/searchCore.js, tests/search.test.mjs).
+{const {stem}=await import('./lib/search.mjs');for(const [w,x] of Object.entries({love:'lov',loved:'lov',loveth:'lov',loving:'lov',lovest:'lov',loves:'lov',cities:'city',goes:'goe',grass:'grass',God:'god',"Israel's":'israel'}))assert(stem(w)===x,`Search stem changed for ${w}: ${stem(w)} (the app expects ${x})`);}
 // Spec v0.35: the search index exists for both translations, Strong's numbers, lemmas and names.
 {const meta=await file('search/meta');assert(meta.verses>31000&&meta.books.length===66,'Search meta incomplete');
 for(const tr of ['KJV','WEB']){const w=await file(`search/${tr}/w/lov`);assert(w.forms&&Object.keys(w.forms).length>=3&&w.v.length,`Search: love forms missing in ${tr}`);const t=await file(`search/${tr}/text/JHN`);assert(t[3]?.[15]?.toLowerCase().includes('loved'),`Search text for John missing in ${tr}`);}
