@@ -105,3 +105,122 @@ export function manuscriptTags(tahot) {
     };
   });
 }
+
+// ---- Greek New Testament (spec v0.35): STEPBible TAGNT (Translators Amalgamated Greek NT, Tyndale
+// House Cambridge / STEPBible.org, CC BY 4.0), the companion to TAHOT in the same format. Each word
+// lists the printed editions that contain it, so edition differences become the NT Manuscripts layer.
+export const EDITIONS = {
+  NA28: 'Nestle-Aland 28th edition (2012)', NA27: 'Nestle-Aland 27th edition (1993)', Tyn: 'Tyndale House Greek NT (2017)',
+  SBL: 'SBL Greek NT (2010)', WH: 'Westcott and Hort (1881)', Treg: 'Tregelles (1857–72)', TR: 'Textus Receptus (behind the KJV)', Byz: 'Byzantine text (Robinson-Pierpont)',
+};
+const ALL_EDITIONS = Object.keys(EDITIONS);
+export const greekStrong = s => { const m = /G0*(\d+)/.exec(s || ''); return m ? `G${m[1]}` : ''; };
+
+// Returns { verses: Map("BOOK|ch|v" -> words[]) }. A word: { n, type, greek, translit, gloss, strong,
+// morph, lemma, lemmaGloss, editions[] }. Uppercase letters in the type (N, K, O) mark editions groups
+// whose wording differs in meaning; lowercase ones only in spelling.
+export async function loadTagnt(files, books) {
+  const ids = new Set(books.map(b => b.id));
+  const verses = new Map();
+  for (const file of files) {
+    for (const line of (await readFile(file, 'utf8')).normalize('NFC').split('\n')) {
+      const m = /^([1-3]?[A-Za-z]+)\.(\d+)\.(\d+)(?:\([^)]*\))?#(\d+)=([A-Za-z]*)\t([^\t]*)\t([^\t]*)\t([^\t]*)\t([^\t]*)\t([^\t]*)/.exec(line);
+      if (!m) continue;
+      const id = m[1].toUpperCase();
+      if (!ids.has(id)) continue;
+      const key = `${id}|${+m[2]}|${+m[3]}`;
+      const g = /^(.*?)\s*\(([^)]*)\)\s*$/.exec(m[6].trim()) || [null, m[6].trim(), ''];
+      const [sm, morph = ''] = m[8].split('=');
+      const [lemma = '', lemmaGloss = ''] = m[9].split('=');
+      const word = {
+        n: +m[4], type: m[5], greek: g[1].trim(), translit: g[2].trim(), gloss: m[7].replace(/\s+/g, ' ').trim().replace(/[,.;:·]+$/, ''),
+        strong: greekStrong(sm), morph: morph.trim(), lemma: lemma.split(',').pop().trim(), lemmaGloss: lemmaGloss.trim(),
+        editions: m[10].split('+').map(s => s.trim()).filter(e => ALL_EDITIONS.includes(e)),
+      };
+      if (!verses.has(key)) verses.set(key, []);
+      verses.get(key).push(word);
+    }
+  }
+  return { verses };
+}
+
+// Words of the modern critical text (NA28); verses found only in other editions fall back to those.
+const mainText = words => { const na = words.filter(w => w.editions.includes('NA28')); return na.length ? na : words; };
+const plain = s => s.replace(/\[\[|\]\]|[[\]]/g, '').replace(/\s+/g, ' ').trim();
+
+export function greekOriginalTags(tagnt) {
+  return byChapter(tagnt.verses, (all, v) => {
+    const words = mainText(all);
+    const greek = plain(words.map(w => w.greek).join(' '));
+    if (!greek) return null;
+    return {
+      category: 'lemma', label: greek, start: v, end: v, status: 'SETTLED', source: 'stepbible-tagnt', witnesses: 1, dir: 'ltr', language: 'Greek',
+      detail: words.map(w => `${plain(w.translit)} (${w.gloss || '—'}${w.strong ? `, ${w.strong}` : ''})`).join(' · '),
+    };
+  });
+}
+
+// Robinson morphology codes (as used by TAGNT) in plain words: "V-AAI-3S" -> "verb, aorist active indicative, 3rd singular".
+const TENSE = { P: 'present', I: 'imperfect', F: 'future', A: 'aorist', R: 'perfect', L: 'pluperfect', '2A': 'second aorist', '2R': 'second perfect', '2F': 'second future', '2L': 'second pluperfect' };
+const VOICE = { A: 'active', M: 'middle', P: 'passive', E: 'middle or passive', D: 'middle deponent', O: 'passive deponent', N: 'middle or passive deponent', Q: 'impersonal active', X: 'no voice' };
+const MOOD = { I: 'indicative', S: 'subjunctive', O: 'optative', M: 'imperative', N: 'infinitive', P: 'participle', R: 'imperative participle' };
+const CASE = { N: 'nominative', G: 'genitive', D: 'dative', A: 'accusative', V: 'vocative' };
+const NUM = { S: 'singular', P: 'plural' };
+const GEN = { M: 'masculine', F: 'feminine', N: 'neuter' };
+const POS = { N: 'noun', A: 'adjective', T: 'article', P: 'personal pronoun', R: 'relative pronoun', C: 'reciprocal pronoun', D: 'demonstrative pronoun', K: 'correlative pronoun', I: 'interrogative pronoun', X: 'indefinite pronoun', Q: 'correlative or interrogative pronoun', F: 'reflexive pronoun', S: 'possessive pronoun', ADV: 'adverb', CONJ: 'conjunction', COND: 'conditional', PRT: 'particle', PREP: 'preposition', INJ: 'interjection', ARAM: 'Aramaic word', HEB: 'Hebrew word', 'N-PRI': 'proper noun', 'A-NUI': 'number', 'N-LI': 'letter', 'N-OI': 'noun (indeclinable)' };
+const caseNumGen = s => { const m = /^([NGDAV])([SP])([MFN])?/.exec(s || ''); return m ? [CASE[m[1]], NUM[m[2]], GEN[m[3]]].filter(Boolean).join(' ') : ''; };
+export function parseGreek(code) {
+  if (!code) return null;
+  if (/\+/.test(code)) { const first = parseGreek(code.split('+')[0].trim()); return { pos: 'combined word', text: `two words written as one${first ? ` (${first.text} + another)` : ''}` }; }
+  if (POS[code]) return { pos: POS[code], text: POS[code] };
+  const parts = code.split('-');
+  if (parts[0] === 'V') {
+    const t = /^(2?[PIFARL])([AMPEDONQX])([ISONMPR])$/.exec(parts[1] || '');
+    if (!t) return { pos: 'verb', text: 'verb' };
+    const rest = parts[2] || '';
+    const person = /^([123])([SP])$/.exec(rest);
+    const tail = person ? `${person[1] === '1' ? '1st' : person[1] === '2' ? '2nd' : '3rd'} ${NUM[person[2]]}` : caseNumGen(rest);
+    return { pos: 'verb', verb: true, text: `verb, ${TENSE[t[1]]} ${VOICE[t[2]]} ${MOOD[t[3]]}${tail ? `, ${tail}` : ''}` };
+  }
+  const pos = POS[parts[0]] || POS[`${parts[0]}-${parts[1]}`];
+  if (!pos) return { pos: code, text: code };
+  const cng = caseNumGen(parts[1]);
+  return { pos, text: cng ? `${pos}, ${cng}` : pos };
+}
+
+export function greekGrammarTags(tagnt) {
+  return byChapter(tagnt.verses, (all, v) => {
+    const words = mainText(all).map(w => ({ w, p: parseGreek(w.morph) })).filter(x => x.p);
+    if (!words.length) return null;
+    const verbs = words.filter(x => x.p.verb);
+    const short = verbs.map(({ w, p }) => `${plain(w.translit)} ${p.text.replace(/^verb, /, '').split(',')[0]}`);
+    return {
+      category: 'morphology', label: verbs.length ? `${verbs.length} verb${verbs.length > 1 ? 's' : ''}: ${short.join(' · ')}` : `${words.length} words parsed`, start: v, end: v,
+      status: 'SETTLED', source: 'stepbible-tagnt', witnesses: 1,
+      detail: words.map(({ w, p }) => `${plain(w.translit)} “${w.gloss}”: ${p.text} (${w.morph})`).join('; '),
+    };
+  });
+}
+
+// Edition differences that change the wording (uppercase type letters), grouped by the set of
+// editions that contain them. Shown side by side, never ranked.
+const nameList = eds => eds.map(e => (e === 'TR' ? 'Textus Receptus' : e === 'Byz' ? 'Byzantine' : e === 'Treg' ? 'Tregelles' : e === 'WH' ? 'Westcott-Hort' : e === 'Tyn' ? 'Tyndale House' : e)).join(', ');
+export function greekVariantTags(tagnt) {
+  return byChapter(tagnt.verses, (words, v) => {
+    const differ = words.filter(w => /[NKO]/.test(w.type) && w.type !== 'NKO' && w.editions.length && w.editions.length < ALL_EDITIONS.length);
+    if (!differ.length) return null;
+    const groups = new Map();
+    for (const w of differ) { const k = w.editions.join('+'); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(w); }
+    const bracketed = words.some(w => /\[\[/.test(w.greek));
+    const parts = [...groups.entries()].map(([k, ws]) => {
+      const inn = k.split('+'), out = ALL_EDITIONS.filter(e => !inn.includes(e));
+      return { inn, out, greek: plain(ws.map(w => w.greek).join(' ')), english: ws.map(w => w.gloss).join(' ') };
+    });
+    const whole = differ.length === words.length;
+    return {
+      category: 'variant', start: v, end: v, status: 'SETTLED', source: 'stepbible-tagnt', witnesses: 1,
+      label: whole ? `Edition difference: this verse is in ${nameList(parts[0].inn)}, not in ${nameList(parts[0].out)}` : `Edition difference: ${parts.length} place${parts.length > 1 ? 's' : ''} where printed Greek texts differ`,
+      detail: `${parts.map(p => `“${p.english}” (${p.greek}) is in ${nameList(p.inn)}; not in ${nameList(p.out)}`).join('. ')}.${bracketed ? ' Double brackets [[ ]] in the editions mark words their editors judge to be a later addition, printed for its long use.' : ''} A printed edition is a scholar's text built from many handwritten manuscripts; editions differ where the manuscripts differ. They are listed here side by side, not ranked.`,
+    };
+  });
+}

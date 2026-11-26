@@ -1,5 +1,5 @@
 {
-  "version": 16,
+  "version": 17,
   "layers": [
     {
       "id": "genre",
@@ -1126,7 +1126,7 @@
     },
     {
       "id": "grammar",
-      "source_note": "STEPBible TAHOT (Tyndale House, Cambridge)",
+      "source_note": "STEPBible TAHOT (Hebrew) and TAGNT (Greek), Tyndale House, Cambridge",
       "name": "Grammar",
       "side": "below",
       "description": "Morphology and parsing",
@@ -1149,7 +1149,7 @@
     },
     {
       "id": "concordance",
-      "source_note": "King James Version with Strong’s numbers (eBible.org)",
+      "source_note": "King James Version with Strong’s numbers (eBible.org); Greek lemmas from STEPBible TAGNT",
       "name": "Concordance",
       "side": "below",
       "description": "Occurrences in the aligned corpus",
@@ -1172,7 +1172,7 @@
     },
     {
       "id": "original",
-      "source_note": "STEPBible TAHOT (Tyndale House, Cambridge)",
+      "source_note": "STEPBible TAHOT (Hebrew) and TAGNT (Greek), Tyndale House, Cambridge",
       "name": "Original words",
       "side": "below",
       "description": "Original-language lemmas and Strong’s numbers",
@@ -1195,7 +1195,7 @@
     },
     {
       "id": "manuscripts",
-      "source_note": "STEPBible TAHOT variant notes (Tyndale House, Cambridge)",
+      "source_note": "STEPBible TAHOT (Hebrew ketiv/qere) and TAGNT (Greek edition differences), Tyndale House, Cambridge",
       "name": "Manuscripts",
       "side": "below",
       "description": "Variants and textual witnesses",

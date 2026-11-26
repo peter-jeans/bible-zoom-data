@@ -28,4 +28,17 @@ for(const b of registry.books)if(Object.keys(coverage).some(k=>k.startsWith(`${b
 // rival site or a low score is marked supported, and each place lies in a real chapter.
 for(const b of registry.books){if(!Object.keys(coverage).some(k=>k.startsWith(`${b.id}/`)))continue;const g=await file(`geo/books/${b.id}`),bg=await file(`background/${b.id}`);assert(sources.some(s=>s.id===g.source),`Unknown map source: ${b.id}`);for(const p of g.places){assert(p.id&&p.name&&['supported','uncertain','unknown'].includes(p.status)&&Object.keys(p.ch).every(c=>+c>=1&&+c<=b.chapters),`Malformed place: ${b.id}/${p.name}`);assert((p.status==='unknown')===!p.sites.length&&p.sites.every(s=>Math.abs(s.x)<=180&&Math.abs(s.y)<=90),`Bad site: ${b.id}/${p.name}`);assert(p.status!=='supported'||(p.sites[0].score>=500&&!(p.sites[1]?.score>=p.sites[0].score*.5)),`Uncertain site marked supported: ${b.id}/${p.name}`);}assert(bg.book===b.id&&Array.isArray(bg.routes)&&bg.life.every(l=>l.items.every(i=>i.word&&i.count>0)),`Malformed background: ${b.id}`);}
 for(const id of ['natural-earth','easton','openbible-geo','theographic'])assert(sources.some(s=>s.id===id),`Background source missing: ${id}`);
+// Spec v0.35: the Greek New Testament. Every NT chapter has Greek words and grammar; the best-known edition
+// differences are marked, naming editions on both sides; the lexicon carries the Greek lemma.
+{const nt=registry.books.slice(39);assert(nt.length===27&&nt[0].id==='MAT','New Testament books not where expected');for(const b of nt)for(let ch=1;ch<=b.chapters;ch++){if(!coverage[`${b.id}/${ch}`])continue;for(const l of ['original','grammar'])assert(coverage[`${b.id}/${ch}`][l],`No Greek ${l} for ${b.id} ${ch}`);}
+const jn=await file('layers/original/JHN/3');assert(jn.some(t=>t.start===16&&t.language==='Greek'&&t.label.startsWith('οὕτως')&&t.source==='stepbible-tagnt'),'John 3:16 Greek missing');
+for(const [b,c,v] of [['MRK',16,9],['JHN',8,1],['1JN',5,7],['ACT',8,37]]){const tags=await file(`layers/manuscripts/${b}/${c}`);const t=tags.find(x=>x.start===v&&x.category==='variant');assert(t&&/ is in .*; not in /.test(t.detail),`Edition difference missing at ${b} ${c}:${v}`);}
+const agape=await file('library/lexicon/G26');assert(agape.greek?.lemma==='ἀγάπη'&&agape.greek.na28>100,'Greek lemma missing for G26');
+assert(sources.some(s=>s.id==='stepbible-tagnt'&&s.license==='CC BY 4.0'),'TAGNT source entry missing');}
+// Spec v0.35: the search index exists for both translations, Strong's numbers, lemmas and names.
+{const meta=await file('search/meta');assert(meta.verses>31000&&meta.books.length===66,'Search meta incomplete');
+for(const tr of ['KJV','WEB']){const w=await file(`search/${tr}/w/lov`);assert(w.forms&&Object.keys(w.forms).length>=3&&w.v.length,`Search: love forms missing in ${tr}`);const t=await file(`search/${tr}/text/JHN`);assert(t[3]?.[15]?.toLowerCase().includes('loved'),`Search text for John missing in ${tr}`);}
+const g=await file('search/strong/G26'),h=await file('search/strong/H430');assert(g.KJV.length&&h.KJV.length&&h.WEB.length,"Search: Strong's verses missing");
+const a=await file('search/lemma/a');assert(a.some(r=>r[0]==='G26'&&r[2]==='agape'),'Search: lemma agape missing');
+const j=await file('search/names/j');assert(j.some(r=>r[0]==='Jesus'&&r[1]==='person')&&j.some(r=>r[0]==='Jerusalem'&&r[1]==='place'),'Search: names Jesus/Jerusalem missing');}
 console.log(`${registry.books.length} books; ${Object.keys(coverage).length} built sample chapters; static release passed validation.`);

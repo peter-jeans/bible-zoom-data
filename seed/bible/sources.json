@@ -189,6 +189,16 @@
     "attribution": "Hebrew text, glosses and grammar from STEP Bible (www.STEPBible.org), TAHOT, CC BY 4.0. Reformatted by Bible Zoom."
   },
   {
+    "id": "stepbible-tagnt",
+    "title": "TAGNT: Translators Amalgamated Greek NT",
+    "author": "Tyndale House Cambridge / STEPBible.org",
+    "date": "2026",
+    "tradition": "Greek New Testament with morphology, glosses and the wording of eight printed editions (NA28, NA27, Tyndale House, SBL, Westcott-Hort, Tregelles, Textus Receptus, Byzantine)",
+    "license": "CC BY 4.0",
+    "url": "https://github.com/STEPBible/STEPBible-Data",
+    "attribution": "Greek text, glosses, grammar and edition differences from STEP Bible (www.STEPBible.org), TAGNT, CC BY 4.0. Reformatted by Bible Zoom."
+  },
+  {
     "id": "bz-world",
     "title": "Bible Zoom nature and daily-life word lists",
     "author": "Bible Zoom",

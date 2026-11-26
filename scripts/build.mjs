@@ -22,7 +22,8 @@ import { loadTheographic, names as nameTags, events as eventTags, bookSetting } 
 import { themes as themeTags } from './lib/themes.mjs';
 import { poeticLines, acrostics } from './lib/poetry.mjs';
 import { formsFor, formsFromNotes, voiceFromNotes, speechFormulas } from './lib/form.mjs';
-import { loadTahot, originalTags, grammarTags, manuscriptTags } from './lib/stepbible.mjs';
+import { buildSearchIndex } from './lib/search.mjs';
+import { loadTahot, originalTags, grammarTags, manuscriptTags, loadTagnt, greekOriginalTags, greekGrammarTags, greekVariantTags } from './lib/stepbible.mjs';
 import { natureTags, objectTags } from './lib/world.mjs';
 import { placeMaps, background, loadEaston } from './lib/background.mjs';
 import { chapterOverview, bookOverview } from './lib/overview.mjs';
@@ -139,6 +140,27 @@ for (const b of books) for (const [c, vs] of Object.entries((await bookText(b.id
 const tahotFiles = existsSync(`${CACHE}/stepbible`) ? (await readdir(`${CACHE}/stepbible`)).filter(f => f.startsWith('tahot-')).map(f => `${CACHE}/stepbible/${f}`) : [];
 const tahot = await loadTahot(tahotFiles, books);
 const [hebrew, parsing, ketiv] = [originalTags(tahot), grammarTags(tahot), manuscriptTags(tahot)];
+// Spec v0.35: the Greek New Testament from STEPBible TAGNT, in the same three layers.
+const tagntFiles = existsSync(`${CACHE}/stepbible`) ? (await readdir(`${CACHE}/stepbible`)).filter(f => f.startsWith('tagnt-')).map(f => `${CACHE}/stepbible/${f}`) : [];
+const tagnt = await loadTagnt(tagntFiles, books);
+const [greek, greekParsing, greekVariants] = [greekOriginalTags(tagnt), greekGrammarTags(tagnt), greekVariantTags(tagnt)];
+// Greek lemma details for the lexicon: the dictionary form, its gloss, and counts in two editions.
+// Both languages also get the commonest transliteration, so search finds "agape" or "chesed".
+const greekLex = new Map(), translits = new Map();
+const noteTranslit = (strong, t) => { if (!strong || !t) return; const k = strong.replace(/^([HG])0*(\d+).*$/, '$1$2'); const s = t.split('/').pop().normalize('NFD').replace(/[^a-zA-Z ]/g, '').toLowerCase().trim(); if (!s) return; if (!translits.has(k)) translits.set(k, new Map()); const m = translits.get(k); m.set(s, (m.get(s) || 0) + 1); };
+for (const words of tahot.verses.values()) for (const w of words) noteTranslit(w.strong, w.translit);
+for (const words of tagnt.verses.values()) for (const w of words) noteTranslit(w.strong, w.translit);
+// Hebrew dictionary forms and glosses, from TAHOT's "{H0430G=אֱלֹהִים=God»…}" column.
+const hebrewLex = new Map();
+for (const f of tahotFiles) for (const m of (await readFile(f, 'utf8')).matchAll(/\{H0*(\d+)\w?=([^=}]+)=([^»}@|]+)/g)) { const k = `H${m[1]}`; if (!hebrewLex.has(k)) hebrewLex.set(k, { lemma: m[2].trim(), gloss: m[3].trim() }); }
+const translitOf = k => { const m = translits.get(k); return m ? [...m].sort((a, b) => b[1] - a[1])[0][0] : ''; };
+for (const words of tagnt.verses.values()) for (const w of words) {
+  if (!w.strong) continue;
+  if (!greekLex.has(w.strong)) greekLex.set(w.strong, { lemma: w.lemma, gloss: w.lemmaGloss, na28: 0, tr: 0 });
+  const e = greekLex.get(w.strong);
+  if (w.editions.includes('NA28')) e.na28++;
+  if (w.editions.includes('TR')) e.tr++;
+}
 const theo = await loadTheographic(`${CACHE}/theographic`, books);
 const names = nameTags(theo, (book, ch) => textCache[book]?.WEB[ch]);
 const dated = eventTags(theo);
@@ -264,7 +286,7 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv),
     structure: extras.outline[ch], history, themes: topical[id]?.[ch],
     form: formWithFamilies(formsFor(id, ch, kjv, extras.noteForms), genreFor(id, ch), last),
-    original: hebrew[id]?.[ch], grammar: parsing[id]?.[ch], manuscripts: ketiv[id]?.[ch],
+    original: hebrew[id]?.[ch] || greek[id]?.[ch], grammar: parsing[id]?.[ch] || greekParsing[id]?.[ch], manuscripts: ketiv[id]?.[ch] || greekVariants[id]?.[ch],
     nature: natureTags(kjv), objects: objectTags(kjv),
     names: (names[id]?.[ch] || []).filter(t => t.category !== 'speaker'),
     voice: [...(names[id]?.[ch] || []).filter(t => t.category === 'speaker'), ...(extras.voice[ch] || []), ...speechFormulas(kjv)].sort((a, b) => a.start - b.start),
@@ -415,7 +437,7 @@ console.log(`Chapter packs: ${packs} (${(packBytes / 1e6).toFixed(1)} MB raw); b
 // Whole-Bible concordance: one file per Strong's number (first 500 occurrences, with the total).
 let lexFiles = 0;
 for (const [strong, list] of occurrences) {
-  await save(`${out}/library/lexicon/${strong}.json`, { scope: 'Whole Bible (KJV)', total: strongCount.get(strong), occurrences: { KJV: { [strong]: list } } });
+  await save(`${out}/library/lexicon/${strong}.json`, { scope: 'Whole Bible (KJV)', total: strongCount.get(strong), ...(greekLex.has(strong) ? { greek: { ...greekLex.get(strong), source: 'stepbible-tagnt' } } : {}), ...(translitOf(strong) ? { translit: translitOf(strong) } : {}), ...(hebrewLex.has(strong) ? { hebrew: { ...hebrewLex.get(strong), source: 'stepbible-tahot' } } : {}), occurrences: { KJV: { [strong]: list } } });
   lexFiles++;
 }
 console.log(`Concordance index: ${lexFiles} Strong's numbers.`);
@@ -427,5 +449,8 @@ if (imageIndex) {
   await save(`${out}/library/images.json`, { ...idx, places: trim(idx.places), words: trim(idx.words) });
   console.log(`Image index: ${Object.keys(idx.places).length} places, ${Object.keys(idx.words).length} words.`);
 }
+// Spec v0.35: the static search index, from the text and layers just written.
+const searchStats = await buildSearchIndex(out, books);
+console.log(`Search index: ${searchStats.verses} verses; word stems KJV ${searchStats.stems.KJV}, WEB ${searchStats.stems.WEB}; ${searchStats.strongs} Strong's numbers; ${searchStats.names} names.`);
 await writeFile(`${out}/.nojekyll`, '');
 console.log(`Built ${builtCount} chapters (${Object.keys(ordered).length}/${total}; budget ${allowed}). Next: ${remaining.slice(0, 5).join(', ') || 'none'}.`);
