@@ -23,6 +23,7 @@ import { themes as themeTags } from './lib/themes.mjs';
 import { poeticLines, acrostics } from './lib/poetry.mjs';
 import { formsFor, formsFromNotes, voiceFromNotes, speechFormulas } from './lib/form.mjs';
 import { buildSearchIndex } from './lib/search.mjs';
+import { loadBsb, bsbVerse } from './lib/bsb.mjs';
 import { loadTahot, originalTags, grammarTags, manuscriptTags, loadTagnt, greekOriginalTags, greekGrammarTags, greekVariantTags } from './lib/stepbible.mjs';
 import { natureTags, objectTags } from './lib/world.mjs';
 import { placeMaps, background, loadEaston } from './lib/background.mjs';
@@ -67,6 +68,21 @@ const toBuild = new Set([...queue.slice(0, allowed), ...Object.keys(seedCoverage
 // ---- 2. Sources ------------------------------------------------------------------------
 const usfmFile = async (dir, id) => (await readdir(`${CACHE}/${dir}`)).find(f => new RegExp(`^\\d+-${id}`).test(f));
 const textCache = {}, notesCache = {}, bookCache = {};
+// Spec v0.36: the Berean Standard Bible, verse places as in the KJV. Verses the BSB leaves out keep their
+// place with a note pointing to the Manuscripts layer.
+const bsb = existsSync(`${CACHE}/bsb/bsb_tables.tsv`) ? await loadBsb(`${CACHE}/bsb/bsb_tables.tsv`, `${CACHE}/bsb/bsb.txt`, registry.books) : null;
+const bsbStats = { tables: 0, 'plain-fallback': 0, omitted: 0 };
+function bsbChapters(id, kjv) {
+  if (!bsb) throw Error('BSB source missing: run scripts/fetch-sources.mjs');
+  const out = {};
+  for (const [ch, verses] of Object.entries(kjv)) out[ch] = verses.map(v => {
+    const got = bsbVerse(bsb, `${id}|${ch}|${v.number}`);
+    if (!got?.words.length) { bsbStats.omitted++; return { number: v.number, words: [], omitted: true, note: 'The Berean Standard Bible leaves this verse out, as most modern Greek editions do. See the Manuscripts layer.' }; }
+    bsbStats[got.checked]++;
+    return { number: v.number, words: got.words.map((w, i) => ({ id: `${id}.${ch}.${v.number}.${i + 1}`, ...w })) };
+  });
+  return out;
+}
 async function bookText(id) {
   if (!textCache[id]) {
     const [k, w] = [await usfmFile('kjv', id), await usfmFile('web', id)];
@@ -74,6 +90,7 @@ async function bookText(id) {
       KJV: parseUsfm(await readFile(`${CACHE}/kjv/${k}`, 'utf8'), id, { strongs: true }),
       WEB: parseUsfm(await readFile(`${CACHE}/web/${w}`, 'utf8'), id, { strongs: false }),
     };
+    textCache[id].BSB = bsbChapters(id, textCache[id].KJV);
   }
   return textCache[id];
 }
@@ -260,11 +277,16 @@ for (const key of queue.filter(k => toBuild.has(k))) {
   // Text: keep curated seed text; otherwise generate.
   if (!seed) {
     const t = await bookText(id);
-    for (const tr of ['KJV', 'WEB']) {
+    for (const tr of ['KJV', 'WEB', 'BSB']) {
       const verses = t[tr][ch];
       if (!verses?.length) throw Error(`Missing ${tr} text for ${key}`);
       await save(`${out}/text/${tr}/${id}/${ch}.json`, { book: id, ch, verses: tr === 'KJV' ? withCounts(verses) : verses });
     }
+  } else {
+    // Curated seed chapters carry their own KJV and WEB; the BSB (v0.36) is always generated.
+    const verses = (await bookText(id)).BSB[ch];
+    if (!verses?.length) throw Error(`Missing BSB text for ${key}`);
+    await save(`${out}/text/BSB/${id}/${ch}.json`, { book: id, ch, verses });
   }
   // Layers from canonical sources, unless the seed already provides that layer.
   const notes = await bookNotes(id);
@@ -436,8 +458,21 @@ console.log(`Chapter packs: ${packs} (${(packBytes / 1e6).toFixed(1)} MB raw); b
 
 // Whole-Bible concordance: one file per Strong's number (first 500 occurrences, with the total).
 let lexFiles = 0;
+// Spec v0.36: how each translation renders each Strong's number, for the word card's "translated as".
+// Neighbouring words linked to the same original word count as one rendering ("one and only").
+const renderings = new Map();
+for (const b of books) {
+  const t = await bookText(b.id);
+  for (const tr of ['KJV', 'WEB', 'BSB']) for (const verses of Object.values(t[tr] || {})) for (const v of verses) {
+    let run = null;
+    const flush = () => { if (!run) return; const k = run.strong.replace(/^([HG])0*(\d+).*$/, '$1$2'); if (!renderings.has(k)) renderings.set(k, { KJV: new Map(), WEB: new Map(), BSB: new Map() }); const m = renderings.get(k)[tr]; const phrase = run.words.join(' ').toLowerCase().replace(/[^\p{L}’' -]/gu, '').trim(); if (phrase) m.set(phrase, (m.get(phrase) || 0) + 1); run = null; };
+    for (const w of v.words) { if (!w.strong) { flush(); continue; } if (run && run.strong === w.strong) run.words.push(w.text); else { flush(); run = { strong: w.strong, words: [w.text] }; } }
+    flush();
+  }
+}
+const renderingsOf = k => { const r = renderings.get(k); if (!r) return undefined; const top = m => [...m].sort((a, b) => b[1] - a[1]).slice(0, 12); const out = {}; for (const tr of ['KJV', 'WEB', 'BSB']) if (r[tr].size) out[tr] = top(r[tr]); return out; };
 for (const [strong, list] of occurrences) {
-  await save(`${out}/library/lexicon/${strong}.json`, { scope: 'Whole Bible (KJV)', total: strongCount.get(strong), ...(greekLex.has(strong) ? { greek: { ...greekLex.get(strong), source: 'stepbible-tagnt' } } : {}), ...(translitOf(strong) ? { translit: translitOf(strong) } : {}), ...(hebrewLex.has(strong) ? { hebrew: { ...hebrewLex.get(strong), source: 'stepbible-tahot' } } : {}), occurrences: { KJV: { [strong]: list } } });
+  await save(`${out}/library/lexicon/${strong}.json`, { scope: 'Whole Bible (KJV)', total: strongCount.get(strong), ...(greekLex.has(strong) ? { greek: { ...greekLex.get(strong), source: 'stepbible-tagnt' } } : {}), ...(translitOf(strong) ? { translit: translitOf(strong) } : {}), ...(hebrewLex.has(strong) ? { hebrew: { ...hebrewLex.get(strong), source: 'stepbible-tahot' } } : {}), ...(renderingsOf(strong) ? { renderings: renderingsOf(strong) } : {}), occurrences: { KJV: { [strong]: list } } });
   lexFiles++;
 }
 console.log(`Concordance index: ${lexFiles} Strong's numbers.`);
@@ -451,6 +486,7 @@ if (imageIndex) {
 }
 // Spec v0.35: the static search index, from the text and layers just written.
 const searchStats = await buildSearchIndex(out, books);
+console.log(`BSB verses: ${bsbStats.tables} with word links, ${bsbStats['plain-fallback']} plain text, ${bsbStats.omitted} left out.`);
 console.log(`Search index: ${searchStats.verses} verses; word stems KJV ${searchStats.stems.KJV}, WEB ${searchStats.stems.WEB}; ${searchStats.strongs} Strong's numbers; ${searchStats.names} names.`);
 await writeFile(`${out}/.nojekyll`, '');
 console.log(`Built ${builtCount} chapters (${Object.keys(ordered).length}/${total}; budget ${allowed}). Next: ${remaining.slice(0, 5).join(', ') || 'none'}.`);

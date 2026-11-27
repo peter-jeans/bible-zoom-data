@@ -110,6 +110,16 @@
     "url": "https://ebible.org/Scriptures/details.php?id=eng-kjv2006"
   },
   {
+    "id": "bsb",
+    "title": "Berean Standard Bible (BSB), with its translation tables",
+    "author": "Berean Bible Translation Committee, with Bible Hub, Discovery Bible, OpenBible.com and unfoldingWord",
+    "date": "2023",
+    "tradition": "English, modern; Hebrew (WLC) and Greek base texts",
+    "license": "Public domain (dedicated 2023)",
+    "url": "https://berean.bible/terms.htm",
+    "attribution": "The Holy Bible, Berean Standard Bible, BSB, is produced in cooperation with Bible Hub, Discovery Bible, OpenBible.com and the Berean Bible Translation Committee. This text of God's Word has been dedicated to the public domain."
+  },
+  {
     "id": "web-text",
     "title": "World English Bible (eng-web)",
     "author": "Michael Paul Johnson and contributors",

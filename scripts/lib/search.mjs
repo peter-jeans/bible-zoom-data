@@ -49,7 +49,7 @@ export async function buildSearchIndex(out, books) {
 
   const strongs = new Map(), lexInfo = new Map();
   const counts = {};
-  for (const tr of ['KJV', 'WEB']) {
+  for (const tr of ['KJV', 'WEB', 'BSB']) {
     const stems = new Map();
     for (const b of books) {
       for (let ch = 1; ch <= b.chapters; ch++) {
@@ -67,7 +67,7 @@ export async function buildSearchIndex(out, books) {
               const e = stems.get(s), form = w.text.toLowerCase().replace(/[^\p{L}’']/gu, '');
               e.forms[form] = (e.forms[form] || 0) + 1; e.v.push(at);
             }
-            if (w.strong) { const k = w.strong.replace(/^([HG])0*/, '$1'); if (w.lemma && !lexInfo.has(k)) lexInfo.set(k, [w.lemma, '', w.gloss || '']); if (!strongs.has(k)) strongs.set(k, { KJV: [], WEB: [] }); strongs.get(k)[tr].push(at); }
+            if (w.strong) { const k = w.strong.replace(/^([HG])0*/, '$1'); if (w.lemma && !lexInfo.has(k)) lexInfo.set(k, [w.lemma, '', w.gloss || '']); if (!strongs.has(k)) strongs.set(k, { KJV: [], WEB: [], BSB: [] }); strongs.get(k)[tr].push(at); }
           }
         }
         await json(join(dir, tr, 'text', b.id, `${ch}.json`), rows);
@@ -76,7 +76,7 @@ export async function buildSearchIndex(out, books) {
     for (const [s, e] of stems) await json(join(dir, tr, 'w', `${safe(s)}.json`), { forms: e.forms, v: pack(e.v) });
     counts[tr] = stems.size;
   }
-  for (const [k, e] of strongs) await json(join(dir, 'strong', `${k}.json`), { KJV: pack(e.KJV), WEB: pack(e.WEB) });
+  for (const [k, e] of strongs) await json(join(dir, 'strong', `${k}.json`), { KJV: pack(e.KJV), WEB: pack(e.WEB), BSB: pack(e.BSB) });
 
   // Lemmas: from the lexicon files the build already wrote (Hebrew from Strong's, Greek from TAGNT).
   const lemmas = {};
