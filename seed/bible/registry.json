@@ -1,5 +1,5 @@
 {
-  "version": 17,
+  "version": 18,
   "layers": [
     {
       "id": "genre",
@@ -289,7 +289,7 @@
     },
     {
       "id": "reception",
-      "source_note": "Matthew Henry, Commentary on the Whole Bible",
+      "source_note": "Matthew Henry, Concise Commentary (full text by section) and Complete Commentary (linked)",
       "name": "Reception",
       "side": "above",
       "description": "Tradition & commentary",

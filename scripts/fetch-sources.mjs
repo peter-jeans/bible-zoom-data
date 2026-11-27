@@ -40,6 +40,9 @@ await download('https://raw.githubusercontent.com/BradyStephenson/bible-data/mai
 await mkdir(`${CACHE}/stepbible`, { recursive: true });
 const TAHOT = { 'Gen-Deu': 'tahot-gen-deu', 'Jos-Est': 'tahot-jos-est', 'Job-Sng': 'tahot-job-sng', 'Isa-Mal': 'tahot-isa-mal' };
 for (const [range, name] of Object.entries(TAHOT)) await download(`https://raw.githubusercontent.com/STEPBible/STEPBible-Data/master/Translators%20Amalgamated%20OT%2BNT/TAHOT%20${range}%20-%20Translators%20Amalgamated%20Hebrew%20OT%20-%20STEPBible.org%20CC%20BY.txt`, `${CACHE}/stepbible/${name}.txt`);
+// Matthew Henry's Concise Commentary (public domain), CrossWire SWORD module MHCC, for Reception.
+await mkdir(`${CACHE}/sword`, { recursive: true });
+if (await download('https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/MHCC.zip', `${CACHE}/sword/MHCC.zip`) || !existsSync(`${CACHE}/sword/MHCC`)) execFileSync('unzip', ['-oq', `${CACHE}/sword/MHCC.zip`, '-d', `${CACHE}/sword/MHCC`]);
 // Berean Standard Bible (public domain since 30 April 2023): plain text and translation tables (spec v0.36).
 await mkdir(`${CACHE}/bsb`, { recursive: true });
 for (const name of ['bsb.txt', 'bsb_tables.tsv']) await download(`https://bereanbible.com/${name}`, `${CACHE}/bsb/${name}`);

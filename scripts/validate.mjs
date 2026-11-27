@@ -35,6 +35,9 @@ const jn=await file('layers/original/JHN/3');assert(jn.some(t=>t.start===16&&t.l
 for(const [b,c,v] of [['MRK',16,9],['JHN',8,1],['1JN',5,7],['ACT',8,37]]){const tags=await file(`layers/manuscripts/${b}/${c}`);const t=tags.find(x=>x.start===v&&x.category==='variant');assert(t&&/ is in .*; not in /.test(t.detail),`Edition difference missing at ${b} ${c}:${v}`);}
 const agape=await file('library/lexicon/G26');assert(agape.greek?.lemma==='ἀγάπη'&&agape.greek.na28>100,'Greek lemma missing for G26');
 assert(sources.some(s=>s.id==='stepbible-tagnt'&&s.license==='CC BY 4.0'),'TAGNT source entry missing');}
+// Reception (2026-11-27): every chapter carries Matthew Henry's own text, linked to the Complete Commentary.
+{let n=0;for(const key of Object.keys(coverage)){if(!coverage[key].reception){n++;continue;}const tags=await file(`layers/reception/${key}`);const d=await file(`details/${key}`).catch(()=>({}));assert(tags.length&&tags.every(t=>t.url&&(t.detail||d.reception)),`Reception without text or link: ${key}`);}assert(n===0,`${n} chapters without Reception`);
+assert(sources.some(s=>s.id==='henry-mhcc'),'Matthew Henry Concise source missing');}
 // Spec v0.36: BSB is stored with word links; John 3:16 "loved" links to G25; left-out verses have a note.
 {const j=await file('text/BSB/JHN/3');const w=j.verses.find(x=>x.number===16).words.find(x=>/^loved/.test(x.text));assert(w?.strong==='G25','BSB John 3:16 "loved" should link to G25');
 const a=await file('text/BSB/ACT/8');assert(a.verses.find(x=>x.number===37)?.omitted,'BSB Acts 8:37 should be marked as left out');

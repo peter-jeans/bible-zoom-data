@@ -24,6 +24,8 @@ import { poeticLines, acrostics } from './lib/poetry.mjs';
 import { formsFor, formsFromNotes, voiceFromNotes, speechFormulas } from './lib/form.mjs';
 import { buildSearchIndex } from './lib/search.mjs';
 import { loadBsb, bsbVerse } from './lib/bsb.mjs';
+import { readCommentary } from './lib/sword.mjs';
+import { henryTags } from './lib/henry.mjs';
 import { loadTahot, originalTags, grammarTags, manuscriptTags, loadTagnt, greekOriginalTags, greekGrammarTags, greekVariantTags } from './lib/stepbible.mjs';
 import { natureTags, objectTags } from './lib/world.mjs';
 import { placeMaps, background, loadEaston } from './lib/background.mjs';
@@ -157,6 +159,14 @@ for (const b of books) for (const [c, vs] of Object.entries((await bookText(b.id
 const tahotFiles = existsSync(`${CACHE}/stepbible`) ? (await readdir(`${CACHE}/stepbible`)).filter(f => f.startsWith('tahot-')).map(f => `${CACHE}/stepbible/${f}`) : [];
 const tahot = await loadTahot(tahotFiles, books);
 const [hebrew, parsing, ketiv] = [originalTags(tahot), grammarTags(tahot), manuscriptTags(tahot)];
+// Reception (owner request 2026-11-27): Matthew Henry's Concise Commentary by section, linked by its own
+// headings. No AI.
+const HENRY_DIR = `${CACHE}/sword/MHCC/modules/comments/zcom/mhcc`;
+if (!existsSync(HENRY_DIR)) throw Error('Matthew Henry source missing: run scripts/fetch-sources.mjs');
+const henryVerses = async (b, c) => (await bookText(b)).KJV[c]?.length || 0;
+const henryCounts = {};
+for (const b of books) { henryCounts[b.id] = {}; for (let c = 1; c <= b.chapters; c++) henryCounts[b.id][c] = await henryVerses(b.id, c); }
+const henry = henryTags(await readCommentary(HENRY_DIR, books, (b, c) => henryCounts[b][c] || 0), books, (b, c) => henryCounts[b][c] || 0);
 // Spec v0.35: the Greek New Testament from STEPBible TAGNT, in the same three layers.
 const tagntFiles = existsSync(`${CACHE}/stepbible`) ? (await readdir(`${CACHE}/stepbible`)).filter(f => f.startsWith('tagnt-')).map(f => `${CACHE}/stepbible/${f}`) : [];
 const tagnt = await loadTagnt(tagntFiles, books);
@@ -305,7 +315,7 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     // v0.28: Ways of reading holds how a passage is taken; the kind table (narrative, poetry, law…)
     // fills Form at family level instead.
     genre: figurativeMode(extras.outline[ch], notes.imagery[ch] || [], last),
-    intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv),
+    intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv), reception: henry[id]?.[ch],
     structure: extras.outline[ch], history, themes: topical[id]?.[ch],
     form: formWithFamilies(formsFor(id, ch, kjv, extras.noteForms), genreFor(id, ch), last),
     original: hebrew[id]?.[ch] || greek[id]?.[ch], grammar: parsing[id]?.[ch] || greekParsing[id]?.[ch], manuscripts: ketiv[id]?.[ch] || greekVariants[id]?.[ch],
