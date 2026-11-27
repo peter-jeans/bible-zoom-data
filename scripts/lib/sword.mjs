@@ -44,3 +44,41 @@ export async function readCommentary(dir, books, verseCounts) {
   }
   return out;
 }
+
+// Every distinct comment with the verses it covers: verses that point to the same text form one range.
+// Supports zCom (10-byte verse entries) and zCom4 (12-byte, 4-byte sizes). Returns
+// [{ book, ch, start, end, text }] in canonical order; chapter introductions have start 0.
+export async function readCommentaryRanges(dir, books, verseCounts, { driver = 'zCom' } = {}) {
+  const wide = /4$/.test(driver), step = wide ? 12 : 10;
+  const out = [];
+  for (const [t, list] of [['ot', books.slice(0, 39)], ['nt', books.slice(39)]]) {
+    let bzs, bzz, bzv;
+    // Blocks by book are .bz*, by chapter .cz*, by verse .vz*; a New-Testament-only module has no ot files.
+    for (const k of ['b', 'c', 'v']) { try { [bzs, bzz, bzv] = await Promise.all(['s', 'z', 'v'].map(x => readFile(join(dir, `${t}.${k}z${x}`)))); break; } catch { /* try the next block type */ } }
+    if (!bzv) continue;
+    const blocks = new Map();
+    const block = n => { if (!blocks.has(n)) { const off = bzs.readUInt32LE(n * 12), size = bzs.readUInt32LE(n * 12 + 4); blocks.set(n, inflateSync(bzz.subarray(off, off + size))); } return blocks.get(n); };
+    const at = i => { const o = i * step; if (o + step > bzv.length) return null; const size = wide ? bzv.readUInt32LE(o + 8) : bzv.readUInt16LE(o + 8); return size ? { b: bzv.readUInt32LE(o), o: bzv.readUInt32LE(o + 4), size } : null; };
+    const text = e => block(e.b).subarray(e.o, e.o + e.size).toString('utf8');
+    let slot = 2;
+    for (const book of list) {
+      slot++;
+      for (let ch = 1; ch <= book.chapters; ch++) {
+        const intro = at(slot++);
+        if (intro) { const x = text(intro); if (x.trim()) out.push({ book: book.id, ch, start: 0, end: 0, text: x }); }
+        const n = verseCounts(book.id, ch);
+        let run = null;
+        for (let v = 1; v <= n; v++) {
+          const e = at(slot++);
+          const key = e && `${e.b}|${e.o}`;
+          if (run && key && key === run.key) { run.end = v; continue; }
+          if (run) out.push(run);
+          run = e ? { book: book.id, ch, start: v, end: v, key, e } : null;
+        }
+        if (run) out.push(run);
+      }
+    }
+    for (const r of out) if (r.e) { r.text = text(r.e); delete r.e; delete r.key; }
+  }
+  return out.filter(r => r.text && r.text.trim());
+}

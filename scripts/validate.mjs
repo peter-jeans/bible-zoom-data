@@ -36,8 +36,11 @@ for(const [b,c,v] of [['MRK',16,9],['JHN',8,1],['1JN',5,7],['ACT',8,37]]){const 
 const agape=await file('library/lexicon/G26');assert(agape.greek?.lemma==='ἀγάπη'&&agape.greek.na28>100,'Greek lemma missing for G26');
 assert(sources.some(s=>s.id==='stepbible-tagnt'&&s.license==='CC BY 4.0'),'TAGNT source entry missing');}
 // Reception (2026-11-27): every chapter carries Matthew Henry's own text, linked to the Complete Commentary.
-{let n=0;for(const key of Object.keys(coverage)){if(!coverage[key].reception){n++;continue;}const tags=await file(`layers/reception/${key}`);const d=await file(`details/${key}`).catch(()=>({}));assert(tags.length&&tags.every(t=>t.url&&(t.detail||d.reception)),`Reception without text or link: ${key}`);}assert(n===0,`${n} chapters without Reception`);
+{let n=0;for(const key of Object.keys(coverage)){if(!coverage[key].reception){n++;continue;}const tags=await file(`layers/reception/${key}`);const d=await file(`details/${key}`).catch(()=>({}));assert(tags.length&&tags.filter(t=>t.kind!=='writers').every(t=>t.url&&(t.detail||d.reception)),`Reception without text or link: ${key}`);}assert(n===0,`${n} chapters without Reception`);
 assert(sources.some(s=>s.id==='henry-mhcc'),'Matthew Henry Concise source missing');}
+// Spec v0.37: every writer has a name, tradition, date, licence and source; every file entry has text and verses.
+{const ws=await file('commentary/writers');assert(ws.length>=10,'Too few Reception writers');for(const w of ws)assert(w.id&&w.name&&w.tradition&&w.year&&w.license&&w.source,`Writer incomplete: ${w.id}`);
+for(const [id,key] of [['calvin','JHN/3'],['wesley','JHN/3'],['father-origen-of-alexandria','JHN/1']]){const e=await file(`commentary/${id}/${key}`);assert(e.length&&e.every(x=>x.text&&x.start>=1&&x.end>=x.start),`Writer file broken: ${id} ${key}`);}}
 // Spec v0.36: BSB is stored with word links; John 3:16 "loved" links to G25; left-out verses have a note.
 {const j=await file('text/BSB/JHN/3');const w=j.verses.find(x=>x.number===16).words.find(x=>/^loved/.test(x.text));assert(w?.strong==='G25','BSB John 3:16 "loved" should link to G25');
 const a=await file('text/BSB/ACT/8');assert(a.verses.find(x=>x.number===37)?.omitted,'BSB Acts 8:37 should be marked as left out');

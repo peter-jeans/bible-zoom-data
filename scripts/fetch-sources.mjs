@@ -43,6 +43,12 @@ for (const [range, name] of Object.entries(TAHOT)) await download(`https://raw.g
 // Matthew Henry's Concise Commentary (public domain), CrossWire SWORD module MHCC, for Reception.
 await mkdir(`${CACHE}/sword`, { recursive: true });
 if (await download('https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/MHCC.zip', `${CACHE}/sword/MHCC.zip`) || !existsSync(`${CACHE}/sword/MHCC`)) execFileSync('unzip', ['-oq', `${CACHE}/sword/MHCC.zip`, '-d', `${CACHE}/sword/MHCC`]);
+// Reception writers (spec v0.37): public-domain CrossWire commentaries, and the Church Fathers collection
+// (public-domain dedication; only Catena Aurea entries are used). Sefaria is fetched during the build.
+for (const m of ['Wesley', 'Clarke', 'Barnes', 'JFB', 'KD', 'CalvinCommentaries']) {
+  if (await download(`https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/${m}.zip`, `${CACHE}/sword/${m}.zip`) || !existsSync(`${CACHE}/sword/${m}`)) execFileSync('unzip', ['-oq', `${CACHE}/sword/${m}.zip`, '-d', `${CACHE}/sword/${m}`]);
+}
+if (!existsSync(`${CACHE}/hcf`)) execFileSync('git', ['clone', '-q', '--depth', '1', 'https://github.com/HistoricalChristianFaith/Commentaries-Database.git', `${CACHE}/hcf`]);
 // Berean Standard Bible (public domain since 30 April 2023): plain text and translation tables (spec v0.36).
 await mkdir(`${CACHE}/bsb`, { recursive: true });
 for (const name of ['bsb.txt', 'bsb_tables.tsv']) await download(`https://bereanbible.com/${name}`, `${CACHE}/bsb/${name}`);

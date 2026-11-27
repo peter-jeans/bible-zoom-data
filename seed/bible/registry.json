@@ -1,5 +1,5 @@
 {
-  "version": 18,
+  "version": 19,
   "layers": [
     {
       "id": "genre",
@@ -289,7 +289,7 @@
     },
     {
       "id": "reception",
-      "source_note": "Matthew Henry, Concise Commentary (full text by section) and Complete Commentary (linked)",
+      "source_note": "63 writers by tradition: Church Fathers in Aquinas’s Catena Aurea (tr. Newman, public domain); Rashi and Ramban (Sefaria; public domain or CC BY); Calvin, Henry, Wesley, Clarke, Barnes, Keil-Delitzsch, Jamieson-Fausset-Brown (CrossWire; public domain)",
       "name": "Reception",
       "side": "above",
       "description": "Tradition & commentary",

@@ -26,6 +26,8 @@ import { buildSearchIndex } from './lib/search.mjs';
 import { loadBsb, bsbVerse } from './lib/bsb.mjs';
 import { readCommentary } from './lib/sword.mjs';
 import { henryTags } from './lib/henry.mjs';
+import { SWORD_WRITERS, swordWriters, fatherWriters } from './lib/commentaries.mjs';
+import { SEFARIA_WRITERS, sefariaWriters } from './lib/sefaria.mjs';
 import { loadTahot, originalTags, grammarTags, manuscriptTags, loadTagnt, greekOriginalTags, greekGrammarTags, greekVariantTags } from './lib/stepbible.mjs';
 import { natureTags, objectTags } from './lib/world.mjs';
 import { placeMaps, background, loadEaston } from './lib/background.mjs';
@@ -167,6 +169,26 @@ const henryVerses = async (b, c) => (await bookText(b)).KJV[c]?.length || 0;
 const henryCounts = {};
 for (const b of books) { henryCounts[b.id] = {}; for (let c = 1; c <= b.chapters; c++) henryCounts[b.id][c] = await henryVerses(b.id, c); }
 const henry = henryTags(await readCommentary(HENRY_DIR, books, (b, c) => henryCounts[b][c] || 0), books, (b, c) => henryCounts[b][c] || 0);
+// Spec v0.37: Reception by writer. Each writer's commentary goes to commentary/<writer>/<BOOK>/<ch>.json,
+// loaded only when a reader taps that writer; writers.json lists who they are. No AI.
+const countOf = (b, c) => henryCounts[b]?.[c] || 0;
+const writerMeta = [], writerData = new Map();
+for (const [id, data] of await swordWriters(CACHE, books, countOf)) { const w = SWORD_WRITERS.find(x => x.id === id); writerMeta.push({ id, name: w.name, work: w.work, tradition: w.tradition, year: w.year, license: 'Public domain', source: `CrossWire SWORD module ${w.module}` }); writerData.set(id, data); }
+if (existsSync(`${CACHE}/hcf`)) {
+  for (const [name, data] of await fatherWriters(`${CACHE}/hcf`, books)) {
+    const meta = await readFile(`${CACHE}/hcf/${name}/metadata.toml`, 'utf8').catch(() => '');
+    const id = `father-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+    const category = /father_category\s*=\s*['"]([^'"]*)/.exec(meta)?.[1] || '';
+    const tradition = { 'Second Temple Judaism': 'Jewish', 'Early Fathers (Pre-Nicaea)': 'Early church (before 325)', 'Eastern & Byzantine Theology': 'Eastern Fathers (Orthodox)', 'Western & Medieval Theology': 'Western Fathers and medieval (Catholic)', 'Councils & Canons': 'Church councils', 'Pseudonymous Works': 'Works under another’s name' }[category] || 'Early church (before 325)';
+    writerMeta.push({ id, name, work: 'in the Catena Aurea of Thomas Aquinas', tradition, year: +(/default_year\s*=\s*(\d+)/.exec(meta)?.[1] || 600), license: 'Public domain', source: 'HistoricalChristianFaith Commentaries Database (public-domain dedication); Catena Aurea, tr. J. H. Newman and others, 1841–45' });
+    writerData.set(id, data);
+  }
+}
+// Sefaria text is kept in seed/bible/sefaria (public domain, CC0 or CC BY), so the build does not depend on
+// Sefaria's rate limits; anything missing there is fetched and saved.
+for (const [id, data] of await sefariaWriters(SEED, books, countOf)) { const w = SEFARIA_WRITERS.find(x => x.id === id); writerMeta.push({ id, name: w.name, work: w.work, tradition: w.tradition, year: w.year, license: 'Public domain or CC BY (shown on each entry)', source: 'Sefaria' }); writerData.set(id, data); }
+const writersIn = (book, ch) => writerMeta.filter(w => writerData.get(w.id)?.[book]?.[ch]?.length).sort((a, b) => a.year - b.year);
+const writersTag = (book, ch, last) => { const ws = writersIn(book, ch); return ws.length ? [{ category: 'tradition', kind: 'writers', label: `Commentary from ${ws.length} writer${ws.length > 1 ? 's' : ''}: ${ws.slice(0, 4).map(w => w.name).join(', ')}${ws.length > 4 ? '…' : ''}`, start: 1, end: last, status: 'SINGLE_PROPOSAL', source: 'henry-mhcc', witnesses: ws.length, writers: ws.map(w => w.id) }] : []; };
 // Spec v0.35: the Greek New Testament from STEPBible TAGNT, in the same three layers.
 const tagntFiles = existsSync(`${CACHE}/stepbible`) ? (await readdir(`${CACHE}/stepbible`)).filter(f => f.startsWith('tagnt-')).map(f => `${CACHE}/stepbible/${f}`) : [];
 const tagnt = await loadTagnt(tagntFiles, books);
@@ -315,7 +337,7 @@ for (const key of queue.filter(k => toBuild.has(k))) {
     // v0.28: Ways of reading holds how a passage is taken; the kind table (narrative, poetry, law…)
     // fills Form at family level instead.
     genre: figurativeMode(extras.outline[ch], notes.imagery[ch] || [], last),
-    intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv), reception: henry[id]?.[ch],
+    intertext: xref[id]?.[ch], places: geo[id]?.[ch], concordance: rareWords(kjv), reception: [...(henry[id]?.[ch] || []), ...writersTag(id, ch, last)],
     structure: extras.outline[ch], history, themes: topical[id]?.[ch],
     form: formWithFamilies(formsFor(id, ch, kjv, extras.noteForms), genreFor(id, ch), last),
     original: hebrew[id]?.[ch] || greek[id]?.[ch], grammar: parsing[id]?.[ch] || greekParsing[id]?.[ch], manuscripts: ketiv[id]?.[ch] || greekVariants[id]?.[ch],
@@ -495,6 +517,11 @@ if (imageIndex) {
   console.log(`Image index: ${Object.keys(idx.places).length} places, ${Object.keys(idx.words).length} words.`);
 }
 // Spec v0.35: the static search index, from the text and layers just written.
+// Spec v0.37: writer files and the writer list.
+let writerFiles = 0;
+for (const [id, data] of writerData) for (const [book, chs] of Object.entries(data)) for (const [ch, entries] of Object.entries(chs)) { await save(`${out}/commentary/${id}/${book}/${ch}.json`, entries); writerFiles++; }
+await save(`${out}/commentary/writers.json`, writerMeta.sort((a, b) => a.year - b.year));
+console.log(`Reception: ${writerMeta.length} writers, ${writerFiles} chapter files.`);
 const searchStats = await buildSearchIndex(out, books);
 console.log(`BSB verses: ${bsbStats.tables} with word links, ${bsbStats['plain-fallback']} plain text, ${bsbStats.omitted} left out.`);
 console.log(`Search index: ${searchStats.verses} verses; word stems KJV ${searchStats.stems.KJV}, WEB ${searchStats.stems.WEB}; ${searchStats.strongs} Strong's numbers; ${searchStats.names} names.`);
