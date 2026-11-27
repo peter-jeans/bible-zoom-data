@@ -180,7 +180,8 @@ if (existsSync(`${CACHE}/hcf`)) {
     const id = `father-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
     const category = /father_category\s*=\s*['"]([^'"]*)/.exec(meta)?.[1] || '';
     const tradition = { 'Second Temple Judaism': 'Jewish', 'Early Fathers (Pre-Nicaea)': 'Early church (before 325)', 'Eastern & Byzantine Theology': 'Eastern Fathers (Orthodox)', 'Western & Medieval Theology': 'Western Fathers and medieval (Catholic)', 'Councils & Canons': 'Church councils', 'Pseudonymous Works': 'Works under another’s name' }[category] || 'Early church (before 325)';
-    writerMeta.push({ id, name, work: 'in the Catena Aurea of Thomas Aquinas', tradition, year: +(/default_year\s*=\s*(\d+)/.exec(meta)?.[1] || 600), license: 'Public domain', source: 'HistoricalChristianFaith Commentaries Database (public-domain dedication); Catena Aurea, tr. J. H. Newman and others, 1841–45' });
+    const hasText = Object.values(data).some(chs => Object.values(chs).some(es => es.some(e => !e.linkOnly)));
+    writerMeta.push({ id, name, work: hasText ? 'in the Catena Aurea of Thomas Aquinas, and other works (links)' : 'works linked at the source (not stored here)', linkOnly: !hasText, tradition, year: +(/default_year\s*=\s*(\d+)/.exec(meta)?.[1] || 600), license: hasText ? 'Public domain (Catena Aurea); other works linked only' : 'Linked only; text not stored', source: 'HistoricalChristianFaith Commentaries Database; Catena Aurea, tr. J. H. Newman and others, 1841–45, public domain; other works are links to that site, with no text stored' });
     writerData.set(id, data);
   }
 }

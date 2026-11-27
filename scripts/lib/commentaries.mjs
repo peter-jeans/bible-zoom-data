@@ -70,12 +70,19 @@ export async function fatherWriters(hcfDir, books) {
       const raw = await readFile(join(dir, f), 'utf8');
       for (const block of raw.split(/\[\[commentary\]\]/).slice(1)) {
         const title = /source_title\s*=\s*"([^"]*)"/.exec(block)?.[1] || /source_title\s*=\s*'([^']*)'/.exec(block)?.[1] || '';
-        if (!PD_WORKS.some(re => re.test(title))) continue;
-        const quote = /quote\s*=\s*'''([\s\S]*?)'''/.exec(block)?.[1] || /quote\s*=\s*"""([\s\S]*?)"""/.exec(block)?.[1];
-        if (!quote?.trim()) continue;
         const url = /source_url\s*=\s*'([^']*)'/.exec(block)?.[1] || /source_url\s*=\s*"([^"]*)"/.exec(block)?.[1] || '';
         if (!writers.has(father)) writers.set(father, {});
-        ((writers.get(father)[id] ||= {})[ch] ||= []).push({ start, end, text: quote.trim(), work: `${title} (tr. J. H. Newman and others, 1841–45)`, ...(url ? { url } : {}) });
+        const list = ((writers.get(father)[id] ||= {})[ch] ||= []);
+        if (PD_WORKS.some(re => re.test(title))) {
+          const quote = /quote\s*=\s*'''([\s\S]*?)'''/.exec(block)?.[1] || /quote\s*=\s*"""([\s\S]*?)"""/.exec(block)?.[1];
+          if (quote?.trim()) list.push({ start, end, text: quote.trim(), work: `${title} (tr. J. H. Newman and others, 1841–45)`, ...(url ? { url } : {}) });
+          continue;
+        }
+        // Owner decision 2026-11-27: other works are listed link-only. No text is stored; the reader
+        // follows the link to read the passage at the source (its own page, or the chapter page).
+        const bookName = books.find(b => b.id === id)?.name || m[1];
+        const link = url || `https://historicalchristian.faith/${bookName.toLowerCase().replace(/\s+/g, '_')}/${ch}`;
+        if (title && !list.some(e => e.linkOnly && e.work === title && e.start === start && e.end === end)) list.push({ start, end, linkOnly: true, work: title, url: link });
       }
     }
   }
