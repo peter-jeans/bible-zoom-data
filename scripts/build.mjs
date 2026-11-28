@@ -28,6 +28,7 @@ import { readCommentary } from './lib/sword.mjs';
 import { henryTags } from './lib/henry.mjs';
 import { SWORD_WRITERS, swordWriters, fatherWriters } from './lib/commentaries.mjs';
 import { SEFARIA_WRITERS, sefariaWriters } from './lib/sefaria.mjs';
+import { buildScholars } from './lib/scholars.mjs';
 import { loadTahot, originalTags, grammarTags, manuscriptTags, loadTagnt, greekOriginalTags, greekGrammarTags, greekVariantTags } from './lib/stepbible.mjs';
 import { natureTags, objectTags } from './lib/world.mjs';
 import { placeMaps, background, loadEaston } from './lib/background.mjs';
@@ -179,9 +180,11 @@ if (existsSync(`${CACHE}/hcf`)) {
     const meta = await readFile(`${CACHE}/hcf/${name}/metadata.toml`, 'utf8').catch(() => '');
     const id = `father-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
     const category = /father_category\s*=\s*['"]([^'"]*)/.exec(meta)?.[1] || '';
-    const tradition = { 'Second Temple Judaism': 'Jewish', 'Early Fathers (Pre-Nicaea)': 'Early church (before 325)', 'Eastern & Byzantine Theology': 'Eastern Fathers (Orthodox)', 'Western & Medieval Theology': 'Western Fathers and medieval (Catholic)', 'Councils & Canons': 'Church councils', 'Pseudonymous Works': 'Works under another’s name' }[category] || 'Early church (before 325)';
+    const tradition = { 'Second Temple Judaism': 'Jewish', 'Early Fathers (Pre-Nicaea)': 'Early church (before 325)', 'Eastern & Byzantine Theology': 'Eastern Fathers (Orthodox)', 'Western & Medieval Theology': 'Western Fathers and medieval (Catholic)', 'Syriac & Oriental Theology': 'Syriac and Oriental Fathers', 'Councils & Canons': 'Church councils', 'Pseudonymous Works': 'Works under another’s name', 'Canonical Scriptures': 'The Bible on itself (later books quoting earlier ones)', 'Apocrypha, Pseudepigrapha & Early Documents': 'Apocrypha and early writings', 'Reformation & Modern': 'Reformation and modern', 'Liturgies & Hymns': 'Liturgies and hymns' }[category] || 'Early church (before 325)';
+    // Only named people can be cited as proponents (spec v0.38); books, councils, liturgies and anonymous works cannot.
+    const person = !['Canonical Scriptures', 'Apocrypha, Pseudepigrapha & Early Documents', 'Liturgies & Hymns', 'Councils & Canons', 'Pseudonymous Works'].includes(category);
     const hasText = Object.values(data).some(chs => Object.values(chs).some(es => es.some(e => !e.linkOnly)));
-    writerMeta.push({ id, name, work: hasText ? 'in the Catena Aurea of Thomas Aquinas, and other works (links)' : 'works linked at the source (not stored here)', linkOnly: !hasText, tradition, year: +(/default_year\s*=\s*(\d+)/.exec(meta)?.[1] || 600), license: hasText ? 'Public domain (Catena Aurea); other works linked only' : 'Linked only; text not stored', source: 'HistoricalChristianFaith Commentaries Database; Catena Aurea, tr. J. H. Newman and others, 1841–45, public domain; other works are links to that site, with no text stored' });
+    writerMeta.push({ id, name, person, work: hasText ? 'in the Catena Aurea of Thomas Aquinas, and other works (links)' : 'works linked at the source (not stored here)', linkOnly: !hasText, tradition, year: +(/default_year\s*=\s*(\d+)/.exec(meta)?.[1] || 600), license: hasText ? 'Public domain (Catena Aurea); other works linked only' : 'Linked only; text not stored', source: 'HistoricalChristianFaith Commentaries Database; Catena Aurea, tr. J. H. Newman and others, 1841–45, public domain; other works are links to that site, with no text stored' });
     writerData.set(id, data);
   }
 }
@@ -523,6 +526,10 @@ let writerFiles = 0;
 for (const [id, data] of writerData) for (const [book, chs] of Object.entries(data)) for (const [ch, entries] of Object.entries(chs)) { await save(`${out}/commentary/${id}/${book}/${ch}.json`, entries); writerFiles++; }
 await save(`${out}/commentary/writers.json`, writerMeta.sort((a, b) => a.year - b.year));
 console.log(`Reception: ${writerMeta.length} writers, ${writerFiles} chapter files.`);
+// Spec v0.38: the citation guard's list of named people the AI may cite.
+const scholarList = await buildScholars(`${SEED}/sources.json`, writerMeta, `${SEED}/scholars-extra.json`);
+await save(`${out}/scholars.json`, { about: 'Named people an AI suggestion may give as a proponent (spec v0.38). Anyone else is shown as "proponent not verified".', scholars: scholarList });
+console.log(`Scholar list: ${scholarList.length} names.`);
 const searchStats = await buildSearchIndex(out, books);
 console.log(`BSB verses: ${bsbStats.tables} with word links, ${bsbStats['plain-fallback']} plain text, ${bsbStats.omitted} left out.`);
 console.log(`Search index: ${searchStats.verses} verses; word stems KJV ${searchStats.stems.KJV}, WEB ${searchStats.stems.WEB}; ${searchStats.strongs} Strong's numbers; ${searchStats.names} names.`);

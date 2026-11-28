@@ -45,6 +45,8 @@ for(const [id,key] of [['calvin','JHN/3'],['wesley','JHN/3'],['father-origen-of-
 {const j=await file('text/BSB/JHN/3');const w=j.verses.find(x=>x.number===16).words.find(x=>/^loved/.test(x.text));assert(w?.strong==='G25','BSB John 3:16 "loved" should link to G25');
 const a=await file('text/BSB/ACT/8');assert(a.verses.find(x=>x.number===37)?.omitted,'BSB Acts 8:37 should be marked as left out');
 assert(sources.some(s=>s.id==='bsb'),'BSB source entry missing');}
+// Spec v0.38: the scholar list exists, holds people (not organisations) and the known authors.
+{const sc=(await file('scholars')).scholars;assert(sc.length>30&&sc.every(x=>x.name&&x.surname),'Scholar list incomplete');for(const n of ['Wenham','Walton','Calvin','Origen'])assert(sc.some(x=>x.surname===n||x.name.includes(n)),`Scholar list lacks ${n}`);assert(!sc.some(x=>/committee|contributors|OpenBible/i.test(x.name)),'Scholar list contains an organisation');}
 // Spec v0.35: word stems must match the app's (src/lib/searchCore.js, tests/search.test.mjs).
 {const {stem}=await import('./lib/search.mjs');for(const [w,x] of Object.entries({love:'lov',loved:'lov',loveth:'lov',loving:'lov',lovest:'lov',loves:'lov',cities:'city',goes:'goe',grass:'grass',God:'god',"Israel's":'israel'}))assert(stem(w)===x,`Search stem changed for ${w}: ${stem(w)} (the app expects ${x})`);}
 // Spec v0.35: the search index exists for both translations, Strong's numbers, lemmas and names.

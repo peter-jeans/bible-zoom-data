@@ -1,0 +1,4 @@
+{
+  "about": "Named scholars the AI may cite as proponents, in addition to the authors in sources.json and the Reception writers (spec v0.38, citation guard). Add full names, e.g. \"Richard B. Hays\". Only add someone whose view on the passage you can point to in a published work.",
+  "names": []
+}
