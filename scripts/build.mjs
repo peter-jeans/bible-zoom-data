@@ -29,6 +29,7 @@ import { henryTags } from './lib/henry.mjs';
 import { SWORD_WRITERS, swordWriters, fatherWriters } from './lib/commentaries.mjs';
 import { SEFARIA_WRITERS, sefariaWriters } from './lib/sefaria.mjs';
 import { buildScholars } from './lib/scholars.mjs';
+import { recheck, cardIndex } from './lib/cards.mjs';
 import { loadTahot, originalTags, grammarTags, manuscriptTags, loadTagnt, greekOriginalTags, greekGrammarTags, greekVariantTags } from './lib/stepbible.mjs';
 import { natureTags, objectTags } from './lib/world.mjs';
 import { placeMaps, background, loadEaston } from './lib/background.mjs';
@@ -530,6 +531,17 @@ console.log(`Reception: ${writerMeta.length} writers, ${writerFiles} chapter fil
 const scholarList = await buildScholars(`${SEED}/sources.json`, writerMeta, `${SEED}/scholars-extra.json`);
 await save(`${out}/scholars.json`, { about: 'Named people an AI suggestion may give as a proponent (spec v0.38). Anyone else is shown as "proponent not verified".', scholars: scholarList });
 console.log(`Scholar list: ${scholarList.length} names.`);
+// Spec v0.41: approved study cards from the app (cards/export.json, by scripts/fetch-cards-export.mjs),
+// checked again against their approved fingerprint, the references and the scholar list.
+const cardsOut = [];
+if (existsSync('cards/export.json')) for (const c of (await json('cards/export.json')).cards || []) {
+  const problems = await recheck(c, books, scholarList);
+  if (problems.length) { console.log(`::warning title=Study card left out::${c.card_id}: ${problems.join('; ')}`); continue; }
+  await save(`${out}/cards/${c.kind}/${c.card_id}.json`, c);
+  cardsOut.push(c);
+}
+await save(`${out}/cards/index.json`, cardIndex(cardsOut));
+console.log(`Study cards: ${cardsOut.length} published.`);
 const searchStats = await buildSearchIndex(out, books);
 console.log(`BSB verses: ${bsbStats.tables} with word links, ${bsbStats['plain-fallback']} plain text, ${bsbStats.omitted} left out.`);
 console.log(`Search index: ${searchStats.verses} verses; word stems KJV ${searchStats.stems.KJV}, WEB ${searchStats.stems.WEB}; ${searchStats.strongs} Strong's numbers; ${searchStats.names} names.`);

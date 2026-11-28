@@ -47,13 +47,15 @@ jobs:
         with:
           path: .cache
           key: sources-v1-${{ hashFiles('scripts/fetch-sources.mjs') }}-${{ steps.week.outputs.week }}
-      - name: Copy saved AI suggestions from the app (spec v0.23)
+      - name: Copy saved AI suggestions and approved study cards from the app (spec v0.23, v0.41)
         run: |
           node scripts/fetch-ai-export.mjs
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/fetch-cards-export.mjs
           if [ -d ai/export ]; then git add -A ai/export; fi
-          if git diff --cached --quiet; then echo "AI export unchanged"; else git commit -q -m "AI export: saved suggestions from the app" && (git push -q || echo "::warning title=AI export::Push failed; the next run will retry"); fi
+          if [ -d cards ]; then git add -A cards; fi
+          if git diff --cached --quiet; then echo "AI export unchanged"; else git commit -q -m "App export: saved AI suggestions and approved study cards" && (git push -q || echo "::warning title=AI export::Push failed; the next run will retry"); fi
       - name: Fetch open sources (skipped when cached)
         run: node scripts/fetch-sources.mjs
       - name: Build (scheduler)

@@ -47,6 +47,8 @@ const a=await file('text/BSB/ACT/8');assert(a.verses.find(x=>x.number===37)?.omi
 assert(sources.some(s=>s.id==='bsb'),'BSB source entry missing');}
 // Spec v0.38: the scholar list exists, holds people (not organisations) and the known authors.
 {const sc=(await file('scholars')).scholars;assert(sc.length>30&&sc.every(x=>x.name&&x.surname),'Scholar list incomplete');for(const n of ['Wenham','Walton','Calvin','Origen'])assert(sc.some(x=>x.surname===n||x.name.includes(n)),`Scholar list lacks ${n}`);assert(!sc.some(x=>/committee|contributors|OpenBible/i.test(x.name)),'Scholar list contains an organisation');}
+// Spec v0.41: the study-card index, and every card it lists, with no private fields.
+{const ci=await file('cards/index');assert(ci.schema==='bible-zoom-cards-index/1'&&Array.isArray(ci.cards),'Card index missing');for(const c of ci.cards){const card=await file(`cards/${c.kind}/${c.id}`);assert(card.hash&&card.approved,`Card ${c.id} is not approved`);for(const k of ['verification','review_note','history','approved_content'])assert(!(k in card),`Card ${c.id} carries private field ${k}`);}}
 // Spec v0.35: word stems must match the app's (src/lib/searchCore.js, tests/search.test.mjs).
 {const {stem}=await import('./lib/search.mjs');for(const [w,x] of Object.entries({love:'lov',loved:'lov',loveth:'lov',loving:'lov',lovest:'lov',loves:'lov',cities:'city',goes:'goe',grass:'grass',God:'god',"Israel's":'israel'}))assert(stem(w)===x,`Search stem changed for ${w}: ${stem(w)} (the app expects ${x})`);}
 // Spec v0.35: the search index exists for both translations, Strong's numbers, lemmas and names.
