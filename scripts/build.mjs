@@ -387,7 +387,7 @@ for (const key of queue.filter(k => toBuild.has(k))) {
       .filter(t => cats.has(t.category) && typeof t.reasoning === 'string' && t.reasoning.trim().length >= 10 && Number.isInteger(t.start) && Number.isInteger(t.end) && t.start >= 1 && t.start <= last)
       .map(t => ({ category: t.category, label: String(t.label).slice(0, 120), start: t.start, end: Math.min(Math.max(t.start, t.end), last),
         status: t.status === 'CONTESTED' && t.group ? 'CONTESTED' : 'SINGLE_PROPOSAL', ...(t.status === 'CONTESTED' && t.group ? { group: t.group } : {}),
-        method: 'ai-suggested', reasoning: t.reasoning, drafted: t.drafted, model: t.model, review_state: t.review_state || 'UNREVIEWED', batch: 'app-export' }))
+        method: 'ai-suggested', reasoning: t.reasoning, drafted: t.drafted, model: t.model, review_state: t.review_state || 'UNREVIEWED', ...(t.attribution === 'unverified' ? { attribution: 'unverified' } : {}), batch: 'app-export' }))
       .filter(t => !known.has(`${t.start}|${t.end}|${t.label}`));
     // A contested group needs two readings; a lone survivor becomes a single proposal.
     const sizes = tags.reduce((m, t) => (t.group ? m.set(t.group, (m.get(t.group) || 0) + 1) : m), new Map());
